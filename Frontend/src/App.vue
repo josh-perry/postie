@@ -1,28 +1,30 @@
 <template>
-  <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <div id="app" class="d-flex flex-column h-100">
+    <nav-bar />
+    <div class="container flex-grow-1">
+      <error />
+      <div class="mt-5">
+        <router-view />
+      </div>
+    </div>
+    <footer class="bg-light text-center p-3">
+      <div class="logo"></div>
+      <p>
+        Sample project provided by
+        <a href="https://auth0.com">Auth0</a>
+      </p>
+    </footer>
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import NavBar from "./components/NavBar";
+import Error from "./components/Error";
 
 export default {
-  name: 'App',
   components: {
-    HelloWorld
+    NavBar,
+    Error
   }
-}
+};
 </script>
-
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
-</style>

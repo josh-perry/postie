@@ -10,6 +10,8 @@ import { faLink, faUser, faPowerOff } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import { domain, clientId, audience } from "../auth_config.json";
 
+import { store } from "./store/store"
+
 Vue.config.productionTip = false;
 
 Vue.use(hljs.vuePlugin);
@@ -32,5 +34,6 @@ Vue.component("font-awesome-icon", FontAwesomeIcon);
 
 new Vue({
   router,
+  store,
   render: h => h(App)
 }).$mount("#app");

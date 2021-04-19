@@ -14,7 +14,7 @@
 
 <script>
 import axios from "axios";
-import { getInstance } from "@/auth";
+import { store } from "../store/store"
 
 export default {
   name: "posts",
@@ -23,34 +23,17 @@ export default {
       posts: []
     };
   },
-
   created() {
-    this.init(this.loadTokenIntoStore);
+    store.dispatch("retrieveTokenFromAuth0").then(() => {
+      this.getPosts()
+    })
   },
   methods: {
-    init(fn) {
-      var instance = getInstance();
-      instance.$watch("loading", loading => {
-        if (loading === false) {
-          fn(instance);
-        }
-      });
-    },
-    async loadTokenIntoStore(instance) {
-      if (instance.isAuthenticated) {
-        await instance.getTokenSilently().then((authToken) => {
-          this.getPosts(authToken);
-        });
-      }
-      else {
-        this.getPosts();
-      }
-    },
-    async getPosts(authToken) {
+    async getPosts() {
       let headers = {}
 
-      if (authToken !== null) {
-        headers["Authorization"] = `Bearer ${authToken}`
+      if (store.state.token !== null) {
+        headers["Authorization"] = `Bearer ${store.state.token}`
       }
 
       const { data } = await axios.get("https://localhost:5001/posts", {

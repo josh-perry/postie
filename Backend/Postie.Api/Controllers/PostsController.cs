@@ -1,43 +1,42 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Postie.Api.Models;
 
 namespace Postie.Api.Controllers
 {
-    public class Post
-    {
-        public string Name { get; set; }
-
-        public string Content { get; set; }
-
-        public bool Hidden { get; set; }
-    }
-
     [ApiController]
     [Route("posts")]
     public class PostsController : Controller
     {
-        private readonly List<Post> _posts = new List<Post>
+        private readonly List<PostListing> _posts = new List<PostListing>
         {
-            new Post
+            new PostListing
             {
-                Name = "Post the first",
-                Content = "some content",
-                Hidden = false
+                Title = "Post the first",
+                Hidden = false,
+                Username = "/u/someone",
+                CommentCount = 52,
+                PostedDateTime = DateTime.Now.AddHours(-5)
             },
-            new Post
+            new PostListing
             {
-                Name = "Post the second",
-                Content = "some content",
-                Hidden = false
+                Title = "Post the second",
+                Hidden = false,
+                Username = "/u/someone-else",
+                CommentCount = 10,
+                PostedDateTime = DateTime.Now.AddHours(-2)
             },
-            new Post
-            {
-                Name = "Hidden post",
-                Content = "logged in users only!",
-                Hidden = true
-            }
+           new PostListing
+           {
+               Title = "Secret post",
+               Hidden = true,
+               Username = "/u/someone-else",
+               CommentCount = 2,
+               PostedDateTime = DateTime.Now.AddHours(-3)
+           } 
         };
         
         [HttpGet]

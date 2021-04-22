@@ -1,14 +1,8 @@
 <template>
   <div>
-    <h1>Test</h1>
-    <ul>
-      <li v-for="post in posts" :key="post.name">
-        <div>
-          <h2>{{ post.name }}</h2>
-          <p>{{ post.content }}</p>
-        </div>
-      </li>
-    </ul>
+    <h1>Front Page</h1>
+
+    <PostList :posts="posts" />
   </div>
 </template>
 
@@ -16,8 +10,12 @@
 import axios from "axios";
 import { store } from "../store/store"
 
+import PostList from "../components/PostList.vue"
+
 export default {
-  name: "posts",
+ components: {
+    PostList
+  },
   data() {
     return {
       posts: []

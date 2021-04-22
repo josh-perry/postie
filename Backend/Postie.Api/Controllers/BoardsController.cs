@@ -1,15 +1,14 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Postie.Api.Models;
 
 namespace Postie.Api.Controllers
 {
     [ApiController]
-    [Route("post")]
-    public class PostsController : Controller
+    [Route("board")]
+    public class BoardsController : Controller
     {
         private readonly List<PostListing> _posts = new List<PostListing>
         {
@@ -29,38 +28,24 @@ namespace Postie.Api.Controllers
                 CommentCount = 10,
                 PostedDateTime = DateTime.Now.AddHours(-2)
             },
-           new PostListing
-           {
-               Title = "Secret post",
-               Hidden = true,
-               Username = "/u/someone-else",
-               CommentCount = 2,
-               PostedDateTime = DateTime.Now.AddHours(-3)
-           } 
+            new PostListing
+            {
+                Title = "Secret post",
+                Hidden = true,
+                Username = "/u/someone-else",
+                CommentCount = 2,
+                PostedDateTime = DateTime.Now.AddHours(-3)
+            } 
         };
         
         [HttpGet]
-        [Route("")]
-        public IActionResult ListAll()
+        [Route("{boardName}")]
+        public IActionResult ListAll(string boardName)
         {
             if (User.Identity.IsAuthenticated)
                 return Json(_posts);
 
             return Json(_posts.Where(x => !x.Hidden));
-        }
-
-        [Authorize]
-        [HttpGet("{id}")]
-        public IActionResult GetPost(int id)
-        {
-            var post = _posts.ElementAtOrDefault(id);
-
-            if (post == null || post.Hidden)
-            {
-                return NotFound();
-            }
-
-            return Json(post);
         }
     }
 }

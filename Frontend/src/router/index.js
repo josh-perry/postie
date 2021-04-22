@@ -3,6 +3,7 @@ import Router from "vue-router";
 import Home from "../views/Home.vue";
 import Profile from "../views/Profile.vue";
 import Posts from "../views/Posts.vue";
+import Board from "../views/Board.vue";
 import { authGuard } from "../auth";
 
 Vue.use(Router);
@@ -26,7 +27,11 @@ const router = new Router({
       path: "/posts",
       name: "posts",
       component: Posts,
-      //beforeEnter: authGuard
+    },
+    {
+      path: "/board/:boardName",
+      name: "board",
+      component: Board
     }
   ]
 });

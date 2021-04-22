@@ -34,7 +34,7 @@ export default {
         headers["Authorization"] = `Bearer ${store.state.token}`
       }
 
-      const { data } = await axios.get(`https://localhost:5001/board/${this.$route.params.boardName}`, {
+      const { data } = await axios.get(`https://localhost:5001/post/board?name=${this.$route.params.boardName}`, {
         headers: headers
       });
 

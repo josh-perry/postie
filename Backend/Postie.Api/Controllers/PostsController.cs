@@ -1,9 +1,10 @@
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Postie.Api.Models;
+using Postie.Api.Data;
+using Postie.Api.Mappers;
+using Postie.Api.Repositories;
+using Postie.Api.Services;
 
 namespace Postie.Api.Controllers
 {
@@ -11,56 +12,40 @@ namespace Postie.Api.Controllers
     [Route("post")]
     public class PostsController : Controller
     {
-        private readonly List<PostListing> _posts = new List<PostListing>
+        private readonly ApplicationDbContext _dbContext;
+
+        private readonly IFetchPostService _fetchPostService;
+
+        private readonly IBoardRepository _boardRepository;
+        
+        private readonly PostResponseMapper _postResponseMapper;
+
+        public PostsController(ApplicationDbContext dbContext,
+                               IFetchPostService fetchPostService,
+                               IBoardRepository boardRepository,
+                               PostResponseMapper postResponseMapper)
         {
-            new PostListing
-            {
-                Title = "Post the first",
-                Hidden = false,
-                Username = "/u/someone",
-                CommentCount = 52,
-                PostedDateTime = DateTime.Now.AddHours(-5)
-            },
-            new PostListing
-            {
-                Title = "Post the second",
-                Hidden = false,
-                Username = "/u/someone-else",
-                CommentCount = 10,
-                PostedDateTime = DateTime.Now.AddHours(-2)
-            },
-           new PostListing
-           {
-               Title = "Secret post",
-               Hidden = true,
-               Username = "/u/someone-else",
-               CommentCount = 2,
-               PostedDateTime = DateTime.Now.AddHours(-3)
-           } 
-        };
+            _dbContext = dbContext;
+            _fetchPostService = fetchPostService;
+            _boardRepository = boardRepository;
+            _postResponseMapper = postResponseMapper;
+        }
         
         [HttpGet]
         [Route("")]
         public IActionResult ListAll()
         {
-            if (User.Identity.IsAuthenticated)
-                return Json(_posts);
-
-            return Json(_posts.Where(x => !x.Hidden));
+            return Json(_dbContext.Posts.ToList());
         }
 
-        [Authorize]
-        [HttpGet("{id}")]
-        public IActionResult GetPost(int id)
+        [HttpGet]
+        [Route("board")]
+        public IActionResult GetPostsForBoard(string name)
         {
-            var post = _posts.ElementAtOrDefault(id);
+            var board = _boardRepository.GetBoardByName(name);
+            var posts = _fetchPostService.GetPostsForBoard(board);
 
-            if (post == null || post.Hidden)
-            {
-                return NotFound();
-            }
-
-            return Json(post);
+            return Json(_postResponseMapper.MapDbToResponseList(posts));
         }
     }
 }

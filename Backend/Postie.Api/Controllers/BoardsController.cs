@@ -1,8 +1,6 @@
-using System;
-using System.Collections.Generic;
 using System.Linq;
 using Microsoft.AspNetCore.Mvc;
-using Postie.Api.Models;
+using Postie.Api.Data;
 
 namespace Postie.Api.Controllers
 {
@@ -10,42 +8,25 @@ namespace Postie.Api.Controllers
     [Route("board")]
     public class BoardsController : Controller
     {
-        private readonly List<PostListing> _posts = new List<PostListing>
-        {
-            new PostListing
-            {
-                Title = "Post the first",
-                Hidden = false,
-                Username = "/u/someone",
-                CommentCount = 52,
-                PostedDateTime = DateTime.Now.AddHours(-5)
-            },
-            new PostListing
-            {
-                Title = "Post the second",
-                Hidden = false,
-                Username = "/u/someone-else",
-                CommentCount = 10,
-                PostedDateTime = DateTime.Now.AddHours(-2)
-            },
-            new PostListing
-            {
-                Title = "Secret post",
-                Hidden = true,
-                Username = "/u/someone-else",
-                CommentCount = 2,
-                PostedDateTime = DateTime.Now.AddHours(-3)
-            } 
-        };
+        private readonly ApplicationDbContext _dbContext;
         
-        [HttpGet]
-        [Route("{boardName}")]
-        public IActionResult ListAll(string boardName)
+        public BoardsController(ApplicationDbContext dbContext)
         {
-            if (User.Identity.IsAuthenticated)
-                return Json(_posts);
+            _dbContext = dbContext;
+        }
+       
+        [HttpGet]
+        [Route("")]
+        public IActionResult GetBoard([FromQuery]string title)
+        {
+            // If no title is provided, get all
+            if (string.IsNullOrEmpty(title))
+            {
+                return Json(_dbContext.Boards.ToList());
+            }
 
-            return Json(_posts.Where(x => !x.Hidden));
+            var board = _dbContext.Boards.FirstOrDefault(x => x.Title == title);
+            return board == null ? (IActionResult) NotFound() : Json(board);
         }
     }
 }

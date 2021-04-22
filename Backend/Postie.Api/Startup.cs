@@ -6,6 +6,10 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Postie.Api.Data;
+using Postie.Api.Mappers;
+using Postie.Api.Models.Db;
+using Postie.Api.Repositories;
+using Postie.Api.Services;
 
 namespace Postie.Api
 {
@@ -44,6 +48,10 @@ namespace Postie.Api
                 options.Authority = "https://dev-q8zwjq1z.us.auth0.com/";
                 options.Audience = "postie";
             });
+
+            services.AddTransient<IFetchPostService, FetchPostService>();
+            services.AddTransient<IBoardRepository, BoardRepository>();
+            services.AddSingleton<PostResponseMapper>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

@@ -3,8 +3,8 @@
     <a href="#">{{ post.title }}</a>
     
     <div class="details">
-      <p>{{ post.username }}</p>
-      <p>{{ post.postedDateTime }}</p>
+      <p>{{ post.createdBy }}</p>
+      <p>{{ post.createdDateTime }}</p>
       <p>{{ post.commentCount }} comments</p>
     </div>
   </div>
@@ -18,10 +18,9 @@ export default {
       default: () => {
         return {
           title: "",
-          href: "",
-          commentCount: 0,
-          postedDateTime: "",
-          username: ""
+          createdBy: "",
+          board: "",
+          createdDateTime: ""
         }
       }
     }

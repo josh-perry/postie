@@ -2,14 +2,28 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
+using Postie.Api.Data;
 
 namespace Postie.Api
 {
     public class Startup
     {
+        private IConfiguration _configuration { get; set; }
+        
+        public Startup(IConfiguration configuration)
+        {
+            _configuration = configuration;
+        }
+        
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddDbContext<ApplicationDbContext>(options => {
+                options.UseSqlite(_configuration.GetConnectionString("DefaultConnection"));
+            });
+            
             services.AddMvc();
 
             services.AddCors(options => {

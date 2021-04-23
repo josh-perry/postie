@@ -1,9 +1,16 @@
 <template>
   <div>
-
+    <h1>Home</h1>
+    <BoardList />
   </div>
 </template>
 
 <script>
-export default {}
+import BoardList from "../components/BoardList";
+
+export default {
+  components: {
+    BoardList
+  }
+}
 </script>

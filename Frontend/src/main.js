@@ -1,20 +1,14 @@
 import Vue from "vue";
 import App from "./App.vue";
 import router from "./router";
-import { Auth0Plugin } from "./auth";
-import hljs from "highlight.js/lib/core";
-import "highlight.js/styles/github.css";
 
-import { library } from "@fortawesome/fontawesome-svg-core";
-import { faLink, faUser, faPowerOff } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
+import { Auth0Plugin } from "./auth";
+
 import { domain, clientId, audience } from "../auth_config.json";
 
 import { store } from "./store/store"
 
 Vue.config.productionTip = false;
-
-Vue.use(hljs.vuePlugin);
 
 Vue.use(Auth0Plugin, {
   domain,
@@ -28,9 +22,6 @@ Vue.use(Auth0Plugin, {
     );
   }
 });
-
-library.add(faLink, faUser, faPowerOff);
-Vue.component("font-awesome-icon", FontAwesomeIcon);
 
 new Vue({
   router,

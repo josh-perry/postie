@@ -1,8 +1,10 @@
 <template>
   <div>
-    <h2>{{ boardName }}</h2>
-
-    <PostList :posts="posts" />
+    <ul>
+      <li v-for="board in boards" :key="board.id">
+        <a :href="`/board/${board.title}`">{{ board.title }}</a>
+      </li>
+    </ul>
   </div>
 </template>
 
@@ -10,26 +12,15 @@
 import axios from "axios";
 import { store } from "../store/store"
 
-import PostList from "../components/PostList.vue"
-
 export default {
- components: {
-    PostList
-  },
   data() {
     return {
-      posts: [],
-      boardName: ""
+      boards: []
     };
   },
   created() {
-    console.log("created")
-    this.boardName = this.$route.params.boardName
-
     store.dispatch("retrieveTokenFromAuth0").then(() => {
-      console.log("before get")
       this.getPosts()
-      console.log("after get")
     })
   },
   methods: {
@@ -40,11 +31,11 @@ export default {
         headers["Authorization"] = `Bearer ${store.state.token}`
       }
 
-      const { data } = await axios.get(`https://localhost:5001/post/board?name=${this.$route.params.boardName}`, {
+      const { data } = await axios.get("https://localhost:5001/board", {
         headers: headers
       });
 
-      this.posts = data;
+      this.boards = data;
     }
   }
 }

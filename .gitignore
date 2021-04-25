@@ -3,6 +3,8 @@
 # Reference: https://intellij-support.jetbrains.com/hc/en-us/articles/206544839
 
 Backend/Postie.Api/app.db
+Backend/Postie.Api/app.db-wal
+Backend/Postie.Api/app.db-shm
 
 # User-specific stuff
 cmake-build-*/

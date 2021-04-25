@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Postie.Api.Data;
 using Postie.Api.Mappers;
+using Postie.Api.Models.Db;
 using Postie.Api.Repositories;
 using Postie.Api.Services;
 
@@ -33,9 +34,32 @@ namespace Postie.Api.Controllers
         
         [HttpGet]
         [Route("")]
-        public IActionResult ListAll()
+        public IActionResult GetPosts(string board, string post)
         {
-            return Json(_dbContext.Posts.ToList());
+            var boardProvided = !string.IsNullOrWhiteSpace(board);
+            var postProvided = !string.IsNullOrWhiteSpace(post);
+            
+            // If we have neither board, nor post, bad request
+            if (!boardProvided && !postProvided)
+            {
+                return BadRequest();
+            }
+
+            // If we have just board, return posts for that board
+            if (boardProvided && !postProvided)
+            {
+                return Json(GetPostsForBoard(board));
+            }
+
+            // If we have a post but no board, bad request
+            if (!boardProvided)
+            {
+                return BadRequest();
+            }
+
+            // If we have both, fetch that specific post
+            var p = _fetchPostService.GetPostByBoardAndUrl(board, post);
+            return p == null ? (IActionResult) NotFound() : Json(p);
         }
 
         [HttpGet]

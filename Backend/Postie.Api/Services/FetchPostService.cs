@@ -10,6 +10,8 @@ namespace Postie.Api.Services
     public interface IFetchPostService
     {
         IEnumerable<Post> GetPostsForBoard(Board board);
+
+        Post GetPostByBoardAndUrl(string boardUrl, string postUrl);
     }
     
     public class FetchPostService : IFetchPostService
@@ -26,6 +28,16 @@ namespace Postie.Api.Services
             return _dbContext.Posts
                 .Include(x => x.CreatedBy)
                 .Where(x => x.Board == board);
+        }
+
+        public Post GetPostByBoardAndUrl(string boardUrl, string postUrl)
+        {
+            var board = _dbContext.Boards.FirstOrDefault(x => x.Title == boardUrl);
+            var post = _dbContext.Posts
+                .Include(x => x.CreatedBy)
+                .FirstOrDefault(x => x.Board == board && x.Url == postUrl);
+
+            return post;
         }
     }
 }

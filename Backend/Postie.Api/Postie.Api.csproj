@@ -32,6 +32,7 @@
       <_ContentIncludedByDefault Remove="Pages\Shared\_ValidationScriptsPartial.cshtml" />
       <_ContentIncludedByDefault Remove="Pages\_ViewImports.cshtml" />
       <_ContentIncludedByDefault Remove="Pages\_ViewStart.cshtml" />
+      <_ContentIncludedByDefault Remove="Areas\Identity\Pages\_ViewStart.cshtml" />
     </ItemGroup>
 
     <ItemGroup>

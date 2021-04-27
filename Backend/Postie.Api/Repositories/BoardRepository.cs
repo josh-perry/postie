@@ -17,5 +17,11 @@ namespace Postie.Api.Repositories
         {
             return _dbContext.Boards.FirstOrDefault(x => x.Title == boardName);
         }
+        
+        public bool AddBoard(Board board)
+        {
+            _dbContext.Boards.Add(board);
+            return _dbContext.SaveChanges() != 0;
+        }
     }
 }

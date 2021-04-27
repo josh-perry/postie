@@ -81,6 +81,8 @@ namespace Postie.Api
 
             services.AddTransient<IFetchPostService, FetchPostService>();
             services.AddTransient<IBoardRepository, BoardRepository>();
+            services.AddTransient<IUrlService, UrlService>();
+            services.AddTransient<IUserRepository, UserRepository>();
             services.AddSingleton<PostResponseMapper>();
         }
 

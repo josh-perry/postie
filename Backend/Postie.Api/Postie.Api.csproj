@@ -4,6 +4,11 @@
         <TargetFramework>netcoreapp3.1</TargetFramework>
         <UserSecretsId>aspnet-Postie.Api-BC7CC727-53B4-4F03-96EE-FF32398C0E51</UserSecretsId>
     </PropertyGroup>
+    
+    <PropertyGroup>
+        <GenerateDocumentationFile>true</GenerateDocumentationFile>
+        <NoWarn>$(NoWarn);1591</NoWarn>
+    </PropertyGroup> 
 
     <ItemGroup>
         <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="3.1.14" />

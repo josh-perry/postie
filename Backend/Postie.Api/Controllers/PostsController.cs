@@ -1,9 +1,5 @@
-using System.Linq;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Postie.Api.Data;
 using Postie.Api.Mappers;
-using Postie.Api.Models.Db;
 using Postie.Api.Repositories;
 using Postie.Api.Services;
 
@@ -13,60 +9,55 @@ namespace Postie.Api.Controllers
     [Route("post")]
     public class PostsController : Controller
     {
-        private readonly ApplicationDbContext _dbContext;
-
         private readonly IFetchPostService _fetchPostService;
 
         private readonly IBoardRepository _boardRepository;
         
         private readonly PostResponseMapper _postResponseMapper;
 
-        public PostsController(ApplicationDbContext dbContext,
-                               IFetchPostService fetchPostService,
+        public PostsController(IFetchPostService fetchPostService,
                                IBoardRepository boardRepository,
                                PostResponseMapper postResponseMapper)
         {
-            _dbContext = dbContext;
             _fetchPostService = fetchPostService;
             _boardRepository = boardRepository;
             _postResponseMapper = postResponseMapper;
         }
         
+        /// <summary>
+        /// Get post details by board and post
+        /// </summary>
+        /// <param name="boardUrl"></param>
+        /// <param name="postUrl"></param>
+        /// <returns></returns>
+        /// <response code="200"></response>
+        /// <response code="404">The post cannot be found</response>
         [HttpGet]
-        [Route("")]
-        public IActionResult GetPosts(string board, string post)
+        [Route("board/{boardUrl}/{postUrl}")]
+        public IActionResult Get(string boardUrl, string postUrl)
         {
-            var boardProvided = !string.IsNullOrWhiteSpace(board);
-            var postProvided = !string.IsNullOrWhiteSpace(post);
-            
-            // If we have neither board, nor post, bad request
-            if (!boardProvided && !postProvided)
-            {
-                return BadRequest();
-            }
-
-            // If we have just board, return posts for that board
-            if (boardProvided && !postProvided)
-            {
-                return Json(GetPostsForBoard(board));
-            }
-
-            // If we have a post but no board, bad request
-            if (!boardProvided)
-            {
-                return BadRequest();
-            }
-
-            // If we have both, fetch that specific post
-            var p = _fetchPostService.GetPostByBoardAndUrl(board, post);
-            return p == null ? (IActionResult) NotFound() : Json(p);
+            var post = _fetchPostService.GetPostByBoardAndUrl(boardUrl, postUrl);
+            return post == null ? (IActionResult) NotFound() : Json(post);
         }
 
+        /// <summary>
+        /// Get a list of posts for a board
+        /// </summary>
+        /// <param name="boardUrl"></param>
+        /// <returns></returns>
+        /// <response code="200">The posts</response>
+        /// <response code="404">The board cannot be found</response>
         [HttpGet]
-        [Route("board")]
-        public IActionResult GetPostsForBoard(string name)
+        [Route("board/{boardUrl}")]
+        public IActionResult Get(string boardUrl)
         {
-            var board = _boardRepository.GetBoardByName(name);
+            var board = _boardRepository.GetBoardByName(boardUrl);
+
+            if (board == null)
+            {
+                return NotFound();
+            }
+            
             var posts = _fetchPostService.GetPostsForBoard(board);
 
             return Json(_postResponseMapper.MapDbToResponseList(posts));

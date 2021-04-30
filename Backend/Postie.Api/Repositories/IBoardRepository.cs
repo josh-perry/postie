@@ -1,4 +1,4 @@
-using Postie.Api.Controllers;
+using System.Collections.Generic;
 using Postie.Api.Models.Db;
 
 namespace Postie.Api.Repositories
@@ -8,5 +8,7 @@ namespace Postie.Api.Repositories
         Board GetBoardByName(string boardName);
 
         bool AddBoard(Board board);
+
+        IEnumerable<Board> GetAllBoards();
     }
 }

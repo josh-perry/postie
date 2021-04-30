@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Linq;
 using Postie.Api.Data;
 using Postie.Api.Models.Db;
@@ -22,6 +23,10 @@ namespace Postie.Api.Repositories
         {
             _dbContext.Boards.Add(board);
             return _dbContext.SaveChanges() != 0;
+        }
+        public IEnumerable<Board> GetAllBoards()
+        {
+            return _dbContext.Boards.ToList();
         }
     }
 }

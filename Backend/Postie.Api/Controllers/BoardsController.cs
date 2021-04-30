@@ -34,6 +34,19 @@ namespace Postie.Api.Controllers
             _urlService = urlService;
             _userRepository = userRepository;
         }
+
+        /// <summary>
+        /// Get a list of all boards
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        [Route("")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public IActionResult Get()
+        {
+            var boards = _boardRepository.GetAllBoards();
+            return Json(boards);
+        }
         
         /// <summary>
         /// Get an existing board

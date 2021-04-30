@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Postie.Api.Models.Db;
 
 namespace Postie.Api.Data
@@ -10,7 +9,7 @@ namespace Postie.Api.Data
             : base(options)
         {
         }
-        
+
         public DbSet<User> Users { get; set; }
         public DbSet<Board> Boards { get; set; }
         public DbSet<Post> Posts { get; set; }

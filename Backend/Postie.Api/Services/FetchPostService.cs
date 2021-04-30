@@ -13,11 +13,11 @@ namespace Postie.Api.Services
 
         Post GetPostByBoardAndUrl(string boardUrl, string postUrl);
     }
-    
+
     public class FetchPostService : IFetchPostService
     {
         private readonly ApplicationDbContext _dbContext;
-        
+
         public FetchPostService(ApplicationDbContext dbContext)
         {
             _dbContext = dbContext;

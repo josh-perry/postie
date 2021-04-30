@@ -6,7 +6,7 @@ namespace Postie.Api.Models.Db
     public class Post
     {
         public int ID { get; set; }
-        
+
         [Required]
         public string Title { get; set; }
 
@@ -15,10 +15,10 @@ namespace Postie.Api.Models.Db
 
         [Required]
         public DateTime CreatedDateTime { get; set; }
-        
+
         [Required]
         public Board Board { get; set; }
-        
+
         [Required]
         public string Url { get; set; }
     }

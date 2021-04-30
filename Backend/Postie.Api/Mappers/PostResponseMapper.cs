@@ -10,13 +10,11 @@ namespace Postie.Api.Mappers
             var result = new List<PostApiResponse>();
 
             foreach (var post in posts)
-            {
                 result.Add(MapDbToResponse(post));
-            }
-            
+
             return result;
         }
-        
+
         public PostApiResponse MapDbToResponse(Post post)
         {
             return new PostApiResponse

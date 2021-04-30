@@ -11,14 +11,12 @@ namespace Postie.Api.Mappers
             var result = new List<BoardApiResponse>();
 
             foreach (var board in boards)
-            {
                 result.Add(MapDbToResponse(board));
-            }
-            
+
             return result;
         }
-        
-        public BoardApiResponse MapDbToResponse (Board board)
+
+        public BoardApiResponse MapDbToResponse(Board board)
         {
             return new BoardApiResponse
             {

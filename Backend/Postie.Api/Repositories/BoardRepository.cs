@@ -14,12 +14,12 @@ namespace Postie.Api.Repositories
         {
             _dbContext = dbContext;
         }
-        
+
         public Board GetBoardByName(string boardName)
         {
             return _dbContext.Boards.FirstOrDefault(x => x.Title == boardName);
         }
-        
+
         public bool AddBoard(Board board)
         {
             _dbContext.Boards.Add(board);

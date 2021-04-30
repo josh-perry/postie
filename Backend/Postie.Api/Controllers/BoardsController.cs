@@ -1,5 +1,4 @@
 using System;
-using System.Linq;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -15,23 +14,23 @@ namespace Postie.Api.Controllers
     {
         public string Title { get; set; }
     }
-    
+
     [ApiController]
     [Route("board")]
     public class BoardsController : Controller
     {
         private readonly IBoardRepository _boardRepository;
-        
-        private readonly IUrlService _urlService;
-        
-        private readonly IUserRepository _userRepository;
-        
+
         private readonly BoardResponseMapper _boardResponseMapper;
 
+        private readonly IUrlService _urlService;
+
+        private readonly IUserRepository _userRepository;
+
         public BoardsController(IBoardRepository boardRepository,
-                                IUrlService urlService,
-                                IUserRepository userRepository,
-                                BoardResponseMapper boardResponseMapper)
+            IUrlService urlService,
+            IUserRepository userRepository,
+            BoardResponseMapper boardResponseMapper)
         {
             _boardRepository = boardRepository;
             _urlService = urlService;
@@ -40,7 +39,7 @@ namespace Postie.Api.Controllers
         }
 
         /// <summary>
-        /// Get a list of all boards
+        ///     Get a list of all boards
         /// </summary>
         /// <returns></returns>
         [HttpGet]
@@ -53,7 +52,7 @@ namespace Postie.Api.Controllers
         }
 
         /// <summary>
-        /// Get an existing board
+        ///     Get an existing board
         /// </summary>
         /// <param name="board">Board name</param>
         /// <returns></returns>
@@ -68,15 +67,13 @@ namespace Postie.Api.Controllers
             var b = _boardRepository.GetBoardByName(board);
 
             if (b == null)
-            {
                 return NotFound();
-            }
 
             return Json(_boardResponseMapper.MapDbToResponse(b));
         }
-        
+
         /// <summary>
-        /// Adds a new board
+        ///     Adds a new board
         /// </summary>
         /// <param name="board">Board name</param>
         /// <param name="newBoard">New board details</param>
@@ -88,9 +85,7 @@ namespace Postie.Api.Controllers
         {
             // Validate this board doesn't already exist
             if (_boardRepository.GetBoardByName(newBoard.Title) != null)
-            {
                 return Conflict($"{newBoard.Title} already exists!");
-            }
 
             var user = _userRepository.GetUserByAuthId(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
 
@@ -104,12 +99,10 @@ namespace Postie.Api.Controllers
             });
 
             if (success)
-            {
                 return CreatedAtAction(nameof(Get), new
                 {
-                    board = board
+                    board
                 });
-            }
 
             return Problem("Failed to create board");
         }

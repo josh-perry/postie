@@ -9,23 +9,23 @@ namespace Postie.Api.Controllers
     [Route("post")]
     public class PostsController : Controller
     {
-        private readonly IFetchPostService _fetchPostService;
 
         private readonly IBoardRepository _boardRepository;
-        
+        private readonly IFetchPostService _fetchPostService;
+
         private readonly PostResponseMapper _postResponseMapper;
 
         public PostsController(IFetchPostService fetchPostService,
-                               IBoardRepository boardRepository,
-                               PostResponseMapper postResponseMapper)
+            IBoardRepository boardRepository,
+            PostResponseMapper postResponseMapper)
         {
             _fetchPostService = fetchPostService;
             _boardRepository = boardRepository;
             _postResponseMapper = postResponseMapper;
         }
-        
+
         /// <summary>
-        /// Get post details by board and post
+        ///     Get post details by board and post
         /// </summary>
         /// <param name="boardUrl"></param>
         /// <param name="postUrl"></param>
@@ -41,7 +41,7 @@ namespace Postie.Api.Controllers
         }
 
         /// <summary>
-        /// Get a list of posts for a board
+        ///     Get a list of posts for a board
         /// </summary>
         /// <param name="boardUrl"></param>
         /// <returns></returns>
@@ -54,12 +54,9 @@ namespace Postie.Api.Controllers
             var board = _boardRepository.GetBoardByName(boardUrl);
 
             if (board == null)
-            {
                 return NotFound();
-            }
-            
-            var posts = _fetchPostService.GetPostsForBoard(board);
 
+            var posts = _fetchPostService.GetPostsForBoard(board);
             return Json(_postResponseMapper.MapDbToResponseList(posts));
         }
     }

@@ -27,9 +27,7 @@ export default {
     this.boardName = this.$route.params.boardName
 
     store.dispatch("retrieveTokenFromAuth0").then(() => {
-      console.log("before get")
       this.getPosts()
-      console.log("after get")
     })
   },
   methods: {

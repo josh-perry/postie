@@ -2,7 +2,7 @@
   <div>
     <ul>
       <li v-for="board in boards" :key="board.id">
-        <a :href="`/board/${board.title}`">{{ board.title }}</a>
+        <BoardCard :board="board" />
       </li>
     </ul>
   </div>
@@ -11,8 +11,12 @@
 <script>
 import axios from "axios";
 import { store } from "../store/store"
+import BoardCard from "../components/BoardCard";
 
 export default {
+  components: {
+    BoardCard
+  },
   data() {
     return {
       boards: []

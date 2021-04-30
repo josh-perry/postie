@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.EntityFrameworkCore;
 using Postie.Api.Data;
 using Postie.Api.Models.Db;
 
@@ -26,7 +27,9 @@ namespace Postie.Api.Repositories
         }
         public IEnumerable<Board> GetAllBoards()
         {
-            return _dbContext.Boards.ToList();
+            return _dbContext.Boards
+                .Include(x => x.CreatedBy)
+                .ToList();
         }
     }
 }

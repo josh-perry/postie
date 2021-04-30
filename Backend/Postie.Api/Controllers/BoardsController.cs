@@ -4,7 +4,7 @@ using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Postie.Api.Data;
+using Postie.Api.Mappers;
 using Postie.Api.Models.Db;
 using Postie.Api.Repositories;
 using Postie.Api.Services;
@@ -20,19 +20,23 @@ namespace Postie.Api.Controllers
     [Route("board")]
     public class BoardsController : Controller
     {
-        private readonly ApplicationDbContext _dbContext;
-
         private readonly IBoardRepository _boardRepository;
         
         private readonly IUrlService _urlService;
+        
         private readonly IUserRepository _userRepository;
+        
+        private readonly BoardResponseMapper _boardResponseMapper;
 
-        public BoardsController(ApplicationDbContext dbContext, IBoardRepository boardRepository, IUrlService urlService, IUserRepository userRepository)
+        public BoardsController(IBoardRepository boardRepository,
+                                IUrlService urlService,
+                                IUserRepository userRepository,
+                                BoardResponseMapper boardResponseMapper)
         {
-            _dbContext = dbContext;
             _boardRepository = boardRepository;
             _urlService = urlService;
             _userRepository = userRepository;
+            _boardResponseMapper = boardResponseMapper;
         }
 
         /// <summary>
@@ -45,9 +49,9 @@ namespace Postie.Api.Controllers
         public IActionResult Get()
         {
             var boards = _boardRepository.GetAllBoards();
-            return Json(boards);
+            return Json(_boardResponseMapper.MapDbToResponseList(boards));
         }
-        
+
         /// <summary>
         /// Get an existing board
         /// </summary>
@@ -61,14 +65,14 @@ namespace Postie.Api.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public IActionResult Get(string board)
         {
-            // If no title is provided, get all
-            if (string.IsNullOrEmpty(board))
+            var b = _boardRepository.GetBoardByName(board);
+
+            if (b == null)
             {
-                return Json(_dbContext.Boards.ToList());
+                return NotFound();
             }
 
-            var b = _dbContext.Boards.FirstOrDefault(x => x.Title == board);
-            return b == null ? (IActionResult) NotFound() : Json(b);
+            return Json(_boardResponseMapper.MapDbToResponse(b));
         }
         
         /// <summary>

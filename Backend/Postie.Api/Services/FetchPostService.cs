@@ -12,6 +12,8 @@ namespace Postie.Api.Services
         IEnumerable<Post> GetPostsForBoard(Board board);
 
         Post GetPostByBoardAndUrl(string boardUrl, string postUrl);
+        
+        Post GetPostById(int postId);
     }
 
     public class FetchPostService : IFetchPostService
@@ -38,6 +40,11 @@ namespace Postie.Api.Services
                 .FirstOrDefault(x => x.Board == board && x.Url == postUrl);
 
             return post;
+        }
+        
+        public Post GetPostById(int postId)
+        {
+            return _dbContext.Posts.FirstOrDefault(x => x.ID == postId);
         }
     }
 }

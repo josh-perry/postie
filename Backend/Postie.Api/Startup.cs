@@ -11,6 +11,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using Postie.Api.Data;
 using Postie.Api.Mappers;
+using Postie.Api.Models.Responses;
 using Postie.Api.Repositories;
 using Postie.Api.Services;
 
@@ -90,8 +91,10 @@ namespace Postie.Api
             services.AddTransient<IBoardRepository, BoardRepository>();
             services.AddTransient<IUrlService, UrlService>();
             services.AddTransient<IUserRepository, UserRepository>();
+            services.AddTransient<ICommentRepository, CommentRepository>();
             services.AddSingleton<PostResponseMapper>();
             services.AddSingleton<BoardResponseMapper>();
+            services.AddSingleton<CommentResponseMapper>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

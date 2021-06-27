@@ -19,12 +19,14 @@ namespace Postie.Api.Mappers
         {
             return new PostApiResponse
             {
+                ID = post.ID,
                 Board = post.Board.Title ?? "",
                 Title = post.Title ?? "",
                 CreatedBy = post.CreatedBy.Username ?? "",
                 CreatedDateTime = post.CreatedDateTime,
                 Content = post.Content,
-                Url = post.Url
+                Url = post.Url,
+                CommentCount = 0
             };
         }
     }

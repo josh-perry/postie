@@ -77,6 +77,11 @@ namespace Postie.Api.Controllers
             userResponse.RecentComments = _commentResponseMapper.MapDbToResponseList(lastComments);
             userResponse.RecentPosts = _postResponseMapper.MapDbToResponseList(lastPosts);
             
+            foreach (var post in userResponse.RecentPosts)
+            {
+                post.CommentCount = _commentRepository.GetCommentsCountForPostId(post.ID);
+            } 
+            
             return Json(userResponse);
         }
     }

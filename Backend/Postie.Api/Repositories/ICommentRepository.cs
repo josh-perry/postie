@@ -16,6 +16,8 @@ namespace Postie.Api.Repositories
         Comment GetCommentById(int id);
 
         IEnumerable<Comment> GetLastCommentsByUser(User user, int amount);
+
+        int GetCommentsCountForPostId(int postId);
     }
 
     public class CommentRepository : ICommentRepository
@@ -65,6 +67,11 @@ namespace Postie.Api.Repositories
                 .OrderByDescending(x => x.CreatedDateTime)
                 .Take(amount)
                 .ToList();
+        }
+        
+        public int GetCommentsCountForPostId(int postId)
+        {
+            return _dbContext.Comments.Count(x => x.Post.ID == postId);
         }
     }
 }

@@ -1,5 +1,8 @@
+using System.Collections.Generic;
+using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using Postie.Api.Mappers;
+using Postie.Api.Models.Db;
 using Postie.Api.Repositories;
 using Postie.Api.Services;
 
@@ -11,16 +14,20 @@ namespace Postie.Api.Controllers
     {
         private readonly IBoardRepository _boardRepository;
         
+        private readonly ICommentRepository _commentRepository;
+
         private readonly IFetchPostService _fetchPostService;
 
         private readonly PostResponseMapper _postResponseMapper;
 
         public PostsController(IFetchPostService fetchPostService,
             IBoardRepository boardRepository,
+            ICommentRepository commentRepository,
             PostResponseMapper postResponseMapper)
         {
             _fetchPostService = fetchPostService;
             _boardRepository = boardRepository;
+            _commentRepository = commentRepository;
             _postResponseMapper = postResponseMapper;
         }
 
@@ -57,7 +64,14 @@ namespace Postie.Api.Controllers
                 return NotFound();
 
             var posts = _fetchPostService.GetPostsForBoard(board);
-            return Json(_postResponseMapper.MapDbToResponseList(posts));
+            var response = _postResponseMapper.MapDbToResponseList(posts);
+
+            foreach (var post in response)
+            {
+                post.CommentCount = _commentRepository.GetCommentsCountForPostId(post.ID);
+            }
+
+            return Json(response);
         }
     }
 }

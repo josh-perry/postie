@@ -35,7 +35,7 @@ export default {
         headers["Authorization"] = `Bearer ${store.state.token}`
       }
 
-      const { data } = await axios.get(`https://localhost:5001/comment/${this.$route.params.boardName}/${this.$route.params.postName}`, {
+      const { data } = await axios.get(`https://localhost:5001/comment/${this.$route.params.boardName}/${this.$route.params.postName}?childrenOf=0`, {
         headers: headers
       });
 

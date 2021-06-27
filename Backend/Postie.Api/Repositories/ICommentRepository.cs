@@ -8,7 +8,7 @@ namespace Postie.Api.Repositories
 {
     public interface ICommentRepository
     {
-        IEnumerable<Comment> GetCommentsForPost(string board, string post);
+        IEnumerable<Comment> GetCommentsForPost(string board, string post, int childrenOf = default);
 
         bool AddComment(Comment comment);
 
@@ -24,10 +24,22 @@ namespace Postie.Api.Repositories
             _dbContext = dbContext;
         }
 
-        public IEnumerable<Comment> GetCommentsForPost(string board, string post)
+        public IEnumerable<Comment> GetCommentsForPost(string board, string post, int childrenOf = default)
         {
+            // TODO: this needs to be improved, I think it'll fail if there are 2 posts with the same URL on
+            //       different boards.
+            if (childrenOf == default)
+            {
+                return _dbContext.Comments
+                    .Where(x => x.Post.Url == post)
+                    .Where(x => x.ParentComment == null)
+                    .Include(x => x.CreatedBy)
+                    .ToList();
+            }
+
             return _dbContext.Comments
                 .Where(x => x.Post.Url == post)
+                .Where(x => x.ParentComment.ID == childrenOf)
                 .Include(x => x.CreatedBy)
                 .ToList();
         }

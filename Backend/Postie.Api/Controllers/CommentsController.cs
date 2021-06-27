@@ -37,13 +37,14 @@ namespace Postie.Api.Controllers
         /// </summary>
         /// <param name="boardUrl"></param>
         /// <param name="postUrl"></param>
+        /// <param name="childrenOf"></param>
         /// <returns></returns>
         /// <response code="200"></response>
         [HttpGet]
         [Route("{boardUrl}/{postUrl}")]
-        public IActionResult Get(string boardUrl, string postUrl)
+        public IActionResult Get(string boardUrl, string postUrl, int childrenOf)
         {
-            var comments = _commentRepository.GetCommentsForPost(boardUrl, postUrl);
+            var comments = _commentRepository.GetCommentsForPost(boardUrl, postUrl, childrenOf);
             return Json(_commentResponseMapper.MapDbToResponseList(comments));
         }
 

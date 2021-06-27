@@ -9,8 +9,8 @@ namespace Postie.Api.Controllers
     [Route("post")]
     public class PostsController : Controller
     {
-
         private readonly IBoardRepository _boardRepository;
+        
         private readonly IFetchPostService _fetchPostService;
 
         private readonly PostResponseMapper _postResponseMapper;

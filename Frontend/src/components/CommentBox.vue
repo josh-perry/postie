@@ -1,8 +1,12 @@
 <template>
-  <div>
+  <div class="comment-box">
     <p v-if="parentCommentId == 0">Replying to thread</p>
     <p v-if="parentCommentId != 0">Replying to comment</p>
-    <textarea v-model="content" placeholder="Say something nice!" />
+
+    <div>
+      <textarea v-model="content" placeholder="Say something nice!" />
+    </div>
+
     <button v-on:click="postComment">Leave a comment</button>
   </div>
 </template>
@@ -68,4 +72,15 @@ export default {
 </script>
 
 <style scoped>
+textarea {
+  width: 100%;
+  box-sizing: border-box;
+  min-height: 120px;
+  margin: 0;
+}
+
+.comment-box {
+  padding: 16px;
+  margin: 8px;
+}
 </style>

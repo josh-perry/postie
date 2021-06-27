@@ -25,3 +25,13 @@ export default {
   }
 };
 </script>
+
+<style scoped>
+.container {
+  margin: 2em auto;
+  max-width: 800px;
+  padding: 1em;
+  line-height: 1.4;
+  text-align: justify;
+}
+</style>

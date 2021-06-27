@@ -13,5 +13,7 @@ namespace Postie.Api
         public DateTime CreatedDateTime { get; set; }
         
         public string Url { get; set; }
+        
+        public string Content { get; set; }
     }
 }

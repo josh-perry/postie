@@ -1,8 +1,13 @@
 <template>
   <div>
     <h1>{{ postName }}</h1>
-    <CommentList :comments="comments" />
+
+    <span class="post-content">
+      {{ post.content }}
+    </span>
+
     <CommentBox :post="postName" :board="boardName" v-on:addedComment="addedComment" />
+    <CommentList :comments="comments" />
   </div>
 </template>
 
@@ -21,6 +26,7 @@ export default {
   data() {
     return {
       comments: [],
+      post: {}
     };
   },
   created() {
@@ -28,10 +34,24 @@ export default {
     this.boardName = this.$route.params.boardName
 
     store.dispatch("retrieveTokenFromAuth0").then(() => {
+      this.getPost()
       this.getRootComments()
     })
   },
   methods: {
+    async getPost() {
+      let headers = {}
+
+      if (store.state.token !== null) {
+        headers["Authorization"] = `Bearer ${store.state.token}`
+      }
+
+      const { data } = await axios.get(`https://localhost:5001/post/board/${this.$route.params.boardName}/${this.$route.params.postName}`, {
+        headers: headers
+      });
+
+      this.post = data
+    },
     async getRootComments() {
       let headers = {}
 
@@ -51,3 +71,9 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+.post-content {
+  white-space: pre-wrap;
+}
+</style>

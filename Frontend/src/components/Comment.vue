@@ -1,6 +1,6 @@
 <template>
   <div class="comment">
-    <a href="#">{{ comment.user }}</a>
+    <p><a :href="`/user/${comment.user}`">{{ comment.user }}</a></p>
     <p>{{ comment.content }}</p>
   </div>
 </template>

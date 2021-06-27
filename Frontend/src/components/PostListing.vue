@@ -1,9 +1,9 @@
 <template>
   <div class="post">
-    <a :href="`${post.board}/${post.url}`">{{ post.title }}</a>
+    <a :href="`/board/${post.board}/${post.url}`">{{ post.title }}</a>
     
     <div class="details">
-      <p>{{ post.createdBy }}</p>
+      <p><a :href="`/user/${post.createdBy}`">{{ post.createdBy }}</a></p>
       <p>{{ post.createdDateTime }}</p>
       <p>{{ post.commentCount }} comments</p>
     </div>
@@ -37,11 +37,14 @@ export default {
   flex: 1;
 }
 
+.details a {
+  flex: 1;
+}
+
 .post {
+  padding: 16px;
+  margin: 8px;
   border: 1px solid black;
-  border-radius: 5px;
-  padding: 6px;
-  margin: 5px;
 }
 
 a {

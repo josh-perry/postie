@@ -5,6 +5,7 @@ import Home from "../views/Home.vue";
 import Profile from "../views/Profile.vue";
 import Board from "../views/Board.vue";
 import Post from "../views/Post.vue";
+import User from "../views/User.vue";
 
 import { authGuard } from "../auth";
 
@@ -24,6 +25,11 @@ const router = new Router({
       name: "profile",
       component: Profile,
       beforeEnter: authGuard
+    },
+    {
+      path: "/user/:username",
+      name: "user",
+      component: User
     },
     {
       path: "/board/:boardName",

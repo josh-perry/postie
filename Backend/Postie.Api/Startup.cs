@@ -92,9 +92,12 @@ namespace Postie.Api
             services.AddTransient<IUrlService, UrlService>();
             services.AddTransient<IUserRepository, UserRepository>();
             services.AddTransient<ICommentRepository, CommentRepository>();
+            
+            // Mappers
             services.AddSingleton<PostResponseMapper>();
             services.AddSingleton<BoardResponseMapper>();
             services.AddSingleton<CommentResponseMapper>();
+            services.AddSingleton<UserResponseMapper>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

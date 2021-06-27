@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
@@ -13,6 +14,8 @@ namespace Postie.Api.Repositories
         bool AddComment(Comment comment);
 
         Comment GetCommentById(int id);
+
+        IEnumerable<Comment> GetLastCommentsByUser(User user, int amount);
     }
 
     public class CommentRepository : ICommentRepository
@@ -53,6 +56,15 @@ namespace Postie.Api.Repositories
         public Comment GetCommentById(int id)
         {
             return _dbContext.Comments.FirstOrDefault(x => x.ID == id);
+        }
+        
+        public IEnumerable<Comment> GetLastCommentsByUser(User user, int amount)
+        {
+            return _dbContext.Comments
+                .Where(x => x.CreatedBy == user)
+                .OrderByDescending(x => x.CreatedDateTime)
+                .Take(amount)
+                .ToList();
         }
     }
 }

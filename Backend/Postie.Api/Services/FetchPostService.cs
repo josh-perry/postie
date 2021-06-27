@@ -14,6 +14,8 @@ namespace Postie.Api.Services
         Post GetPostByBoardAndUrl(string boardUrl, string postUrl);
         
         Post GetPostById(int postId);
+
+        IEnumerable<Post> GetLastPostsByUser(User user, int amount);
     }
 
     public class FetchPostService : IFetchPostService
@@ -41,10 +43,20 @@ namespace Postie.Api.Services
 
             return post;
         }
-        
+
         public Post GetPostById(int postId)
         {
             return _dbContext.Posts.FirstOrDefault(x => x.ID == postId);
+        }
+
+        public IEnumerable<Post> GetLastPostsByUser(User user, int amount)
+        {
+            return _dbContext.Posts
+                .Include(x => x.Board)
+                .Where(x => x.CreatedBy == user)
+                .OrderByDescending(x => x.CreatedDateTime)
+                .Take(amount)
+                .ToList();
         }
     }
 }

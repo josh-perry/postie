@@ -1,6 +1,6 @@
 <template>
   <div class="post">
-    <a href="#">{{ post.title }}</a>
+    <a :href="`${post.board}/${post.url}`">{{ post.title }}</a>
     
     <div class="details">
       <p>{{ post.createdBy }}</p>

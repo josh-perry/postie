@@ -29,15 +29,22 @@ export default {
 </script>
 
 <style scoped>
-.post {
-  margin: 12px;
-}
-
 .details {
   display: flex;
 }
 
 .details p {
   flex: 1;
+}
+
+.post {
+  border: 1px solid black;
+  border-radius: 5px;
+  padding: 6px;
+  margin: 5px;
+}
+
+a {
+  text-decoration: none;
 }
 </style>

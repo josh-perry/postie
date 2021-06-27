@@ -1,3 +1,4 @@
+using System;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -77,7 +78,8 @@ namespace Postie.Api.Controllers
                 Content = postComment.Content,
                 Post = post,
                 ParentComment = parentComment,
-                CreatedBy = user
+                CreatedBy = user,
+                CreatedDateTime = DateTime.UtcNow
             };
 
             _commentRepository.AddComment(comment);

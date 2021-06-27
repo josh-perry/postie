@@ -2,6 +2,7 @@
   <div>
     <h1>{{ postName }}</h1>
     <CommentList :comments="comments" />
+    <CommentBox :post="postName" :board="boardName" v-on:addedComment="addedComment" />
   </div>
 </template>
 
@@ -10,10 +11,12 @@ import axios from "axios";
 import { store } from "../store/store"
 
 import CommentList from "../components/CommentList.vue"
+import CommentBox from "../components/CommentBox.vue"
 
 export default {
  components: {
-    CommentList
+    CommentList,
+    CommentBox
   },
   data() {
     return {
@@ -22,6 +25,7 @@ export default {
   },
   created() {
     this.postName = this.$route.params.postName
+    this.boardName = this.$route.params.boardName
 
     store.dispatch("retrieveTokenFromAuth0").then(() => {
       this.getRootComments()
@@ -40,6 +44,9 @@ export default {
       });
 
       this.comments = data;
+    },
+    addedComment (value) {
+      this.comments.push(value)
     }
   }
 }

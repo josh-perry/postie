@@ -81,7 +81,7 @@ namespace Postie.Api.Controllers
             };
 
             _commentRepository.AddComment(comment);
-            return Ok();
+            return Json(_commentResponseMapper.MapDbToResponse(comment));
         }
     }
 }

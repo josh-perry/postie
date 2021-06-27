@@ -22,7 +22,8 @@ namespace Postie.Api.Mappers
                 Board = post.Board.Title ?? "",
                 Title = post.Title ?? "",
                 CreatedBy = post.CreatedBy.Username ?? "",
-                CreatedDateTime = post.CreatedDateTime
+                CreatedDateTime = post.CreatedDateTime,
+                Url = post.Url
             };
         }
     }

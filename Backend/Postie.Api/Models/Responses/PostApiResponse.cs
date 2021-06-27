@@ -11,5 +11,7 @@ namespace Postie.Api
         public string Board { get; set; }
 
         public DateTime CreatedDateTime { get; set; }
+        
+        public string Url { get; set; }
     }
 }

@@ -39,6 +39,10 @@ namespace Postie.Api.Controllers
             _fetchPostService = fetchPostService;
         }
         
+        /// <summary>
+        ///     Retrieves the claims of the logged in user
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         [Authorize]
         [Route("")]
@@ -48,6 +52,13 @@ namespace Postie.Api.Controllers
             return Json(claims);
         }
 
+        /// <summary>
+        ///     Gets details about a given user
+        /// </summary>
+        /// <param name="username">The username to fetch details about</param>
+        /// <param name="recentCommentsCount">How many recent comments should we grab?</param>
+        /// <param name="recentPostsCount">How many recent posts should we grab?</param>
+        /// <returns></returns>
         [HttpGet]
         [Route("{username}")]
         public IActionResult Get(string username, int recentCommentsCount = 10, int recentPostsCount = 10)

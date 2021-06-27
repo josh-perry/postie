@@ -2,7 +2,6 @@
   <a :href="`/board/${board.title}`">
     <div class="board-card">
       <p class="board-title">{{ board.title }}</p>
-      <p class="created-by">{{ board.createdBy }}</p>
     </div>
   </a>
 </template>

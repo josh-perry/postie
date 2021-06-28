@@ -58,7 +58,7 @@ namespace Postie.Api.Controllers
         [Route("board/{boardUrl}")]
         public IActionResult Get(string boardUrl)
         {
-            var board = _boardRepository.GetBoardByName(boardUrl);
+            var board = _boardRepository.GetBoardByUrl(boardUrl);
 
             if (board == null)
                 return NotFound();

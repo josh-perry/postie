@@ -5,7 +5,7 @@ namespace Postie.Api.Repositories
 {
     public interface IBoardRepository
     {
-        Board GetBoardByName(string boardName);
+        Board GetBoardByUrl(string boardName);
 
         bool AddBoard(Board board);
 

@@ -9,5 +9,7 @@ namespace Postie.Api.Models.Responses
         public string CreatedBy { get; set; }
 
         public DateTime CreatedDateTime { get; set; }
+        
+        public string Url { get; set; }
     }
 }

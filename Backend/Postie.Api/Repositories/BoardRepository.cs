@@ -15,9 +15,9 @@ namespace Postie.Api.Repositories
             _dbContext = dbContext;
         }
 
-        public Board GetBoardByName(string boardName)
+        public Board GetBoardByUrl(string boardName)
         {
-            return _dbContext.Boards.FirstOrDefault(x => x.Title == boardName);
+            return _dbContext.Boards.FirstOrDefault(x => x.Url == boardName);
         }
 
         public bool AddBoard(Board board)

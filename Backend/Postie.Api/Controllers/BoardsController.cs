@@ -64,7 +64,7 @@ namespace Postie.Api.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public IActionResult Get(string board)
         {
-            var b = _boardRepository.GetBoardByName(board);
+            var b = _boardRepository.GetBoardByUrl(board);
 
             if (b == null)
                 return NotFound();
@@ -84,27 +84,26 @@ namespace Postie.Api.Controllers
         public IActionResult Put(string board, NewBoard newBoard)
         {
             // Validate this board doesn't already exist
-            if (_boardRepository.GetBoardByName(newBoard.Title) != null)
+            if (_boardRepository.GetBoardByUrl(newBoard.Title) != null)
                 return Conflict($"{newBoard.Title} already exists!");
 
             var user = _userRepository.GetUserByAuthId(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
 
-            board = _urlService.GenerateUrl(board);
-
             var success = _boardRepository.AddBoard(new Board
             {
-                Title = board,
+                Url = board,
+                Title = newBoard.Title,
                 CreatedBy = user,
-                CreatedDateTime = DateTime.Now
+                CreatedDateTime = DateTime.UtcNow
             });
 
-            if (success)
-                return CreatedAtAction(nameof(Get), new
-                {
-                    board
-                });
-
-            return Problem("Failed to create board");
+            if (!success)
+                return Problem("Failed to create board");
+            
+            return CreatedAtAction(nameof(Get), new
+            {
+                board
+            });
         }
     }
 }

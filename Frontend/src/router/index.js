@@ -6,6 +6,7 @@ import Profile from "../views/Profile.vue";
 import Board from "../views/Board.vue";
 import Post from "../views/Post.vue";
 import User from "../views/User.vue";
+import CreateBoard from "../views/CreateBoard.vue";
 
 import { authGuard } from "../auth";
 
@@ -40,6 +41,11 @@ const router = new Router({
       path: "/board/:boardName/:postName",
       name: "post",
       component: Post
+    },
+    {
+      path: "/create-board",
+      name: "createboard",
+      component: CreateBoard
     }
   ]
 });

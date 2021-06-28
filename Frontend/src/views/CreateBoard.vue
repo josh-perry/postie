@@ -3,10 +3,20 @@
     <h2>Create a new board</h2>
 
     <form v-on:submit.prevent="createBoard">
-      <input v-model="form.title" v-on:input="boardNameChanged" type="text" placeholder="Name" />
-      <input v-model="form.url" type="text" placeholder="URL" readonly="true" />
+      <fieldset>
+        <label>Board name</label>
+        <input v-model="form.title" v-on:input="boardNameChanged" type="text" placeholder="Name" />
+      </fieldset>
 
-      <input value="Create" type="submit" />
+      <fieldset>
+        <label>URL</label>
+        <input v-model="form.url" type="text" placeholder="URL" readonly="true" />
+      </fieldset>
+
+      <fieldset>
+        <input value="Create" type="submit" />
+        <button @click="cancel">Cancel</button>
+      </fieldset>
     </form>
   </div>
 </template>
@@ -49,7 +59,26 @@ export default {
     },
     boardNameChanged() {
       this.form.url = this.form.title.replaceAll(" ", "-").toLowerCase();
+    },
+    cancel() {
+      this.$router.push("/")
     }
   }
 }
 </script>
+
+<style scoped>
+fieldset {
+  display: flex;
+  border: 0;
+}
+
+input, button {
+  flex: 3;
+  margin: 8px;
+}
+
+label {
+  flex: 1;
+}
+</style>

@@ -1,18 +1,20 @@
 <template>
-  <div>
-    <a href="/">Postie</a>
+  <div class="navbar">
+    <div class="left">
+      <a href="/">Postie</a>
+    </div>
 
-    <li v-if="!$auth.isAuthenticated && !$auth.loading" class="nav-item">
-      <button
-        id="qsLoginBtn"
-        class="btn btn-primary btn-margin"
-        @click.prevent="login"
-        >Login</button>
-    </li>
+    <div class="right">
+      <a v-if="!$auth.isAuthenticated && !$auth.loading" href="#" class @click.prevent="login">Log in</a>
 
-    <a v-if="$auth.isAuthenticated && !$auth.loading" id="qsLogoutBtn" href="#" class @click.prevent="logout">Log out</a>
-
-    <BoardList />
+      <div class="dropdown">
+        <button v-if="$auth.isAuthenticated && !$auth.loading" class="dropdown-button">{{ $auth.user.name }}</button>
+        <div class="dropdown-content">
+          <a href="/profile">Profile</a>
+          <a @click.prevent="logout">Log out</a>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -32,8 +34,66 @@ export default {
 </script>
 
 <style>
-#mobileAuthNavBar {
-  min-height: 125px;
-  justify-content: space-between;
+.left {
+  float: left;
+}
+
+.right {
+  float: right;
+}
+
+.navbar a {
+  float: left;
+  font-size: 16px;
+  color: white;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+}
+
+.dropdown {
+  float: left;
+  overflow: hidden;
+}
+
+.dropdown .dropdown-button {
+  font-size: 16px;
+  border: none;
+  outline: none;
+  padding: 14px 16px;
+  background-color: inherit;
+  font-family: inherit;
+  margin: 0;
+}
+
+.navbar a:hover, .dropdown:hover .dropdown-button {
+  background-color: blue;
+  color: white;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #f9f9f9;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+}
+
+.dropdown-content a {
+  float: none;
+  color: black;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+  text-align: left;
+}
+
+.dropdown-content a:hover {
+  background-color: #ddd;
+}
+
+.dropdown:hover .dropdown-content {
+  display: block;
 }
 </style>

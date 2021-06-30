@@ -1,16 +1,13 @@
 <template>
-  <div id="app" class="d-flex flex-column h-100">
-    <nav-bar />
+  <div>
+    <NavBar />
 
-    <div class="container flex-grow-1">
+    <div class="container">
       <error />
-      <div class="mt-5">
+      <div>
         <router-view />
       </div>
     </div>
-
-    <footer class="bg-light text-center p-3">
-    </footer>
   </div>
 </template>
 
@@ -29,6 +26,7 @@ export default {
 <style scoped>
 .container {
   margin: 2em auto;
+  margin-top: 0;
   max-width: 800px;
   padding: 1em;
   line-height: 1.4;

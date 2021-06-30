@@ -3,9 +3,9 @@
     <NavBar />
 
     <div class="container">
-      <error />
+      <Error />
       <div>
-        <router-view />
+        <RouterView />
       </div>
     </div>
   </div>

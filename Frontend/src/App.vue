@@ -39,6 +39,7 @@ export default {
   padding: 1em;
   line-height: 1.4;
   display: inline-flex;
+  width: 100%;
 }
 
 .main {

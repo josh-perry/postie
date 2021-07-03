@@ -51,7 +51,7 @@ namespace Postie.Api.Controllers
         /// <response code="404">The post cannot be found</response>
         [HttpGet]
         [Route("board/{boardUrl}/{postUrl}")]
-        public IActionResult Get(string boardUrl, string postUrl)
+        public IActionResult GetByBoardAndPost(string boardUrl, string postUrl)
         {
             var post = _fetchPostService.GetPostByBoardAndUrl(boardUrl, postUrl);
             return post == null ? (IActionResult) NotFound() : Json(post);
@@ -66,7 +66,7 @@ namespace Postie.Api.Controllers
         /// <response code="404">The board cannot be found</response>
         [HttpGet]
         [Route("board/{boardUrl}")]
-        public IActionResult Get(string boardUrl)
+        public IActionResult GetByBoard(string boardUrl)
         {
             var board = _boardRepository.GetBoardByUrl(boardUrl);
 
@@ -87,9 +87,9 @@ namespace Postie.Api.Controllers
         [HttpPost]
         [Authorize]
         [Route("board/{boardUrl}")]
-        public IActionResult Post(string boardUrl, PostPost postRequest)
+        public IActionResult Post(string boardUrl, AddPostRequest addPostRequest)
         {
-            if (boardUrl != postRequest.Board)
+            if (boardUrl != addPostRequest.Board)
             {
                 return BadRequest("Board in URL and board in request mismatch!");
             }
@@ -105,12 +105,12 @@ namespace Postie.Api.Controllers
                 return NotFound("Board not found");
 
             // TODO: check if this conflicts
-            var postUrl = _urlService.GenerateUrl(postRequest.Title);
+            var postUrl = _urlService.GenerateUrl(addPostRequest.Title);
             
             var post = new Post
             {
-                Title = postRequest.Title,
-                Content = postRequest.Content,
+                Title = addPostRequest.Title,
+                Content = addPostRequest.Content,
                 Board = board,
                 Url = postUrl,
                 CreatedDateTime = DateTime.UtcNow,

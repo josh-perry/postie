@@ -1,7 +1,6 @@
 namespace Postie.Api.Models.Requests
 {
-    // Good name
-    public class PostPost
+    public class AddPostRequest
     {
         public string Title { get; set; }
         

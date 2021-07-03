@@ -54,16 +54,16 @@ namespace Postie.Api.Controllers
         /// </summary>
         /// <param name="boardUrl"></param>
         /// <param name="postUrl"></param>
-        /// <param name="postComment"></param>
+        /// <param name="addCommentRequest"></param>
         /// <returns></returns>
         /// <response code="200"></response>
         [HttpPost]
         [Authorize]
         [Route("{boardUrl}/{postUrl}")]
-        public IActionResult Post(string boardUrl, string postUrl, PostComment postComment)
+        public IActionResult Post(string boardUrl, string postUrl, AddCommentRequest addCommentRequest)
         {
             var post = _fetchPostService.GetPostByBoardAndUrl(boardUrl, postUrl);
-            var parentComment = postComment.ParentCommentId != null ? _commentRepository.GetCommentById(postComment.ParentCommentId.Value) : null;
+            var parentComment = addCommentRequest.ParentCommentId != null ? _commentRepository.GetCommentById(addCommentRequest.ParentCommentId.Value) : null;
             var user = _userRepository.GetUserByAuthId(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
 
             if (user == null)
@@ -75,7 +75,7 @@ namespace Postie.Api.Controllers
 
             var comment = new Comment
             {
-                Content = postComment.Content,
+                Content = addCommentRequest.Content,
                 Post = post,
                 ParentComment = parentComment,
                 CreatedBy = user,

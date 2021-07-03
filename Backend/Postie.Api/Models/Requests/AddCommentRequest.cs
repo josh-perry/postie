@@ -1,6 +1,6 @@
 namespace Postie.Api.Models.Requests
 {
-    public class PostComment
+    public class AddCommentRequest
     {
         public int? ParentCommentId { get; set; }
         

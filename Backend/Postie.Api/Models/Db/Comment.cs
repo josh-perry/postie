@@ -19,7 +19,7 @@ namespace Postie.Api.Models.Db
         [MinLength(1)]
         [MaxLength(4000)]
         public string Content { get; set; }
-        
+
         public DateTime CreatedDateTime { get; set; }
     }
 }

@@ -12,17 +12,17 @@ namespace Postie.Api.Controllers
     [Route("user")]
     public class UserController : Controller
     {
-        private readonly IUserRepository _userRepository;
-        
         private readonly ICommentRepository _commentRepository;
-        
-        private readonly UserResponseMapper _userResponseMapper;
-        
+
         private readonly CommentResponseMapper _commentResponseMapper;
-        
-        private readonly PostResponseMapper _postResponseMapper;
 
         private readonly IFetchPostService _fetchPostService;
+
+        private readonly PostResponseMapper _postResponseMapper;
+        
+        private readonly IUserRepository _userRepository;
+
+        private readonly UserResponseMapper _userResponseMapper;
 
         public UserController(IUserRepository userRepository,
             ICommentRepository commentRepository,
@@ -38,7 +38,7 @@ namespace Postie.Api.Controllers
             _postResponseMapper = postResponseMapper;
             _fetchPostService = fetchPostService;
         }
-        
+
         /// <summary>
         ///     Retrieves the claims of the logged in user
         /// </summary>
@@ -66,22 +66,18 @@ namespace Postie.Api.Controllers
             var user = _userRepository.GetUserByName(username);
 
             if (user == null)
-            {
                 return NotFound();
-            }
 
             var lastComments = _commentRepository.GetLastCommentsByUser(user, recentCommentsCount);
             var lastPosts = _fetchPostService.GetLastPostsByUser(user, recentPostsCount);
-            
+
             var userResponse = _userResponseMapper.MapDbToResponse(user);
             userResponse.RecentComments = _commentResponseMapper.MapDbToResponseList(lastComments);
             userResponse.RecentPosts = _postResponseMapper.MapDbToResponseList(lastPosts);
-            
+
             foreach (var post in userResponse.RecentPosts)
-            {
                 post.CommentCount = _commentRepository.GetCommentsCountForPostId(post.ID);
-            } 
-            
+
             return Json(userResponse);
         }
     }

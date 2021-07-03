@@ -6,13 +6,12 @@ using Microsoft.AspNetCore.Mvc;
 using Postie.Api.Mappers;
 using Postie.Api.Models.Db;
 using Postie.Api.Repositories;
-using Postie.Api.Services;
 
 namespace Postie.Api.Controllers
 {
     public class NewBoard
     {
-        public string Title { get; set; }
+        public string Title;
     }
 
     [ApiController]
@@ -23,17 +22,13 @@ namespace Postie.Api.Controllers
 
         private readonly BoardResponseMapper _boardResponseMapper;
 
-        private readonly IUrlService _urlService;
-
         private readonly IUserRepository _userRepository;
 
         public BoardsController(IBoardRepository boardRepository,
-            IUrlService urlService,
             IUserRepository userRepository,
             BoardResponseMapper boardResponseMapper)
         {
             _boardRepository = boardRepository;
-            _urlService = urlService;
             _userRepository = userRepository;
             _boardResponseMapper = boardResponseMapper;
         }
@@ -99,7 +94,7 @@ namespace Postie.Api.Controllers
 
             if (!success)
                 return Problem("Failed to create board");
-            
+
             return CreatedAtAction(nameof(Get), new
             {
                 board

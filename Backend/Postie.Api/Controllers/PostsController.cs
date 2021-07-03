@@ -15,15 +15,15 @@ namespace Postie.Api.Controllers
     public class PostsController : Controller
     {
         private readonly IBoardRepository _boardRepository;
-        
+
         private readonly ICommentRepository _commentRepository;
 
         private readonly IFetchPostService _fetchPostService;
 
         private readonly PostResponseMapper _postResponseMapper;
-        
+
         private readonly IUrlService _urlService;
-        
+
         private readonly IUserRepository _userRepository;
 
         public PostsController(IFetchPostService fetchPostService,
@@ -77,9 +77,7 @@ namespace Postie.Api.Controllers
             var response = _postResponseMapper.MapDbToResponseList(posts);
 
             foreach (var post in response)
-            {
                 post.CommentCount = _commentRepository.GetCommentsCountForPostId(post.ID);
-            }
 
             return Json(response);
         }
@@ -90,15 +88,13 @@ namespace Postie.Api.Controllers
         public IActionResult Post(string boardUrl, AddPostRequest addPostRequest)
         {
             if (boardUrl != addPostRequest.Board)
-            {
                 return BadRequest("Board in URL and board in request mismatch!");
-            }
-            
+
             var user = _userRepository.GetUserByAuthId(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
 
             if (user == null)
                 return BadRequest("User is null.");
-            
+
             var board = _boardRepository.GetBoardByUrl(boardUrl);
 
             if (board == null)
@@ -106,7 +102,7 @@ namespace Postie.Api.Controllers
 
             // TODO: check if this conflicts
             var postUrl = _urlService.GenerateUrl(addPostRequest.Title);
-            
+
             var post = new Post
             {
                 Title = addPostRequest.Title,
@@ -116,9 +112,9 @@ namespace Postie.Api.Controllers
                 CreatedDateTime = DateTime.UtcNow,
                 CreatedBy = user
             };
-            
+
             _fetchPostService.AddPost(post);
-            
+
             // TODO: fix this. We should just be able to return CreatedAtAction(nameof(...)) but it
             //       doesn't seem to get the route properly.
             var baseUrl = new Uri($"{Request.Scheme}://{Request.Host}{Request.PathBase}");

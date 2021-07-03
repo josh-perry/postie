@@ -21,7 +21,7 @@ namespace Postie.Api.Models.Db
 
         [Required]
         public string Url { get; set; }
-        
+
         [Required]
         public string Content { get; set; }
     }

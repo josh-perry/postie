@@ -16,11 +16,11 @@ namespace Postie.Api.Controllers
     {
         private readonly ICommentRepository _commentRepository;
 
+        private readonly CommentResponseMapper _commentResponseMapper;
+
         private readonly IFetchPostService _fetchPostService;
 
         private readonly IUserRepository _userRepository;
-        
-        private readonly CommentResponseMapper _commentResponseMapper;
 
         public CommentsController(ICommentRepository commentRepository,
             IFetchPostService fetchPostService,

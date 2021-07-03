@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
@@ -23,7 +22,7 @@ namespace Postie.Api.Repositories
     public class CommentRepository : ICommentRepository
     {
         private readonly ApplicationDbContext _dbContext;
-        
+
         public CommentRepository(ApplicationDbContext dbContext)
         {
             _dbContext = dbContext;
@@ -34,13 +33,11 @@ namespace Postie.Api.Repositories
             // TODO: this needs to be improved, I think it'll fail if there are 2 posts with the same URL on
             //       different boards.
             if (childrenOf == default)
-            {
                 return _dbContext.Comments
                     .Where(x => x.Post.Url == post)
                     .Where(x => x.ParentComment == null)
                     .Include(x => x.CreatedBy)
                     .ToList();
-            }
 
             return _dbContext.Comments
                 .Where(x => x.Post.Url == post)
@@ -48,7 +45,7 @@ namespace Postie.Api.Repositories
                 .Include(x => x.CreatedBy)
                 .ToList();
         }
-        
+
         public bool AddComment(Comment comment)
         {
             _dbContext.Comments.Add(comment);
@@ -59,7 +56,7 @@ namespace Postie.Api.Repositories
         {
             return _dbContext.Comments.FirstOrDefault(x => x.ID == id);
         }
-        
+
         public IEnumerable<Comment> GetLastCommentsByUser(User user, int amount)
         {
             return _dbContext.Comments
@@ -68,7 +65,7 @@ namespace Postie.Api.Repositories
                 .Take(amount)
                 .ToList();
         }
-        
+
         public int GetCommentsCountForPostId(int postId)
         {
             return _dbContext.Comments.Count(x => x.Post.ID == postId);

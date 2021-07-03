@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using Postie.Api.Models.Db;
 using Postie.Api.Models.Responses;
 
@@ -8,12 +9,7 @@ namespace Postie.Api.Mappers
     {
         public IEnumerable<BoardApiResponse> MapDbToResponseList(IEnumerable<Board> boards)
         {
-            var result = new List<BoardApiResponse>();
-
-            foreach (var board in boards)
-                result.Add(MapDbToResponse(board));
-
-            return result;
+            return boards.Select(MapDbToResponse).ToList();
         }
 
         public BoardApiResponse MapDbToResponse(Board board)

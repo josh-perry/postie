@@ -3,7 +3,6 @@ using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using Postie.Api.Data;
 using Postie.Api.Models.Db;
-using Postie.Api.Models.Requests;
 
 namespace Postie.Api.Services
 {
@@ -13,7 +12,7 @@ namespace Postie.Api.Services
         IEnumerable<Post> GetPostsForBoard(Board board);
 
         Post GetPostByBoardAndUrl(string boardUrl, string postUrl);
-        
+
         Post GetPostById(int postId);
 
         IEnumerable<Post> GetLastPostsByUser(User user, int amount);

@@ -6,7 +6,7 @@
 
     <div class="section">
       <a href="/create-board">Create a new board</a>
-      <a href="#">Submit post</a>
+      <a href="/submit">Submit post</a>
     </div>
 
     <div v-if="showBoardDetails" class="section">

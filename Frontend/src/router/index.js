@@ -7,6 +7,7 @@ import Board from "../views/Board.vue";
 import Post from "../views/Post.vue";
 import User from "../views/User.vue";
 import CreateBoard from "../views/CreateBoard.vue";
+import SubmitPost from "../views/SubmitPost.vue";
 
 import { authGuard } from "../auth";
 
@@ -38,6 +39,11 @@ const router = new Router({
       component: Board
     },
     {
+      path: "/board/:boardName/submit",
+      name: "submitposttoboard",
+      component: SubmitPost
+    },
+    {
       path: "/board/:boardName/:postName",
       name: "post",
       component: Post
@@ -46,7 +52,12 @@ const router = new Router({
       path: "/create-board",
       name: "createboard",
       component: CreateBoard
-    }
+    },
+    {
+      path: "/submit",
+      name: "submitpost",
+      component: SubmitPost
+    } 
   ]
 });
 

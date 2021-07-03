@@ -53,12 +53,12 @@ export default {
         headers["Authorization"] = `Bearer ${store.state.token}`
       }
       
-      const { data } = await axios.get(`https://localhost:5001/board/`, this.form, {
+      const { data } = await axios.get(`https://localhost:5001/board/`, {
         headers: headers,
         "Content-Type": "application/json"
       })
 
-      this.boards = data.map(x => x.title)
+      this.boards = data.map(x => x.url)
 
       let defaultBoard = this.$route.params.boardName
  
@@ -71,7 +71,18 @@ export default {
       }
     },
     async createPost() {
-      // TODO: this
+      let headers = {}
+
+      if (store.state.token !== null) {
+        headers["Authorization"] = `Bearer ${store.state.token}`
+      }
+      
+      const { data } = await axios.post(`https://localhost:5001/post/board/${this.form.board}`, this.form, {
+        headers: headers,
+        "Content-Type": "application/json"
+      })
+
+      this.$router.push(`/board/${this.form.board}/${data.url}`);
     },
     cancel() {
       this.$router.push("/")

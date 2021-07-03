@@ -33,6 +33,8 @@ export default {
     this.postName = this.$route.params.postName
     this.boardName = this.$route.params.boardName
 
+    store.dispatch("retrieveBoardDetails", this.boardName)
+
     store.dispatch("retrieveTokenFromAuth0").then(() => {
       this.getPost()
       this.getRootComments()

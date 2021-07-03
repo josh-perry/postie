@@ -26,6 +26,8 @@ export default {
     console.log("created")
     this.boardName = this.$route.params.boardName
 
+    store.dispatch("retrieveBoardDetails", this.boardName)
+
     store.dispatch("retrieveTokenFromAuth0").then(() => {
       this.getPosts()
     })

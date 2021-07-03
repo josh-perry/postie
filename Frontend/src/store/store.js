@@ -2,6 +2,7 @@ import Vue from "vue"
 import Vuex from "vuex"
 import createPersistedState from "vuex-persistedstate"
 import * as Cookies from "js-cookie"
+import axios from 'axios'
 
 Vue.use(Vuex)
 
@@ -21,11 +22,21 @@ function getToken(context, instance, resolve, reject) {
 
 export const store = new Vuex.Store({
   state: {
-    token: null
+    token: null,
+    board: {
+      title: "Unknown board",
+      createdBy: "Unknown",
+      createdDateTime: null,
+      url: "",
+      description: "No description"
+    }
   },
   mutations: {
     setToken(state, token) {
       state.token = token;
+    },
+    setBoard(state, board) {
+      state.board = board
     }
   },
   actions: {
@@ -58,6 +69,26 @@ export const store = new Vuex.Store({
           }
         });
       });
+    },
+    async retrieveBoardDetails(context, boardUrl) {
+      // Don't bother retrieving if we already have this board's information
+      console.log(`Fetching board data for '${boardUrl}'`)
+      if (boardUrl == context.state.board.url) {
+        console.log(`Already got board data for '${boardUrl}', skipping request`)
+        return
+      }
+
+      let headers = {}
+
+      if (context.state.token !== null) {
+        headers["Authorization"] = `Bearer ${context.state.token}`
+      }
+
+      const { data } = await axios.get(`https://localhost:5001/board/${boardUrl}`, {
+        headers: headers
+      });
+
+      context.commit("setBoard", data)
     }
   },
   plugins: [

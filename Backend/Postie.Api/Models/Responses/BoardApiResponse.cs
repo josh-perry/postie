@@ -11,5 +11,7 @@ namespace Postie.Api.Models.Responses
         public DateTime CreatedDateTime { get; set; }
         
         public string Url { get; set; }
+        
+        public string Description { get; set; }
     }
 }

@@ -23,7 +23,8 @@ namespace Postie.Api.Mappers
                 Title = board.Title ?? "",
                 CreatedBy = board.CreatedBy?.Username ?? "",
                 CreatedDateTime = board.CreatedDateTime,
-                Url = board.Url
+                Url = board.Url,
+                Description = board.Description
             };
         }
     }

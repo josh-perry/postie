@@ -20,7 +20,7 @@ namespace Postie.Api.Mappers
             return new PostApiResponse
             {
                 ID = post.ID,
-                Board = post.Board.Title ?? "",
+                Board = post.Board.Url ?? "",
                 Title = post.Title ?? "",
                 CreatedBy = post.CreatedBy.Username ?? "",
                 CreatedDateTime = post.CreatedDateTime,

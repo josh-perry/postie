@@ -1,8 +1,10 @@
-using System.Collections.Generic;
-using System.Linq;
+using System;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Postie.Api.Mappers;
 using Postie.Api.Models.Db;
+using Postie.Api.Models.Requests;
 using Postie.Api.Repositories;
 using Postie.Api.Services;
 
@@ -19,16 +21,24 @@ namespace Postie.Api.Controllers
         private readonly IFetchPostService _fetchPostService;
 
         private readonly PostResponseMapper _postResponseMapper;
+        
+        private readonly IUrlService _urlService;
+        
+        private readonly IUserRepository _userRepository;
 
         public PostsController(IFetchPostService fetchPostService,
             IBoardRepository boardRepository,
             ICommentRepository commentRepository,
-            PostResponseMapper postResponseMapper)
+            PostResponseMapper postResponseMapper,
+            IUrlService urlService,
+            IUserRepository userRepository)
         {
             _fetchPostService = fetchPostService;
             _boardRepository = boardRepository;
             _commentRepository = commentRepository;
             _postResponseMapper = postResponseMapper;
+            _urlService = urlService;
+            _userRepository = userRepository;
         }
 
         /// <summary>
@@ -72,6 +82,48 @@ namespace Postie.Api.Controllers
             }
 
             return Json(response);
+        }
+
+        [HttpPost]
+        [Authorize]
+        [Route("board/{boardUrl}")]
+        public IActionResult Post(string boardUrl, PostPost postRequest)
+        {
+            if (boardUrl != postRequest.Board)
+            {
+                return BadRequest("Board in URL and board in request mismatch!");
+            }
+            
+            var user = _userRepository.GetUserByAuthId(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
+
+            if (user == null)
+                return BadRequest("User is null.");
+            
+            var board = _boardRepository.GetBoardByUrl(boardUrl);
+
+            if (board == null)
+                return NotFound("Board not found");
+
+            // TODO: check if this conflicts
+            var postUrl = _urlService.GenerateUrl(postRequest.Title);
+            
+            var post = new Post
+            {
+                Title = postRequest.Title,
+                Content = postRequest.Content,
+                Board = board,
+                Url = postUrl,
+                CreatedDateTime = DateTime.UtcNow,
+                CreatedBy = user
+            };
+            
+            _fetchPostService.AddPost(post);
+            
+            // TODO: fix this. We should just be able to return CreatedAtAction(nameof(...)) but it
+            //       doesn't seem to get the route properly.
+            var baseUrl = new Uri($"{Request.Scheme}://{Request.Host}{Request.PathBase}");
+            var createdAtUrl = new Uri(baseUrl, $"/post/board/{board.Url}/{post.Url}");
+            return Created(createdAtUrl, _postResponseMapper.MapDbToResponse(post));
         }
     }
 }

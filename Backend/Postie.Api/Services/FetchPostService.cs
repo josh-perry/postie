@@ -3,6 +3,7 @@ using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using Postie.Api.Data;
 using Postie.Api.Models.Db;
+using Postie.Api.Models.Requests;
 
 namespace Postie.Api.Services
 {
@@ -16,6 +17,8 @@ namespace Postie.Api.Services
         Post GetPostById(int postId);
 
         IEnumerable<Post> GetLastPostsByUser(User user, int amount);
+
+        bool AddPost(Post post);
     }
 
     public class FetchPostService : IFetchPostService
@@ -57,6 +60,12 @@ namespace Postie.Api.Services
                 .OrderByDescending(x => x.CreatedDateTime)
                 .Take(amount)
                 .ToList();
+        }
+
+        public bool AddPost(Post post)
+        {
+            _dbContext.Add(post);
+            return _dbContext.SaveChanges() > 0;
         }
     }
 }

@@ -1,5 +1,5 @@
 <template>
-  <a :href="`/board/${board.title}`">
+  <a :href="`/board/${board.url}`">
     <div class="board-card">
       <p class="board-title">{{ board.title }}</p>
     </div>

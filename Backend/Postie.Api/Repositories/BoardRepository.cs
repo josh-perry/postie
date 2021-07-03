@@ -17,7 +17,9 @@ namespace Postie.Api.Repositories
 
         public Board GetBoardByUrl(string boardName)
         {
-            return _dbContext.Boards.FirstOrDefault(x => x.Url == boardName);
+            return _dbContext.Boards
+                .Include(x => x.CreatedBy)
+                .FirstOrDefault(x => x.Url == boardName);
         }
 
         public bool AddBoard(Board board)

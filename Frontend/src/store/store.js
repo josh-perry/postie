@@ -8,18 +8,6 @@ Vue.use(Vuex)
 
 import { getInstance } from "@/auth";
 
-function getToken(context, instance, resolve, reject) {
-  instance
-    .getTokenSilently()
-    .then(authToken => {
-      context.commit("setToken", authToken);
-      resolve(authToken);
-    })
-    .catch(error => {
-      reject(error);
-    });
-}
-
 export const store = new Vuex.Store({
   state: {
     token: null,
@@ -47,33 +35,20 @@ export const store = new Vuex.Store({
   },
   actions: {
     retrieveTokenFromAuth0(context) {
-      return new Promise((resolve, reject) => {
-        console.log("getting token")
-        if (context.state.token !== null) {
-          console.log("returning early")
-          resolve(context.state.token)
-          return
-        }
-
+      return new Promise(async (resolve) => {
         const instance = getInstance();
 
-        if (instance.loading === false) {
-          if (instance.isAuthenticated) {
-            getToken(context, instance, resolve, reject)
-          }
-          else {
-            resolve(null)
-          }
-        }
+        instance.$watch("loading", async loading => {
+          if (loading === false) {
+            let authToken = await instance.getTokenSilently();
 
-        instance.$watch("loading", loading => {
-          if (loading === false && instance.isAuthenticated) {
-            getToken(context, instance, resolve, reject);
+            if (context.state.token !== authToken) {
+              context.commit("setToken", authToken);
+            }
+
+            resolve(authToken);
           }
-          else if (loading === false) {
-            resolve(null);
-          }
-        });
+        })
       });
     },
     async retrieveBoardDetails(context, boardUrl) {

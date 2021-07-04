@@ -16,7 +16,7 @@ import axios from "axios";
 import { store } from "../store/store"
 
 export default {
-  name: "commentbox",
+  name: "CommentBox",
   props: {
     parentCommentId: {
       type: Number,

@@ -7,6 +7,8 @@
       <a href="#" @click.prevent="createCommentBox">Reply</a>
     </div>
 
+    <CommentBox v-if="showCommentBox" :parentCommentId="comment.id" v-on:addedComment="addedComment" />
+
     <div v-for="childComment in comment.children" v-bind:key="childComment.id">
       <Comment :comment="childComment" />
     </div>
@@ -14,8 +16,18 @@
 </template>
 
 <script>
+import CommentBox from "../components/CommentBox.vue"
+
 export default {
+  components: {
+    CommentBox
+  },
   name: "Comment",
+  data() {
+    return {
+      showCommentBox: false
+    }
+  },
   props: {
     comment: {
       type: Object,
@@ -26,8 +38,11 @@ export default {
   },
   methods: {
     createCommentBox() {
-      // TODO: this
-      console.log("wanna reply to this!")
+      this.showCommentBox = !this.showCommentBox
+    },
+    addedComment(value) {
+      this.comment.children.push(value)
+      this.showCommentBox = false
     }
   }
 }

@@ -86,6 +86,11 @@ export default {
       this.$router.push(`/board/${this.form.board}/${data.url}`);
     },
     cancel() {
+      if (this.$route.params.boardName != null) {
+        this.$router.push(`/board/${this.$route.params.boardName}`)
+        return
+      }
+
       this.$router.push("/")
     }
   }

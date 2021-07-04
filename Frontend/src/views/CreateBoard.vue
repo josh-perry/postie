@@ -44,9 +44,6 @@ export default {
       }
     };
   },
-  created() {
-    store.dispatch("retrieveTokenFromAuth0").then(() => { })
-  },
   methods: {
     async createBoard() {
       let headers = {}

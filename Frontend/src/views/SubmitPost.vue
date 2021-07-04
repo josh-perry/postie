@@ -44,7 +44,6 @@ export default {
   },
   created() {
     this.getBoards()
-    store.dispatch("retrieveTokenFromAuth0").then(() => { })
   },
   methods: {
     async getBoards() {

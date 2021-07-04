@@ -27,10 +27,7 @@ export default {
     this.boardName = this.$route.params.boardName
 
     store.dispatch("retrieveBoardDetails", this.boardName)
-
-    store.dispatch("retrieveTokenFromAuth0").then(() => {
-      this.getPosts()
-    })
+    this.getPosts()
   },
   methods: {
     async getPosts() {

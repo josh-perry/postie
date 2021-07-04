@@ -31,10 +31,7 @@ export default {
   },
   created() {
     this.username = this.$route.params.username
-
-    store.dispatch("retrieveTokenFromAuth0").then(() => {
-      this.getUser()
-    })
+    this.getUser()
   },
   methods: {
     async getUser() {

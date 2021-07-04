@@ -23,9 +23,7 @@ export default {
     };
   },
   created() {
-    store.dispatch("retrieveTokenFromAuth0").then(() => {
-      this.getPosts()
-    })
+    this.getPosts()
   },
   methods: {
     async getPosts() {

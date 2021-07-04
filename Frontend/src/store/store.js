@@ -29,6 +29,9 @@ export const store = new Vuex.Store({
       createdDateTime: null,
       url: "",
       description: "No description"
+    },
+    user: {
+      username: ""
     }
   },
   mutations: {
@@ -37,6 +40,9 @@ export const store = new Vuex.Store({
     },
     setBoard(state, board) {
       state.board = board
+    },
+    setUser(state, user) {
+      state.user = user
     }
   },
   actions: {
@@ -89,6 +95,34 @@ export const store = new Vuex.Store({
       });
 
       context.commit("setBoard", data)
+    },
+    async logout(context) {
+      context.commit("setUser", {})
+      context.commit("setToken", null)
+    },
+    async retrieveUserDetails(context) {
+      if (context.state.token === null) {
+        if (Object.keys(context.state.user).length === 0 && context.state.user.constructor === Object) {
+          console.log("User is empty already")
+          return
+        }
+
+        console.log("Emptying user state")
+        context.commit("setUser", {})
+        return
+      }
+
+      console.log("getting user")
+
+      const { data } = await axios.get(`https://localhost:5001/user`, {
+        headers: {
+          Authorization: `Bearer ${context.state.token}`
+        }
+      });
+
+      console.log("user", data)
+
+      context.commit("setUser", data)
     }
   },
   plugins: [

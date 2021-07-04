@@ -35,10 +35,8 @@ export default {
 
     store.dispatch("retrieveBoardDetails", this.boardName)
 
-    store.dispatch("retrieveTokenFromAuth0").then(() => {
-      this.getPost()
-      this.getRootComments()
-    })
+    this.getPost()
+    this.getRootComments()
   },
   methods: {
     async getPost() {

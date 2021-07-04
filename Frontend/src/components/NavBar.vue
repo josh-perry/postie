@@ -10,7 +10,7 @@
       <div class="dropdown">
         <button v-if="$auth.isAuthenticated && !$auth.loading" class="dropdown-button">{{ $auth.user.name }}</button>
         <div class="dropdown-content">
-          <a href="/profile">Profile</a>
+          <a :href="profileLink">Profile</a>
           <a @click.prevent="logout">Log out</a>
         </div>
       </div>
@@ -19,13 +19,26 @@
 </template>
 
 <script>
+import { store } from "../store/store"
+
 export default {
   name: "NavBar",
+  computed: {
+    profileLink() {
+      if (store.state.user.username == null) {
+        return null
+      }
+
+      return `/user/${store.state.user.username}`
+    }
+  },
   methods: {
     login() {
       this.$auth.loginWithRedirect();
     },
     logout() {
+      store.dispatch("logout")
+
       this.$auth.logout();
       this.$router.push({ path: "/" });
     }

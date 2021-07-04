@@ -23,11 +23,18 @@ import NavBar from "./components/NavBar";
 import SideBar from "./components/SideBar";
 import Error from "./components/Error";
 
+import { store } from "./store/store"
+
 export default {
   components: {
     NavBar,
     SideBar,
     Error
+  },
+  created() {
+    store.dispatch("retrieveTokenFromAuth0").then(() => {
+      store.dispatch("retrieveUserDetails")
+    })
   }
 };
 </script>

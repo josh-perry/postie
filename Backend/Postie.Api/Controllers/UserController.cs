@@ -1,4 +1,5 @@
 using System.Linq;
+using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Postie.Api.Mappers;
@@ -48,8 +49,12 @@ namespace Postie.Api.Controllers
         [Route("")]
         public IActionResult Get()
         {
-            var claims = HttpContext.User.Claims.Select(x => x.Value);
-            return Json(claims);
+            var user = _userRepository.GetUserByAuthId(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
+
+            if (user == null)
+                return BadRequest("User is null.");
+
+            return Json(_userResponseMapper.MapDbToResponse(user));
         }
 
         /// <summary>

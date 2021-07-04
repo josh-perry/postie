@@ -65,7 +65,13 @@ export default {
         headers: headers
       });
 
-      this.comments = data;
+      // TODO: I don't know. Make this less disastrous I guess. Maybe this should be done server-side? Maybe it's fine. Who knows.
+      data.filter(x => x.parentCommentId != null).forEach(childComment => {
+        let parentComment = data.find(parentComment => parentComment.id == childComment.parentCommentId)
+        parentComment.children.push(childComment)
+      });
+
+      this.comments = data.filter(x => x.parentCommentId == null);
     },
     addedComment (value) {
       this.comments.push(value)

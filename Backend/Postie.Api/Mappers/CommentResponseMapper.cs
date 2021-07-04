@@ -16,9 +16,11 @@ namespace Postie.Api.Mappers
         {
             return new CommentApiResponse
             {
+                ID = board.ID,
                 Content = board.Content,
                 User = board.CreatedBy.Username,
-                ParentCommentId = board.ParentComment?.ID
+                ParentCommentId = board.ParentComment?.ID,
+                Children = new List<Comment>()
             };
         }
     }

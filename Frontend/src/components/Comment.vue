@@ -2,12 +2,16 @@
   <div class="comment">
     <p><a :href="`/user/${comment.user}`">{{ comment.user }}</a></p>
     <p>{{ comment.content }}</p>
+
+    <div v-for="childComment in comment.children" v-bind:key="childComment.id">
+      <Comment :comment="childComment" />
+    </div>
   </div>
 </template>
 
 <script>
 export default {
-  name: "comment",
+  name: "Comment",
   props: {
     comment: {
       type: Object,

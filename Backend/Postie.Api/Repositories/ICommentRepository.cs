@@ -35,7 +35,6 @@ namespace Postie.Api.Repositories
             if (childrenOf == default)
                 return _dbContext.Comments
                     .Where(x => x.Post.Url == post)
-                    .Where(x => x.ParentComment == null)
                     .Include(x => x.CreatedBy)
                     .ToList();
 

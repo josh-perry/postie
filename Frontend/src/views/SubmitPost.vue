@@ -16,6 +16,7 @@
       </fieldset>
 
       <fieldset>
+        <label>Content</label>
         <textarea v-model="form.content" placeholder="Post something wonderful" />
       </fieldset>
 
@@ -93,21 +94,26 @@ export default {
 
 <style scoped>
 fieldset {
-  display: flex;
   border: 0;
-}
-
-input, button, select {
-  flex: 3;
-  margin: 8px;
+  display: flex;
 }
 
 label {
   flex: 1;
 }
 
+input, textarea, select {
+  flex: 3;
+  margin: 8px;
+}
+
+button {
+  flex: 3;
+  margin: 8px;
+  padding: 8px;
+}
+
 textarea {
-  width: 100%;
-  min-height: 220px;
+  min-height: 120px;
 }
 </style>

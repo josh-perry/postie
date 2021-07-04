@@ -6,7 +6,7 @@
 
     <div class="section">
       <a href="/create-board">Create a new board</a>
-      <a href="/submit">Submit post</a>
+      <a :href="submitLinkDestination">Submit post</a>
     </div>
 
     <div v-if="showBoardDetails" class="section">
@@ -22,10 +22,18 @@ export default {
   components: {
     BoardSideBar
   },
+  computed: {
+    submitLinkDestination() {
+      if (this.$route.params.boardName == null)
+        return "/submit"
+
+      return `${this.$route.params.boardName}/submit`
+    }
+  },
   data() {
     // I don't like this but it works for now
     return {
-      showBoardDetails: this.$route.path.startsWith("/board")
+      showBoardDetails: this.$route.path.startsWith("/board"),
     }
   }
 };

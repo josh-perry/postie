@@ -5,12 +5,17 @@
     <form v-on:submit.prevent="createBoard">
       <fieldset>
         <label>Board name</label>
-        <input v-model="form.title" v-on:input="boardNameChanged" type="text" placeholder="Name" />
+        <input v-model="form.title" v-on:input="boardNameChanged" type="text" placeholder="Super cool board" />
       </fieldset>
 
       <fieldset>
         <label>URL</label>
-        <input v-model="form.url" type="text" placeholder="URL" readonly="true" />
+        <input v-model="form.url" type="text" placeholder="super-cool-board" readonly="true" />
+      </fieldset>
+
+      <fieldset>
+        <label>Description</label>
+        <textarea v-model="form.description" placeholder="A place for all my pals to chat!" />
       </fieldset>
 
       <fieldset>
@@ -50,6 +55,8 @@ export default {
         headers["Authorization"] = `Bearer ${store.state.token}`
       }
 
+      console.log(this.form)
+
       const { data } = await axios.put(`https://localhost:5001/board/${this.form.url}`, this.form, {
         headers: headers,
         "Content-Type": "application/json"
@@ -69,16 +76,26 @@ export default {
 
 <style scoped>
 fieldset {
-  display: flex;
   border: 0;
-}
-
-input, button {
-  flex: 3;
-  margin: 8px;
+  display: flex;
 }
 
 label {
   flex: 1;
+}
+
+input, textarea {
+  flex: 3;
+  margin: 8px;
+}
+
+button {
+  flex: 3;
+  margin: 8px;
+  padding: 8px;
+}
+
+textarea {
+  min-height: 120px;
 }
 </style>

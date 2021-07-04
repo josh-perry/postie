@@ -91,7 +91,8 @@ namespace Postie.Api.Controllers
                 Url = board,
                 Title = newBoard.Title,
                 CreatedBy = user,
-                CreatedDateTime = DateTime.UtcNow
+                CreatedDateTime = DateTime.UtcNow,
+                Description = newBoard.Description
             });
 
             if (!success)

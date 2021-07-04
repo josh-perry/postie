@@ -38,7 +38,7 @@ namespace Postie.Api.Services
 
         public Post GetPostByBoardAndUrl(string boardUrl, string postUrl)
         {
-            var board = _dbContext.Boards.FirstOrDefault(x => x.Title == boardUrl);
+            var board = _dbContext.Boards.FirstOrDefault(x => x.Url == boardUrl);
             var post = _dbContext.Posts
                 .Include(x => x.CreatedBy)
                 .FirstOrDefault(x => x.Board == board && x.Url == postUrl);

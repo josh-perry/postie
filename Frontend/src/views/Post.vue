@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1>{{ postName }}</h1>
+    <h1>{{ post.title }}</h1>
 
     <span class="post-content">
       {{ post.content }}

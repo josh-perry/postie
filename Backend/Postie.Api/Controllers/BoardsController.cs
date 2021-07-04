@@ -11,7 +11,9 @@ namespace Postie.Api.Controllers
 {
     public class NewBoard
     {
-        public string Title;
+        public string Title { get; set; }
+        
+        public string Description { get; set; }
     }
 
     [ApiController]

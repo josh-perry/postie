@@ -11,7 +11,7 @@
         <button v-if="$auth.isAuthenticated && !$auth.loading" class="dropdown-button">{{ $auth.user.name }}</button>
         <div class="dropdown-content">
           <a :href="profileLink">Profile</a>
-          <a @click.prevent="logout">Log out</a>
+          <a href="#" @click.prevent="logout">Log out</a>
         </div>
       </div>
     </div>

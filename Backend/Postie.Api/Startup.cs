@@ -8,9 +8,11 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
 using Postie.Api.Data;
 using Postie.Api.Mappers;
+using Postie.Api.Models.Options;
 using Postie.Api.Repositories;
 using Postie.Api.Services;
 
@@ -32,6 +34,7 @@ namespace Postie.Api
             });
 
             services.AddMvc();
+            services.AddOptions();
 
             services.AddCors(options => {
                 options.AddPolicy("AllowedOrigins", builder => {
@@ -97,6 +100,8 @@ namespace Postie.Api
             services.AddSingleton<BoardResponseMapper>();
             services.AddSingleton<CommentResponseMapper>();
             services.AddSingleton<UserResponseMapper>();
+
+            services.AddSingleton(o => Configuration.GetSection("SeedData").Get<SeedDataOptions>());
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

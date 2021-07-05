@@ -7,8 +7,10 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Options;
 using Postie.Api.Data;
 using Postie.Api.Models.Db;
+using Postie.Api.Models.Options;
 
 namespace Postie.Api
 {
@@ -36,6 +38,7 @@ namespace Postie.Api
         {
             using var serviceScope = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>().CreateScope();
             using var dbContext = serviceScope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+            var defaultUserOptions = serviceScope.ServiceProvider.GetRequiredService<SeedDataOptions>();
 
             // Create the database if needed, quit early if it already existed
             if (!dbContext.Database.EnsureCreated())
@@ -43,7 +46,20 @@ namespace Postie.Api
 
             if (!env.IsDevelopment())
                 return;
-               
+
+            foreach (var user in defaultUserOptions.Users)
+            {
+                var defaultUser = new User
+                {
+                    Username = user.Username,
+                    AuthId = user.AuthId
+                };
+
+                dbContext.Users.Add(defaultUser);
+            }
+            
+            dbContext.SaveChanges();
+
             var userFaker = new Faker<User>()
                 .RuleFor(u => u.Username, f => f.Internet.UserName())
                 .RuleFor(u => u.AuthId, f => "auth0|");

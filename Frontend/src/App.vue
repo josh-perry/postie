@@ -43,7 +43,6 @@ export default {
 .container {
   margin: 2em auto;
   margin-top: 0;
-  padding: 1em;
   line-height: 1.4;
   display: inline-flex;
   width: 100%;

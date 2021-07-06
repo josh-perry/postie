@@ -8,6 +8,8 @@ import { domain, clientId, audience } from "../auth_config.json";
 
 import { store } from "./store/store"
 
+import '@/assets/css/main.css'
+
 Vue.config.productionTip = false;
 
 Vue.use(Auth0Plugin, {

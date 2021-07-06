@@ -64,16 +64,6 @@ export default {
   flex-grow: 0;
 }
 
-a {
-  color: #F06543;
-  font-weight: bold;
-  font-family: 'Nunito Sans', sans-serif;
-}
-
-h1, h2, h3, h4, p, span, textarea {
-  font-family: 'Nunito Sans', sans-serif;
-}
-
 .navbar {
   display: flex;
   background-color: #0A0908;

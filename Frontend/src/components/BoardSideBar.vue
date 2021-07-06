@@ -2,7 +2,7 @@
   <div>
     <div class="section">
       <h3>{{ board.title }}</h3>
-      <p>Created by {{ board.createdBy }}</p>
+      <p>Created by <a :href="`/user/${board.createdBy}`">{{ board.createdBy }}</a></p>
 
       <div class="board-description">
         {{ board.description }}

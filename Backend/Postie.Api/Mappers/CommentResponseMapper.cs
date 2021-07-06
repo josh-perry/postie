@@ -12,17 +12,17 @@ namespace Postie.Api.Mappers
             return comments.Select(MapDbToResponse).ToList();
         }
 
-        public CommentApiResponse MapDbToResponse(Comment board)
+        public CommentApiResponse MapDbToResponse(Comment comment)
         {
             return new CommentApiResponse
             {
-                ID = board.ID,
-                Content = board.Content,
-                User = board.CreatedBy.Username,
-                ParentCommentId = board.ParentComment?.ID,
+                ID = comment.ID,
+                Content = comment.Content,
+                User = comment.CreatedBy.Username,
+                ParentCommentId = comment.ParentComment?.ID,
                 Children = new List<Comment>(),
-                Board = board?.Post?.Board.Url,
-                Post = board?.Post?.Url
+                Board = comment.Post?.Board.Url,
+                Post = comment.Post?.Url
             };
         }
     }

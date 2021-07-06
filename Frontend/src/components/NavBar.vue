@@ -7,7 +7,7 @@
     </div>
 
     <div class="right">
-      <a v-if="!$auth.isAuthenticated && !$auth.loading" href="#" class @click.prevent="login">Log in</a>
+      <a v-if="!$auth.isAuthenticated && !$auth.loading" href="#" class="badge" @click.prevent="login">Log in</a> 
 
       <div class="dropdown">
         <button v-if="$auth.isAuthenticated && !$auth.loading" class="dropdown-button">{{ username }}</button>
@@ -55,7 +55,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .left {
   flex: 1;
 }
@@ -79,11 +79,13 @@ export default {
 }
 
 .dropdown {
+  height: 100%;
   float: left;
   overflow: hidden;
 }
 
 .dropdown .dropdown-button {
+  height: 100%;
   color: #EAE0D5;
   font-size: 16px;
   border: none;

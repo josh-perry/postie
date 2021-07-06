@@ -20,7 +20,9 @@ namespace Postie.Api.Mappers
                 Content = board.Content,
                 User = board.CreatedBy.Username,
                 ParentCommentId = board.ParentComment?.ID,
-                Children = new List<Comment>()
+                Children = new List<Comment>(),
+                Board = board?.Post?.Board.Url,
+                Post = board?.Post?.Url
             };
         }
     }

@@ -14,5 +14,9 @@ namespace Postie.Api.Models.Responses
         public int? ParentCommentId { get; set; }
         
         public List<Comment> Children { get; set; }
+        
+        public string Board { get; set; }
+        
+        public string Post { get; set; }
     }
 }

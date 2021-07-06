@@ -59,6 +59,8 @@ namespace Postie.Api.Repositories
         public IEnumerable<Comment> GetLastCommentsByUser(User user, int amount)
         {
             return _dbContext.Comments
+                .Include(x => x.Post)
+                    .ThenInclude(x => x.Board)
                 .Where(x => x.CreatedBy == user)
                 .OrderByDescending(x => x.CreatedDateTime)
                 .Take(amount)

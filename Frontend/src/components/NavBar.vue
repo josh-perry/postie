@@ -1,7 +1,9 @@
 <template>
   <div class="navbar">
     <div class="left">
-      <a href="/">Postie</a>
+      <a class="badge" href="/">Postie</a>
+
+      <Breadcrumb/>
     </div>
 
     <div class="right">
@@ -19,10 +21,14 @@
 </template>
 
 <script>
+import Breadcrumb from "../components/Breadcrumb";
 import { store } from "../store/store"
 
 export default {
   name: "NavBar",
+  components: {
+    Breadcrumb
+  },
   computed: {
     profileLink() {
       if (store.state.user.username == null) {
@@ -51,14 +57,18 @@ export default {
 
 <style>
 .left {
-  float: left;
+  flex: 1;
 }
 
 .right {
-  float: right;
+  flex-grow: 0;
 }
 
-.navbar a {
+.navbar {
+  display: flex;
+}
+
+.badge {
   float: left;
   font-size: 16px;
   color: white;
@@ -82,7 +92,7 @@ export default {
   margin: 0;
 }
 
-.navbar a:hover, .dropdown:hover .dropdown-button {
+.navbar .badge:hover, .dropdown:hover .dropdown-button {
   background-color: blue;
   color: white;
 }

@@ -5,7 +5,9 @@
       <p>Created by <a :href="`/user/${board.createdBy}`">{{ board.createdBy }}</a></p>
 
       <div class="board-description">
-        {{ board.description }}
+        <p>
+          {{ board.description }}
+        </p>
       </div>
     </div>
   </div>

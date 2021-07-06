@@ -41,9 +41,7 @@ export default {
 
 <style scoped>
 .container {
-  margin: 2em auto;
-  margin-top: 0;
-  line-height: 1.4;
+ line-height: 1.4;
   display: inline-flex;
   width: 100%;
 }
@@ -53,11 +51,17 @@ export default {
 }
 
 .route-wrapper {
+  margin: 2em auto;
+  margin-top: 0;
+ 
   max-width: 880px;
   margin: auto;
+  padding: 30px;
+  background-color: #FFFCF9;
 }
 
 .sidebar {
   flex: 1;
+  background-color: #FFFCF9;
 }
 </style>

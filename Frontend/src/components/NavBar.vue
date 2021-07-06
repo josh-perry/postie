@@ -64,15 +64,27 @@ export default {
   flex-grow: 0;
 }
 
+a {
+  color: #F06543;
+  font-weight: bold;
+  font-family: 'Nunito Sans', sans-serif;
+}
+
+h1, h2, h3, h4, p, span, textarea {
+  font-family: 'Nunito Sans', sans-serif;
+}
+
 .navbar {
   display: flex;
+  background-color: #0A0908;
+  color: #EAE0D5;
 }
 
 .badge {
   float: left;
   font-size: 16px;
   text-align: center;
-  padding: 14px 16px;
+  padding: 16px;
   text-decoration: none;
 }
 
@@ -82,24 +94,24 @@ export default {
 }
 
 .dropdown .dropdown-button {
+  color: #EAE0D5;
   font-size: 16px;
   border: none;
   outline: none;
-  padding: 14px 16px;
+  padding: 16px;
   background-color: inherit;
   font-family: inherit;
   margin: 0;
 }
 
 .navbar .badge:hover, .dropdown:hover .dropdown-button {
-  background-color: blue;
+  background-color: #F06543;
   color: white;
 }
 
 .dropdown-content {
   display: none;
   position: absolute;
-  background-color: #f9f9f9;
   min-width: 160px;
   box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
   z-index: 1;
@@ -107,15 +119,15 @@ export default {
 
 .dropdown-content a {
   float: none;
-  color: black;
-  padding: 12px 16px;
+  padding: 16px 16px;
   text-decoration: none;
   display: block;
   text-align: left;
 }
 
 .dropdown-content a:hover {
-  background-color: #ddd;
+  background-color: #F06543;
+  color: white;
 }
 
 .dropdown:hover .dropdown-content {

@@ -27,7 +27,7 @@ export default {
       if (this.$route.params.boardName == null)
         return "/submit"
 
-      return `${this.$route.params.boardName}/submit`
+      return `/board/${this.$route.params.boardName}/submit`
     }
   },
   data() {

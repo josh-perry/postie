@@ -54,6 +54,11 @@ export default {
   padding-right: 0;
   margin: 8px;
   border: 1px solid black;
+  white-space: pre-wrap;
+}
+
+.comment p {
+  padding-right: 16px;
 }
 
 .parent-comment { }

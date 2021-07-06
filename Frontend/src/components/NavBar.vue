@@ -8,7 +8,7 @@
       <a v-if="!$auth.isAuthenticated && !$auth.loading" href="#" class @click.prevent="login">Log in</a>
 
       <div class="dropdown">
-        <button v-if="$auth.isAuthenticated && !$auth.loading" class="dropdown-button">{{ $auth.user.name }}</button>
+        <button v-if="$auth.isAuthenticated && !$auth.loading" class="dropdown-button">{{ username }}</button>
         <div class="dropdown-content">
           <a :href="profileLink">Profile</a>
           <a href="#" @click.prevent="logout">Log out</a>
@@ -30,6 +30,9 @@ export default {
       }
 
       return `/user/${store.state.user.username}`
+    },
+    username() {
+      return store.state.user.username
     }
   },
   methods: {

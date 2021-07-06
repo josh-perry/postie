@@ -6,7 +6,11 @@
     <PostList :posts="posts" />
 
     <h3>Recent comments</h3>
-    <CommentList :comments="comments" />
+    <ul>
+      <li v-for="comment in comments" :key="comment.id">
+        <CommentPreview :comment="comment" />
+      </li>
+    </ul>
   </div>
 </template>
 
@@ -16,11 +20,13 @@ import { store } from "../store/store"
 
 import PostList from "../components/PostList.vue"
 import CommentList from "../components/CommentList.vue"
+import CommentPreview from "../components/CommentPreview.vue"
 
 export default {
  components: {
     PostList,
-    CommentList
+    CommentList,
+    CommentPreview
   },
   data() {
     return {
@@ -51,3 +57,11 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+</style>

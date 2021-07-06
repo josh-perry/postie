@@ -1,11 +1,17 @@
 <template>
   <div class="comment">
-    <a v-if="postLink" :href="postLink">Post</a>
+    <div class="top-details">
+      <a class="post-link" v-if="postLink" :href="postLink">Post</a>
+      <span class="datetime" :title="comment.createdDateTime">{{ humanDateTime }}</span>
+    </div>
+
     <p>{{ comment.content }}</p>
   </div>
 </template>
 
 <script>
+import humanDate from "human-date"
+
 export default {
   name: "CommentPreview",
   computed: {
@@ -14,6 +20,9 @@ export default {
         return null
 
       return `/board/${this.comment.board}/${this.comment.post}`
+    },
+    humanDateTime() {
+      return humanDate.relativeTime(new Date(this.comment.createdDateTime))
     }
   },
   props: {
@@ -43,5 +52,18 @@ export default {
 
 .links a {
   margin-left: 16px;
+}
+
+.top-details {
+  display: block;
+  padding: 8px;
+}
+
+.post-link {
+  float: left;
+}
+
+.datetime {
+  float: right;
 }
 </style>

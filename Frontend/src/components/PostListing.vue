@@ -4,13 +4,15 @@
     
     <div class="details">
       <p><a :href="`/user/${post.createdBy}`">{{ post.createdBy }}</a></p>
-      <p>{{ post.createdDateTime }}</p>
+      <p class="datetime" :title="post.createdDateTime">{{ humanDateTime }}</p>
       <p>{{ post.commentCount }} comments</p>
     </div>
   </div>
 </template>
 
 <script>
+import humanDate from "human-date"
+
 export default {
   props: {
     post: {
@@ -23,6 +25,11 @@ export default {
           createdDateTime: ""
         }
       }
+    }
+  },
+  computed: {
+    humanDateTime() {
+      return humanDate.relativeTime(new Date(this.post.createdDateTime))
     }
   }
 }

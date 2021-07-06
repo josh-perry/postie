@@ -1,7 +1,13 @@
 <template>
   <div class="comment" v-bind:class="{ 'child-comment': comment.parentCommentId !== null, 'parent-comment': comment.children.length !== 0 }">
-    <p><a :href="`/user/${comment.user}`">{{ comment.user }}</a></p>
-    <p>{{ comment.content }}</p>
+    <div class="top-details">
+      <a class="user" :href="`/user/${comment.user}`">{{ comment.user }}</a>
+      <span class="datetime" :title="comment.createdDateTime">{{ humanDateTime }}</span>
+    </div>
+
+    <div class="comment-content">
+      <p>{{ comment.content }}</p>
+    </div>
 
     <div class="links">
       <a href="#" @click.prevent="createCommentBox">Reply</a>
@@ -17,6 +23,7 @@
 
 <script>
 import CommentBox from "../components/CommentBox.vue"
+import humanDate from "human-date"
 
 export default {
   components: {
@@ -34,6 +41,11 @@ export default {
       default: () => {
         return []
       }
+    }
+  },
+  computed: {
+    humanDateTime() {
+      return humanDate.relativeTime(new Date(this.comment.createdDateTime))
     }
   },
   methods: {
@@ -76,5 +88,22 @@ export default {
 
 .links a {
   margin-left: 16px;
+}
+
+.top-details {
+  display: block;
+  padding: 8px;
+}
+
+.user {
+  float: left;
+}
+
+.datetime {
+  float: right;
+}
+
+.comment-content {
+  padding-top: 12px;
 }
 </style>

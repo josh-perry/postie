@@ -22,7 +22,8 @@ namespace Postie.Api.Mappers
                 ParentCommentId = comment.ParentComment?.ID,
                 Children = new List<Comment>(),
                 Board = comment.Post?.Board.Url,
-                Post = comment.Post?.Url
+                Post = comment.Post?.Url,
+                CreatedDateTime = comment.CreatedDateTime
             };
         }
     }

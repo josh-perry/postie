@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Postie.Api.Models.Db;
 
@@ -18,5 +19,7 @@ namespace Postie.Api.Models.Responses
         public string Board { get; set; }
         
         public string Post { get; set; }
+        
+        public DateTime CreatedDateTime { get; set; }
     }
 }

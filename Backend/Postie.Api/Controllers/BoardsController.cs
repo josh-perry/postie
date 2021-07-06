@@ -5,16 +5,11 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Postie.Api.Mappers;
 using Postie.Api.Models.Db;
+using Postie.Api.Models.Requests;
 using Postie.Api.Repositories;
 
 namespace Postie.Api.Controllers
 {
-    public class NewBoard
-    {
-        public string Title { get; set; }
-        
-        public string Description { get; set; }
-    }
 
     [ApiController]
     [Route("board")]
@@ -73,26 +68,26 @@ namespace Postie.Api.Controllers
         ///     Adds a new board
         /// </summary>
         /// <param name="board">Board name</param>
-        /// <param name="newBoard">New board details</param>
+        /// <param name="newBoardRequest">New board details</param>
         /// <returns></returns>
         [HttpPut]
         [Authorize]
         [Route("{board}")]
-        public IActionResult Put(string board, NewBoard newBoard)
+        public IActionResult Put(string board, NewBoardRequest newBoardRequest)
         {
             // Validate this board doesn't already exist
-            if (_boardRepository.GetBoardByUrl(newBoard.Title) != null)
-                return Conflict($"{newBoard.Title} already exists!");
+            if (_boardRepository.GetBoardByUrl(newBoardRequest.Title) != null)
+                return Conflict($"{newBoardRequest.Title} already exists!");
 
             var user = _userRepository.GetUserByAuthId(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
 
             var success = _boardRepository.AddBoard(new Board
             {
                 Url = board,
-                Title = newBoard.Title,
+                Title = newBoardRequest.Title,
                 CreatedBy = user,
                 CreatedDateTime = DateTime.UtcNow,
-                Description = newBoard.Description
+                Description = newBoardRequest.Description
             });
 
             if (!success)

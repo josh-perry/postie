@@ -2,13 +2,13 @@
   <div class="container">
     <div class="upvotes">
       <span>{{ upVotes }}</span>
-      <a href="#" @click.prevent="postVote(true)">
+      <a href="#" @click.prevent="postVote(true)" v-bind:class="{ selected: voted === true }">
         :)
       </a>
     </div>
 
     <div>
-      <a href="#" @click.prevent="postVote(false)">
+      <a href="#" @click.prevent="postVote(false)" v-bind:class="{ selected: voted === false }">
         :(
       </a>
     </div>
@@ -25,6 +25,11 @@ export default {
     post: {
       type: Object,
       default: null
+    }
+  },
+  data() {
+    return {
+      voted: null
     }
   },
   computed: {
@@ -46,10 +51,13 @@ export default {
         up
       }
 
-      await axios.post(`https://localhost:5001/vote/post/${this.post.id}`, json, {
+      const { data } = await axios.post(`https://localhost:5001/vote/post/${this.post.id}`, json, {
         headers: headers,
         "Content-Type": "application/json"
       });
+
+      this.post.upVotes = data.upVotes
+      this.voted = up
     }
   }
 }
@@ -65,6 +73,10 @@ export default {
   text-align: right;
 }
 
+.selected {
+  background-color: #F06543;
+}
+
 a {
   height: 32px;
   width: 32px;
@@ -74,7 +86,7 @@ a {
 
   display: inline-block;
 
-  background-color: #F06543;
+  background-color: #F0654354;
   color: white;
 
   font-size: 18px;

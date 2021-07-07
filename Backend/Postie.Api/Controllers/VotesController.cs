@@ -43,7 +43,7 @@ namespace Postie.Api.Controllers
                 return BadRequest("Post is null.");
 
             _postVotesRepository.PostVote(post, user, postVoteRequest);
-            return Ok();
+            return Json(_postVotesRepository.GetPostVotes(postId));
         }
     }
 }

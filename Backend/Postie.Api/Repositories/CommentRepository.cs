@@ -3,22 +3,10 @@ using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using Postie.Api.Data;
 using Postie.Api.Models.Db;
+using Postie.Api.Repositories.Interfaces;
 
 namespace Postie.Api.Repositories
 {
-    public interface ICommentRepository
-    {
-        IEnumerable<Comment> GetCommentsForPost(string board, string post, int childrenOf = default);
-
-        bool AddComment(Comment comment);
-
-        Comment GetCommentById(int id);
-
-        IEnumerable<Comment> GetLastCommentsByUser(User user, int amount);
-
-        int GetCommentsCountForPostId(int postId);
-    }
-
     public class CommentRepository : ICommentRepository
     {
         private readonly ApplicationDbContext _dbContext;
@@ -60,7 +48,7 @@ namespace Postie.Api.Repositories
         {
             return _dbContext.Comments
                 .Include(x => x.Post)
-                    .ThenInclude(x => x.Board)
+                .ThenInclude(x => x.Board)
                 .Where(x => x.CreatedBy == user)
                 .OrderByDescending(x => x.CreatedDateTime)
                 .Take(amount)

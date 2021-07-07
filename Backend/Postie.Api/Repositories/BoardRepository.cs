@@ -3,6 +3,7 @@ using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using Postie.Api.Data;
 using Postie.Api.Models.Db;
+using Postie.Api.Repositories.Interfaces;
 
 namespace Postie.Api.Repositories
 {
@@ -27,6 +28,7 @@ namespace Postie.Api.Repositories
             _dbContext.Boards.Add(board);
             return _dbContext.SaveChanges() != 0;
         }
+
         public IEnumerable<Board> GetAllBoards()
         {
             return _dbContext.Boards

@@ -6,11 +6,11 @@ namespace Postie.Api.Models.Options
     {
         public List<DefaultUser> Users { get; set; }
     }
-    
+
     public class DefaultUser
     {
         public string Username { get; set; }
-        
+
         public string AuthId { get; set; }
     }
 }

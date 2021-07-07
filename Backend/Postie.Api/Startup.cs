@@ -13,6 +13,7 @@ using Postie.Api.Data;
 using Postie.Api.Mappers;
 using Postie.Api.Models.Options;
 using Postie.Api.Repositories;
+using Postie.Api.Repositories.Interfaces;
 using Postie.Api.Services;
 
 namespace Postie.Api
@@ -112,7 +113,9 @@ namespace Postie.Api
                 app.SeedDatabase(env);
             }
             else
+            {
                 app.UseExceptionHandler("/Home/Error");
+            }
 
             app.UseStaticFiles();
             app.UseRouting();

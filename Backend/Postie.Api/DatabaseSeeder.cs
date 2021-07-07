@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Cryptography;
 using Bogus;
 using Bogus.Extensions;
 using Microsoft.AspNetCore.Builder;
@@ -9,7 +8,6 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Options;
 using Postie.Api.Data;
 using Postie.Api.Models.Db;
 using Postie.Api.Models.Options;
@@ -34,7 +32,7 @@ namespace Postie.Api
 
         private const int CommentReplyChance = 75;
 
-        private static Random _random = new Random();
+        private static readonly Random _random = new Random();
 
         public static void SeedDatabase(this IApplicationBuilder app, IWebHostEnvironment env)
         {
@@ -44,10 +42,10 @@ namespace Postie.Api
 
             // Apply any migrations, but don't seed if not necessary or not in development mode
             dbContext.Database.Migrate();
-            
+
             if (!env.IsDevelopment())
                 return;
-            
+
             if (dbContext.Users.FirstOrDefault() != null)
                 return;
 
@@ -61,7 +59,7 @@ namespace Postie.Api
 
                 dbContext.Users.Add(defaultUser);
             }
-            
+
             dbContext.SaveChanges();
 
             var userFaker = new Faker<User>()
@@ -79,7 +77,7 @@ namespace Postie.Api
 
             // Create boards
             var boardFaker = new Faker<Board>()
-                .RuleFor(b => b.Description, f => f.Lorem.Paragraphs(3))
+                .RuleFor(b => b.Description, f => f.Lorem.Paragraphs())
                 .RuleFor(b => b.Title, f => f.Lorem.Sentence(1, 3).ToString())
                 .RuleFor(b => b.Url, (f, b) => b.Title.Replace(" ", "-").ToLower().Replace(".", ""))
                 .RuleFor(b => b.CreatedBy, f => f.PickRandom(users))
@@ -87,7 +85,7 @@ namespace Postie.Api
 
             boards.AddRange(boardFaker.GenerateBetween(MinBoards, MaxBoards));
             dbContext.Boards.AddRange(boards);
-                
+
             dbContext.SaveChanges();
 
             // Create posts
@@ -104,7 +102,7 @@ namespace Postie.Api
                 var postsForUser = postFaker.GenerateBetween(MinPostsPerUser, MaxPostsPerUser);
                 posts.AddRange(postsForUser);
                 dbContext.Posts.AddRange(postsForUser);
-                    
+
                 dbContext.SaveChanges();
             }
 
@@ -135,7 +133,7 @@ namespace Postie.Api
                     comment.ParentComment = parentComment;
                     comment.Post = parentComment.Post;
                 }
-                    
+
                 dbContext.Comments.AddRange(userComments);
 
                 dbContext.SaveChanges();
@@ -144,17 +142,17 @@ namespace Postie.Api
 
         private static bool CheckCommentTreeContainsAncestor(Comment commentToCheck, Comment possibleAncestor)
         {
-             var ancestor = commentToCheck;
-             
-             while (ancestor != null)
-             {
-                 if (ancestor == possibleAncestor)
-                     return true;
-                 
-                 ancestor = ancestor.ParentComment;
-             }
+            var ancestor = commentToCheck;
 
-             return false;
+            while (ancestor != null)
+            {
+                if (ancestor == possibleAncestor)
+                    return true;
+
+                ancestor = ancestor.ParentComment;
+            }
+
+            return false;
         }
     }
 }

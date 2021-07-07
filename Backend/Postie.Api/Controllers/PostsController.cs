@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Postie.Api.Mappers;
 using Postie.Api.Models.Db;
 using Postie.Api.Models.Requests;
-using Postie.Api.Repositories;
+using Postie.Api.Repositories.Interfaces;
 using Postie.Api.Services;
 
 namespace Postie.Api.Controllers
@@ -22,11 +22,11 @@ namespace Postie.Api.Controllers
 
         private readonly PostResponseMapper _postResponseMapper;
 
+        private readonly IPostVotesRepository _postVotesRepository;
+
         private readonly IUrlService _urlService;
 
         private readonly IUserRepository _userRepository;
-        
-        private readonly IPostVotesRepository _postVotesRepository;
 
         public PostsController(IFetchPostService fetchPostService,
             IBoardRepository boardRepository,
@@ -61,12 +61,12 @@ namespace Postie.Api.Controllers
 
             if (post == null)
                 return NotFound();
-            
+
             var response = _postResponseMapper.MapDbToResponse(post);
-            
+
             var votes = _postVotesRepository.GetPostVotes(post.ID);
             response.UpVotes = votes.UpVotes;
-            
+
             return Json(response);
         }
 

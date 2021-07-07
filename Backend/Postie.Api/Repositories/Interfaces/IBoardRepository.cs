@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using Postie.Api.Models.Db;
 
-namespace Postie.Api.Repositories
+namespace Postie.Api.Repositories.Interfaces
 {
     public interface IBoardRepository
     {

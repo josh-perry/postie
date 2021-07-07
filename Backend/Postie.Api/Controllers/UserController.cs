@@ -1,9 +1,8 @@
-using System.Linq;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Postie.Api.Mappers;
-using Postie.Api.Repositories;
+using Postie.Api.Repositories.Interfaces;
 using Postie.Api.Services;
 
 namespace Postie.Api.Controllers
@@ -20,7 +19,7 @@ namespace Postie.Api.Controllers
         private readonly IFetchPostService _fetchPostService;
 
         private readonly PostResponseMapper _postResponseMapper;
-        
+
         private readonly IUserRepository _userRepository;
 
         private readonly UserResponseMapper _userResponseMapper;

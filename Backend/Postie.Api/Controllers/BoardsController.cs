@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Postie.Api.Mappers;
 using Postie.Api.Models.Db;
 using Postie.Api.Models.Requests;
-using Postie.Api.Repositories;
+using Postie.Api.Repositories.Interfaces;
 
 namespace Postie.Api.Controllers
 {

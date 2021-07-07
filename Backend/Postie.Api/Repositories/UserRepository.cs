@@ -1,16 +1,10 @@
 using System.Linq;
 using Postie.Api.Data;
 using Postie.Api.Models.Db;
+using Postie.Api.Repositories.Interfaces;
 
 namespace Postie.Api.Repositories
 {
-    public interface IUserRepository
-    {
-        User GetUserByName(string username);
-
-        User GetUserByAuthId(string authId);
-    }
-
     public class UserRepository : IUserRepository
     {
         private readonly ApplicationDbContext _dbContext;

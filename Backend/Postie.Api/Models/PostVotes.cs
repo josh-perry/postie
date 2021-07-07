@@ -1,4 +1,4 @@
-namespace Postie.Api.Repositories
+namespace Postie.Api.Models
 {
     public class PostVotes
     {

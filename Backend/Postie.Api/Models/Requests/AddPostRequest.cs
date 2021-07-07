@@ -6,7 +6,7 @@ namespace Postie.Api.Models.Requests
         public string Board { get; set; }
 
         public string Content { get; set; }
-        
+
         public string Title { get; set; }
     }
 }

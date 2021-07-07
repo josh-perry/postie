@@ -32,7 +32,7 @@ namespace Postie.Api.Controllers
         [HttpPost]
         [Authorize]
         [Route("post/{postId}")]
-        public IActionResult Post(int postId, PostVoteRequest postVoteRequest)
+        public IActionResult AddPostVote(int postId, PostVoteRequest postVoteRequest)
         {
             var user = _userRepository.GetUserByAuthId(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
             if (user == null)
@@ -53,7 +53,7 @@ namespace Postie.Api.Controllers
         /// <returns></returns>
         [HttpGet]
         [Route("post/{postId}")]
-        public IActionResult Get(int postId)
+        public IActionResult GetPostVotes(int postId)
         {
             var votes = _postVotesRepository.GetPostVotes(postId);
             return Json(votes);

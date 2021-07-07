@@ -1,14 +1,14 @@
 <template>
   <div class="container">
     <div class="upvotes">
-      <span>{{ upvotes }}</span>
-      <a href="#">
+      <span>{{ upVotes }}</span>
+      <a href="#" @click.prevent="postVote(true)">
         :)
       </a>
     </div>
 
     <div>
-      <a href="#">
+      <a href="#" @click.prevent="postVote(false)">
         :(
       </a>
     </div>
@@ -16,12 +16,40 @@
 </template>
 
 <script>
+import axios from "axios"
+import { store } from "../store/store"
+
 export default {
   name: "Votes",
   props: {
-    upvotes: {
-      type: Number,
-      default: 0
+    post: {
+      type: Object,
+      default: null
+    }
+  },
+  computed: {
+    upVotes() {
+      return this.post.upVotes
+    }
+  },
+  methods: {
+    async postVote(up) {
+      if (store.state.token === null) {
+        return
+      }
+
+      let headers = {
+        Authorization: `Bearer ${store.state.token}`
+      }
+
+      let json = {
+        up
+      }
+
+      await axios.post(`https://localhost:5001/vote/post/${this.post.id}`, json, {
+        headers: headers,
+        "Content-Type": "application/json"
+      });
     }
   }
 }

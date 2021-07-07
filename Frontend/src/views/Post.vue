@@ -7,7 +7,7 @@
     </span>
 
     <div class="votes">
-      <Votes :upvotes="post.upVotes" />
+      <Votes :post="post" />
     </div>
 
     <CommentBox :post="postName" :board="boardName" v-on:addedComment="addedComment" />

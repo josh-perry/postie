@@ -22,7 +22,13 @@ namespace Postie.Api.Data
             builder.Entity<Board>().ToTable("Boards");
             builder.Entity<Post>().ToTable("Posts");
             builder.Entity<Comment>().ToTable("Comments");
-            builder.Entity<PostVote>().ToTable("PostVote");
+            builder.Entity<PostVote>().ToTable("PostVote")
+                .HasIndex(e => new
+                {
+                    e.PostID,
+                    e.UserID
+                })
+                .IsUnique();
         }
     }
 }

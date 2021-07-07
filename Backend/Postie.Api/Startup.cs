@@ -8,7 +8,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
 using Postie.Api.Data;
 using Postie.Api.Mappers;
@@ -94,6 +93,7 @@ namespace Postie.Api
             services.AddTransient<IUrlService, UrlService>();
             services.AddTransient<IUserRepository, UserRepository>();
             services.AddTransient<ICommentRepository, CommentRepository>();
+            services.AddTransient<IPostVotesRepository, PostVotesRepository>();
 
             // Mappers
             services.AddSingleton<PostResponseMapper>();

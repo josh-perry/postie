@@ -6,6 +6,10 @@
       {{ post.content }}
     </span>
 
+    <div class="votes">
+      <Votes :upvotes="post.upVotes" />
+    </div>
+
     <CommentBox :post="postName" :board="boardName" v-on:addedComment="addedComment" />
     <CommentList :comments="comments" />
   </div>
@@ -17,11 +21,13 @@ import { store } from "../store/store"
 
 import CommentList from "../components/CommentList.vue"
 import CommentBox from "../components/CommentBox.vue"
+import Votes from "../components/Votes.vue"
 
 export default {
  components: {
     CommentList,
-    CommentBox
+    CommentBox,
+    Votes
   },
   data() {
     return {
@@ -81,5 +87,9 @@ export default {
 <style scoped>
 .post-content {
   white-space: pre-wrap;
+}
+
+.votes {
+  float: right;
 }
 </style>

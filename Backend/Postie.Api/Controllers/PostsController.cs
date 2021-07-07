@@ -25,13 +25,16 @@ namespace Postie.Api.Controllers
         private readonly IUrlService _urlService;
 
         private readonly IUserRepository _userRepository;
+        
+        private readonly IPostVotesRepository _postVotesRepository;
 
         public PostsController(IFetchPostService fetchPostService,
             IBoardRepository boardRepository,
             ICommentRepository commentRepository,
             PostResponseMapper postResponseMapper,
             IUrlService urlService,
-            IUserRepository userRepository)
+            IUserRepository userRepository,
+            IPostVotesRepository postVotesRepository)
         {
             _fetchPostService = fetchPostService;
             _boardRepository = boardRepository;
@@ -39,6 +42,7 @@ namespace Postie.Api.Controllers
             _postResponseMapper = postResponseMapper;
             _urlService = urlService;
             _userRepository = userRepository;
+            _postVotesRepository = postVotesRepository;
         }
 
         /// <summary>
@@ -54,7 +58,16 @@ namespace Postie.Api.Controllers
         public IActionResult GetByBoardAndPost(string boardUrl, string postUrl)
         {
             var post = _fetchPostService.GetPostByBoardAndUrl(boardUrl, postUrl);
-            return post == null ? (IActionResult) NotFound() : Json(post);
+
+            if (post == null)
+                return NotFound();
+            
+            var response = _postResponseMapper.MapDbToResponse(post);
+            
+            var votes = _postVotesRepository.GetPostVotes(post.ID);
+            response.UpVotes = votes.UpVotes;
+            
+            return Json(response);
         }
 
         /// <summary>

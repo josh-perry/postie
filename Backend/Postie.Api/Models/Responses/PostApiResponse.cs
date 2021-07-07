@@ -19,5 +19,7 @@ namespace Postie.Api
         public string Content { get; set; }
 
         public int CommentCount { get; set; }
+        
+        public int UpVotes { get; set; }
     }
 }

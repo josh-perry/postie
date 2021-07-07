@@ -1,10 +1,12 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Security.Cryptography;
 using Bogus;
 using Bogus.Extensions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
@@ -40,11 +42,13 @@ namespace Postie.Api
             using var dbContext = serviceScope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
             var defaultUserOptions = serviceScope.ServiceProvider.GetRequiredService<SeedDataOptions>();
 
-            // Create the database if needed, quit early if it already existed
-            if (!dbContext.Database.EnsureCreated())
-                return;
-
+            // Apply any migrations, but don't seed if not necessary or not in development mode
+            dbContext.Database.Migrate();
+            
             if (!env.IsDevelopment())
+                return;
+            
+            if (dbContext.Users.FirstOrDefault() != null)
                 return;
 
             foreach (var user in defaultUserOptions.Users)

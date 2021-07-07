@@ -45,5 +45,18 @@ namespace Postie.Api.Controllers
             _postVotesRepository.PostVote(post, user, postVoteRequest);
             return Json(_postVotesRepository.GetPostVotes(postId));
         }
+
+        /// <summary>
+        ///     Get a posts vote stats
+        /// </summary>
+        /// <param name="postId"></param>
+        /// <returns></returns>
+        [HttpGet]
+        [Route("post/{postId}")]
+        public IActionResult Get(int postId)
+        {
+            var votes = _postVotesRepository.GetPostVotes(postId);
+            return Json(votes);
+        }
     }
 }

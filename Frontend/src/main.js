@@ -3,6 +3,7 @@ import App from "./App.vue";
 import router from "./router";
 
 import { Auth0Plugin } from "./auth";
+import VueScreen from "vue-screen"
 
 import { domain, clientId, audience } from "../auth_config.json";
 
@@ -24,6 +25,8 @@ Vue.use(Auth0Plugin, {
     );
   }
 });
+
+Vue.use(VueScreen);
 
 new Vue({
   router,

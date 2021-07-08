@@ -3,10 +3,10 @@
     <div class="left">
       <a class="badge" href="/">Postie</a>
 
-      <Breadcrumb/>
+      <Breadcrumb v-if="!mobile" />
     </div>
 
-    <div class="right">
+    <div class="right" v-if="!mobile">
       <a v-if="!$auth.isAuthenticated && !$auth.loading" href="#" class="badge" @click.prevent="login">Log in</a> 
 
       <div class="dropdown">
@@ -15,6 +15,16 @@
           <a :href="profileLink">Profile</a>
           <a href="#" @click.prevent="logout">Log out</a>
         </div>
+      </div>
+    </div>
+
+    <div class="right" v-if="mobile">
+      <div class="dropdown">
+        <button @click.prevent="toggleMenu" class="dropdown-button">
+          <span class="burger-part" />
+          <span class="burger-part" />
+          <span class="burger-part" />
+        </button>
       </div>
     </div>
   </div>
@@ -39,6 +49,9 @@ export default {
     },
     username() {
       return store.state.user.username
+    },
+    mobile() {
+      return this.$screen.width < 800
     }
   },
   methods: {
@@ -50,6 +63,9 @@ export default {
 
       this.$auth.logout();
       this.$router.push({ path: "/" });
+    },
+    toggleMenu() {
+      store.dispatch("toggleMobileMenu");
     }
   }
 };
@@ -90,7 +106,6 @@ export default {
   font-size: 16px;
   border: none;
   outline: none;
-  padding: 16px;
   background-color: inherit;
   font-family: inherit;
   margin: 0;
@@ -124,5 +139,17 @@ export default {
 
 .dropdown:hover .dropdown-content {
   display: block;
+}
+
+.burger-part {
+  display: block;
+  width: 33px;
+  height: 4px;
+  margin-bottom: 5px;
+  position: relative;
+  background: #cdcdcd;
+  border-radius: 3px;
+  
+  z-index: 1;
 }
 </style>

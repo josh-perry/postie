@@ -20,7 +20,8 @@ export const store = new Vuex.Store({
     },
     user: {
       username: ""
-    }
+    },
+    mobileMenu: false
   },
   mutations: {
     setToken(state, token) {
@@ -31,6 +32,9 @@ export const store = new Vuex.Store({
     },
     setUser(state, user) {
       state.user = user
+    },
+    setMobileMenu(state, menuOpen) {
+      state.mobileMenu = menuOpen
     }
   },
   actions: {
@@ -98,6 +102,9 @@ export const store = new Vuex.Store({
       console.log("user", data)
 
       context.commit("setUser", data)
+    },
+    toggleMobileMenu(context) {
+      context.commit("setMobileMenu", !context.state.mobileMenu)
     }
   },
   plugins: [

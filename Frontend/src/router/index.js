@@ -58,7 +58,35 @@ const router = new Router({
       name: "submitpost",
       component: SubmitPost
     } 
-  ]
+  ],
+  scrollBehavior(to) {
+    if (to.hash) {
+      const scrollOptions = {
+        behavior: "smooth"
+      }
+
+      const element = document.getElementById(to.hash.replace(/#/, ''))
+
+      // If it's already on the page then scroll to it
+      if (element) {
+          element.scrollIntoView(scrollOptions)
+      }
+      else {
+        // Otherwise check every 500ms. When we find it, scroll to it and stop the timer
+        let scrollInterval = setInterval(() => {
+          const element = document.getElementById(to.hash.replace(/#/, ''))
+          if (element) {
+            element.scrollIntoView(scrollOptions)
+            clearInterval(scrollInterval)
+          }
+        }, 500)
+      }
+
+      return {
+        el: to.hash
+      }
+    }
+  }
 });
 
 export default router;

@@ -95,6 +95,9 @@ export default {
     addedComment (value) {
       value.new = true
       this.comments.push(value)
+
+      // Scroll to the new comment
+      this.$router.push({ hash: `Comment${value.id}` })
     }
   }
 }

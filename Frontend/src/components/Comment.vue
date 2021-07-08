@@ -1,8 +1,11 @@
 <template>
-  <div class="comment" v-bind:class="getCommentClass()">
+  <div :id="`Comment${comment.id}`" class="comment" :class="getCommentClass()">
     <div class="top-details">
       <a class="user" :href="`/user/${comment.user}`">{{ comment.user }}</a>
-      <span class="datetime" :title="comment.createdDateTime"> — {{ humanDateTime }}</span>
+      <span> — </span>
+      <a class="comment-anchor" :href="`#Comment${comment.id}`">
+        <span class="datetime" :title="comment.createdDateTime">{{ humanDateTime }}</span>
+      </a>
     </div>
 
     <div class="comment-content">
@@ -30,6 +33,20 @@ export default {
     CommentBox
   },
   name: "Comment",
+  created() {
+    let hash = this.$route.hash
+
+    if (!hash || !hash.startsWith("#Comment")) {
+      return
+    }
+
+    let hashComment = parseInt(hash.replace("#Comment", ""))
+
+    if (this.comment.id == hashComment) {
+      this.comment.new = true
+      console.log(this.comment)
+    }
+  },
   data() {
     return {
       showCommentBox: false
@@ -62,6 +79,9 @@ export default {
       value.new = true
       this.comment.children.push(value)
       this.showCommentBox = false
+
+      // Scroll to the new comment
+      this.$router.push({ hash: `Comment${value.id}` })
     },
     getCommentClass() {
       let classes = {

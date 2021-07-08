@@ -1,5 +1,5 @@
 <template>
-  <div class="comment" v-bind:class="{ 'child-comment': comment.parentCommentId !== null, 'parent-comment': comment.children.length !== 0 }">
+  <div class="comment" v-bind:class="getCommentClass()">
     <div class="top-details">
       <a class="user" :href="`/user/${comment.user}`">{{ comment.user }}</a>
       <span class="datetime" :title="comment.createdDateTime">{{ humanDateTime }}</span>
@@ -16,7 +16,7 @@
     <CommentBox v-if="showCommentBox" :parentCommentId="comment.id" v-on:addedComment="addedComment" />
 
     <div v-for="childComment in comment.children" v-bind:key="childComment.id">
-      <Comment :comment="childComment" />
+      <Comment :comment="childComment" :depth="depth+1" />
     </div>
   </div>
 </template>
@@ -41,6 +41,12 @@ export default {
       default: () => {
         return []
       }
+    },
+    depth: {
+      type: Number,
+      default: () => {
+        return 1
+      }
     }
   },
   computed: {
@@ -55,6 +61,15 @@ export default {
     addedComment(value) {
       this.comment.children.push(value)
       this.showCommentBox = false
+    },
+    getCommentClass() {
+      let classes = {
+        'child-comment': this.comment.parentCommentId !== null,
+        'parent-comment': this.comment.children.length !== 0,
+      }
+
+      classes[`comment-depth-${this.depth}`] = true
+      return classes
     }
   }
 }
@@ -65,8 +80,24 @@ export default {
   padding: 16px;
   padding-right: 0;
   margin: 8px;
-  border: 1px solid black;
+  border: 1px solid #CACACA;
   white-space: pre-wrap;
+}
+
+.comment-depth-1 {
+  border-left: 6px solid #F06543FF;
+}
+
+.comment-depth-2 {
+  border-left: 6px solid #F06543CC;
+}
+
+.comment-depth-3 {
+  border-left: 6px solid #F0654399;
+}
+
+.comment-depth-4 {
+  border-left: 6px solid #F0654366;
 }
 
 .comment p {

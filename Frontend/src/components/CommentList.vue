@@ -1,7 +1,7 @@
 <template>
   <ul>
     <li v-for="comment in comments" :key="comment.id">
-      <Comment :comment="comment" />
+      <Comment :comment="comment" :depth="1" />
     </li>
   </ul>
 </template>

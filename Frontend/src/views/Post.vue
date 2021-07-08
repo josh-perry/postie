@@ -10,6 +10,7 @@
       <Votes :post="post" />
     </div>
 
+    <hr />
     <CommentBox :post="postName" :board="boardName" v-on:addedComment="addedComment" />
     <CommentList :comments="comments" />
   </div>
@@ -90,6 +91,6 @@ export default {
 }
 
 .votes {
-  float: right;
+  text-align: right;
 }
 </style>

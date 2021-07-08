@@ -7,7 +7,7 @@
       <textarea v-model="content" placeholder="Say something nice!" />
     </div>
 
-    <button v-on:click="postComment">Leave a comment</button>
+    <a href="#" @click.prevent="postComment">Leave a comment</a>
   </div>
 </template>
 
@@ -77,7 +77,12 @@ textarea {
 }
 
 .comment-box {
+  text-align: right;
   padding: 16px;
   margin: 8px;
+}
+
+a {
+  width: 100%;
 }
 </style>

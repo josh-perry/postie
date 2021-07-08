@@ -61,7 +61,7 @@ export default {
 }
 
 .sidebar {
-  flex: 1;
+  flex: 1.5;
   background-color: #FFFCF9;
 }
 </style>

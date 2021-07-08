@@ -93,6 +93,7 @@ export default {
       this.comments = data.filter(x => x.parentCommentId == null);
     },
     addedComment (value) {
+      value.new = true
       this.comments.push(value)
     }
   }

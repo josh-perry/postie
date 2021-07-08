@@ -59,6 +59,7 @@ export default {
       this.showCommentBox = !this.showCommentBox
     },
     addedComment(value) {
+      value.new = true
       this.comment.children.push(value)
       this.showCommentBox = false
     },
@@ -66,6 +67,7 @@ export default {
       let classes = {
         'child-comment': this.comment.parentCommentId !== null,
         'parent-comment': this.comment.children.length !== 0,
+        'new-comment': this.comment.new
       }
 
       if (this.depth < 5) {
@@ -88,6 +90,21 @@ export default {
   margin: 8px;
   border: 1px solid #CACACA;
   white-space: pre-wrap;
+}
+
+@keyframes new-comment-animation {
+  from {
+    background-color: #F0645455;
+  }
+
+  to {
+    background-color: unset;
+  }
+}
+
+.new-comment {
+  animation: new-comment-animation 10s infinite;
+  animation-iteration-count: 1;
 }
 
 .comment-depth-1 {

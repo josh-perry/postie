@@ -1,13 +1,17 @@
 <template>
-  <div>
+  <div class="sidebar">
     <div class="section">
       <input type="text" placeholder="Search..."/>
     </div>
+
+    <hr />
 
     <div class="section">
       <a href="/create-board">Create a new board</a>
       <a :href="submitLinkDestination">Submit post</a>
     </div>
+
+    <hr v-if="showBoardDetails" />
 
     <div v-if="showBoardDetails" class="section">
       <BoardSideBar />
@@ -50,6 +54,23 @@ export default {
 
 .section {
   margin: 8px;
+  margin-top: 16px;
+  margin-bottom: 16px;
+}
+
+hr {
+  margin-left: 24px;
+  margin-right: 24px;
+  margin-top: 16px;
+  margin-bottom: 16px;
+}
+
+.sidebar {
+  padding: 16px;
+}
+
+input {
+  width: 100%;
 }
 
 a {

@@ -2,6 +2,13 @@
   <div>
     <h1>{{ post.title }}</h1>
 
+    <p>
+      Posted by <a class="user" :href="`/user/${post.createdBy}`">{{ post.createdBy }}</a>
+      <span class="datetime" :title="post.createdDateTime"> {{ humanDateTime }}</span>
+    </p>
+
+    <hr />
+
     <span class="post-content">
       {{ post.content }}
     </span>
@@ -24,6 +31,8 @@ import CommentList from "../components/CommentList.vue"
 import CommentBox from "../components/CommentBox.vue"
 import Votes from "../components/Votes.vue"
 
+import humanDate from "human-date"
+
 export default {
  components: {
     CommentList,
@@ -35,6 +44,11 @@ export default {
       comments: [],
       post: {}
     };
+  },
+  computed: {
+    humanDateTime() {
+      return humanDate.relativeTime(new Date(this.post.createdDateTime))
+    }
   },
   created() {
     this.postName = this.$route.params.postName

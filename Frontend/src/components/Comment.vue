@@ -2,7 +2,7 @@
   <div class="comment" v-bind:class="getCommentClass()">
     <div class="top-details">
       <a class="user" :href="`/user/${comment.user}`">{{ comment.user }}</a>
-      <span class="datetime" :title="comment.createdDateTime">{{ humanDateTime }}</span>
+      <span class="datetime" :title="comment.createdDateTime"> — {{ humanDateTime }}</span>
     </div>
 
     <div class="comment-content">
@@ -68,7 +68,13 @@ export default {
         'parent-comment': this.comment.children.length !== 0,
       }
 
-      classes[`comment-depth-${this.depth}`] = true
+      if (this.depth < 5) {
+        classes[`comment-depth-${this.depth}`] = true
+      }
+      else {
+        classes[`comment-depth-deep`] = true
+      }
+
       return classes
     }
   }
@@ -89,15 +95,19 @@ export default {
 }
 
 .comment-depth-2 {
-  border-left: 6px solid #F06543CC;
+  border-left: 6px solid #F06543DD;
 }
 
 .comment-depth-3 {
-  border-left: 6px solid #F0654399;
+  border-left: 6px solid #F06543AA;
 }
 
 .comment-depth-4 {
-  border-left: 6px solid #F0654366;
+  border-left: 6px solid #F0654377;
+}
+
+.comment-depth-deep {
+  border-left: 6px solid #F0654355;
 }
 
 .comment p {
@@ -124,17 +134,5 @@ export default {
 .top-details {
   display: block;
   padding: 8px;
-}
-
-.user {
-  float: left;
-}
-
-.datetime {
-  float: right;
-}
-
-.comment-content {
-  padding-top: 12px;
 }
 </style>

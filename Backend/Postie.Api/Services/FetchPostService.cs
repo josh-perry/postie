@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using Postie.Api.Data;
+using Postie.Api.Models;
 using Postie.Api.Models.Db;
 
 namespace Postie.Api.Services
@@ -18,6 +19,8 @@ namespace Postie.Api.Services
         IEnumerable<Post> GetLastPostsByUser(User user, int amount);
 
         bool AddPost(Post post);
+
+        IEnumerable<Post> GetTopPosts(int skip = 0, int take = 10);
     }
 
     public class FetchPostService : IFetchPostService
@@ -48,7 +51,10 @@ namespace Postie.Api.Services
 
         public Post GetPostById(int postId)
         {
-            return _dbContext.Posts.FirstOrDefault(x => x.ID == postId);
+            return _dbContext.Posts
+                .Include(x => x.Board)
+                .Include(x => x.CreatedBy)
+                .FirstOrDefault(x => x.ID == postId);
         }
 
         public IEnumerable<Post> GetLastPostsByUser(User user, int amount)
@@ -65,6 +71,26 @@ namespace Postie.Api.Services
         {
             _dbContext.Add(post);
             return _dbContext.SaveChanges() > 0;
+        }
+
+        public IEnumerable<Post> GetTopPosts(int skip = 0, int take = 10)
+        {
+            var ids = _dbContext.PostVotes
+                .Where(x => x.Up)
+                .GroupBy(x => x.PostID)
+                .OrderByDescending(x => x.Count())
+                .Skip(skip)
+                .Take(take)
+                .Select(x => x.Key);
+
+            var posts = new List<Post>();
+
+            foreach (var postId in ids)
+            {
+                posts.Add(GetPostById(postId));
+            }
+
+            return posts;
         }
     }
 }

@@ -134,5 +134,23 @@ namespace Postie.Api.Controllers
             var createdAtUrl = new Uri(baseUrl, $"/post/board/{board.Url}/{post.Url}");
             return Created(createdAtUrl, _postResponseMapper.MapDbToResponse(post));
         }
+
+        [HttpGet]
+        [Route("top")]
+        public IActionResult GetTopPosts(int skip = 0, int take = 10)
+        {
+            var posts = _fetchPostService.GetTopPosts(skip, take);
+            var response = _postResponseMapper.MapDbToResponseList(posts);
+
+            foreach (var post in response)
+            {
+                post.CommentCount = _commentRepository.GetCommentsCountForPostId(post.ID);
+
+                var votes = _postVotesRepository.GetPostVotes(post.ID);
+                post.UpVotes = votes.UpVotes;
+            }
+
+            return Json(response);
+        }
     }
 }

@@ -32,6 +32,10 @@ namespace Postie.Api
 
         private const int CommentReplyChance = 75;
 
+        private const int MinPostUpvotesPerUser = MinCommentsPerUser;
+
+        private const int MaxPostUpvotesPerUser = MaxCommentsPerUser;
+
         private static readonly Random _random = new Random();
 
         public static void SeedDatabase(this IApplicationBuilder app, IWebHostEnvironment env)
@@ -103,6 +107,39 @@ namespace Postie.Api
                 posts.AddRange(postsForUser);
                 dbContext.Posts.AddRange(postsForUser);
 
+                dbContext.SaveChanges();
+            }
+
+            // Post votes
+            foreach (var user in users)
+            {
+                var votes = new List<PostVote>();
+                var postIdsVoted = new HashSet<int>();
+                var voteCount = _random.Next(Math.Min(MinPostUpvotesPerUser, posts.Count), Math.Min(MaxPostUpvotesPerUser, posts.Count));
+
+                for(var i = 0; i < voteCount; i++)
+                {
+                    while (true)
+                    {
+                        var post = posts[_random.Next(posts.Count)];
+
+                        if (postIdsVoted.Contains(post.ID))
+                            continue;
+
+                        postIdsVoted.Add(post.ID);
+
+                        votes.Add(new PostVote
+                        {
+                            Post = post,
+                            Up = _random.Next(0, 2) == 0,
+                            User = user
+                        });
+
+                        break;
+                    }
+                }
+
+                dbContext.AddRange(votes);
                 dbContext.SaveChanges();
             }
 

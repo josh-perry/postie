@@ -4,6 +4,7 @@ import Router from "vue-router";
 import Home from "../views/Home.vue";
 import Profile from "../views/Profile.vue";
 import Board from "../views/Board.vue";
+import Boards from "../views/Boards.vue";
 import Post from "../views/Post.vue";
 import User from "../views/User.vue";
 import CreateBoard from "../views/CreateBoard.vue";
@@ -32,6 +33,11 @@ const router = new Router({
       path: "/user/:username",
       name: "user",
       component: User
+    },
+    {
+      path: "/board",
+      name: "boards",
+      component: Boards
     },
     {
       path: "/board/:boardName",

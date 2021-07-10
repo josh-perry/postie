@@ -1,9 +1,9 @@
 <template>
-  <div :id="`Comment${comment.id}`" class="comment" :class="getCommentClass()">
+  <div v-on:animationend="commentAnimationEnd" :id="`Comment${comment.id}`" class="comment" :class="getCommentClass()">
     <div class="top-details">
       <a class="user" :href="`/user/${comment.user}`">{{ comment.user }}</a>
       <span> — </span>
-      <a class="comment-anchor" :href="`#Comment${comment.id}`">
+      <a class="comment-anchor" @click="commentDateClicked" :href="`#Comment${comment.id}`">
         <span class="datetime" :title="comment.createdDateTime">{{ humanDateTime }}</span>
       </a>
     </div>
@@ -43,20 +43,20 @@ export default {
     let hashComment = parseInt(hash.replace("#Comment", ""))
 
     if (this.comment.id == hashComment) {
-      this.comment.new = true
-      console.log(this.comment)
+      this.highlightComment = true
     }
   },
   data() {
     return {
-      showCommentBox: false
+      showCommentBox: false,
+      highlightComment: false
     }
   },
   props: {
     comment: {
       type: Object,
       default: () => {
-        return []
+        return { }
       }
     },
     depth: {
@@ -76,7 +76,6 @@ export default {
       this.showCommentBox = !this.showCommentBox
     },
     addedComment(value) {
-      value.new = true
       this.comment.children.push(value)
       this.showCommentBox = false
 
@@ -87,7 +86,7 @@ export default {
       let classes = {
         'child-comment': this.comment.parentCommentId !== null,
         'parent-comment': this.comment.children.length !== 0,
-        'new-comment': this.comment.new
+        'highlight-comment': this.highlightComment
       }
 
       if (this.depth < 5) {
@@ -98,6 +97,12 @@ export default {
       }
 
       return classes
+    },
+    commentAnimationEnd() {
+      this.highlightComment = false
+    },
+    commentDateClicked() {
+      this.highlightComment = true
     }
   }
 }
@@ -112,7 +117,7 @@ export default {
   white-space: pre-wrap;
 }
 
-@keyframes new-comment-animation {
+@keyframes highlight-comment-animation {
   from {
     background-color: #F0645455;
   }
@@ -122,8 +127,8 @@ export default {
   }
 }
 
-.new-comment {
-  animation: new-comment-animation 10s infinite;
+.highlight-comment {
+  animation: highlight-comment-animation 4s infinite;
   animation-iteration-count: 1;
 }
 

@@ -97,7 +97,7 @@ namespace Postie.Api
             services.AddTransient<IPostVotesRepository, PostVotesRepository>();
 
             // Mappers
-            services.AddSingleton<PostResponseMapper>();
+            services.AddTransient<PostResponseMapper>();
             services.AddSingleton<BoardResponseMapper>();
             services.AddSingleton<CommentResponseMapper>();
             services.AddSingleton<UserResponseMapper>();

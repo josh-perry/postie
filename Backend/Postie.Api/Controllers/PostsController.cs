@@ -5,7 +5,6 @@ using Microsoft.AspNetCore.Mvc;
 using Postie.Api.Mappers;
 using Postie.Api.Models.Db;
 using Postie.Api.Models.Requests;
-using Postie.Api.Repositories;
 using Postie.Api.Repositories.Interfaces;
 using Postie.Api.Services;
 
@@ -17,17 +16,13 @@ namespace Postie.Api.Controllers
     {
         private readonly IBoardRepository _boardRepository;
 
-        private readonly ICommentRepository _commentRepository;
-
         private readonly IPostRepository _postRepository;
-
-        private readonly PostResponseMapper _postResponseMapper;
-
-        private readonly IPostVotesRepository _postVotesRepository;
 
         private readonly IUrlService _urlService;
 
         private readonly IUserRepository _userRepository;
+
+        private readonly PostResponseMapper _postResponseMapper;
 
         public PostsController(IPostRepository postRepository,
             IBoardRepository boardRepository,
@@ -39,11 +34,9 @@ namespace Postie.Api.Controllers
         {
             _postRepository = postRepository;
             _boardRepository = boardRepository;
-            _commentRepository = commentRepository;
             _postResponseMapper = postResponseMapper;
             _urlService = urlService;
             _userRepository = userRepository;
-            _postVotesRepository = postVotesRepository;
         }
 
         /// <summary>
@@ -64,10 +57,6 @@ namespace Postie.Api.Controllers
                 return NotFound();
 
             var response = _postResponseMapper.MapDbToResponse(post);
-
-            var votes = _postVotesRepository.GetPostVotes(post.ID);
-            response.UpVotes = votes.UpVotes;
-
             return Json(response);
         }
 
@@ -89,10 +78,6 @@ namespace Postie.Api.Controllers
 
             var posts = _postRepository.GetPostsForBoard(board);
             var response = _postResponseMapper.MapDbToResponseList(posts);
-
-            foreach (var post in response)
-                post.CommentCount = _commentRepository.GetCommentsCountForPostId(post.ID);
-
             return Json(response);
         }
 
@@ -158,15 +143,6 @@ namespace Postie.Api.Controllers
         {
             var posts = _postRepository.GetTopPosts(skip, take);
             var response = _postResponseMapper.MapDbToResponseList(posts);
-
-            foreach (var post in response)
-            {
-                post.CommentCount = _commentRepository.GetCommentsCountForPostId(post.ID);
-
-                var votes = _postVotesRepository.GetPostVotes(post.ID);
-                post.UpVotes = votes.UpVotes;
-            }
-
             return Json(response);
         }
     }

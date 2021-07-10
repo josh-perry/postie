@@ -34,7 +34,8 @@ namespace Postie.Api.Controllers
         }
 
         /// <summary>
-        ///     Get comments by board and post
+        ///     Get comments by board and post and optionally only the children of specified
+        ///     post ID
         /// </summary>
         /// <param name="boardUrl"></param>
         /// <param name="postUrl"></param>
@@ -43,7 +44,7 @@ namespace Postie.Api.Controllers
         /// <response code="200"></response>
         [HttpGet]
         [Route("{boardUrl}/{postUrl}")]
-        public IActionResult Get(string boardUrl, string postUrl, int childrenOf)
+        public IActionResult GetByUrls(string boardUrl, string postUrl, int childrenOf)
         {
             var comments = _commentRepository.GetCommentsForPost(boardUrl, postUrl, childrenOf);
             return Json(_commentResponseMapper.MapDbToResponseList(comments));
@@ -63,7 +64,10 @@ namespace Postie.Api.Controllers
         public IActionResult Post(string boardUrl, string postUrl, AddCommentRequest addCommentRequest)
         {
             var post = _fetchPostService.GetPostByBoardAndUrl(boardUrl, postUrl);
-            var parentComment = addCommentRequest.ParentCommentId != null ? _commentRepository.GetCommentById(addCommentRequest.ParentCommentId.Value) : null;
+            var parentComment = addCommentRequest.ParentCommentId != null
+                ? _commentRepository.GetCommentById(addCommentRequest.ParentCommentId.Value)
+                : null;
+
             var user = _userRepository.GetUserByAuthId(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
 
             if (user == null)
@@ -82,7 +86,9 @@ namespace Postie.Api.Controllers
                 CreatedDateTime = DateTime.UtcNow
             };
 
-            _commentRepository.AddComment(comment);
+            if(!_commentRepository.AddComment(comment))
+                return Problem("Failed to create comment");
+
             return Json(_commentResponseMapper.MapDbToResponse(comment));
         }
     }

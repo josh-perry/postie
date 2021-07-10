@@ -46,7 +46,7 @@ namespace Postie.Api.Controllers
         [HttpGet]
         [Authorize]
         [Route("")]
-        public IActionResult Get()
+        public IActionResult GetMe()
         {
             var user = _userRepository.GetUserByAuthId(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
 
@@ -65,7 +65,7 @@ namespace Postie.Api.Controllers
         /// <returns></returns>
         [HttpGet]
         [Route("{username}")]
-        public IActionResult Get(string username, int recentCommentsCount = 10, int recentPostsCount = 10)
+        public IActionResult GetByUsername(string username, int recentCommentsCount = 10, int recentPostsCount = 10)
         {
             var user = _userRepository.GetUserByName(username);
 

@@ -95,6 +95,16 @@ namespace Postie.Api.Controllers
             return Json(response);
         }
 
+        /// <summary>
+        ///     Add a new post
+        /// </summary>
+        /// <param name="boardUrl"></param>
+        /// <param name="addPostRequest"></param>
+        /// <returns></returns>
+        /// <response code="200">The url of the new post</response>
+        /// <response code="400">Url/request mismatch</response>
+        /// <response code="404">Board cannot be found</response>
+        /// <response code="500"></response>
         [HttpPost]
         [Authorize]
         [Route("board/{boardUrl}")]
@@ -135,9 +145,15 @@ namespace Postie.Api.Controllers
             return Created(createdAtUrl, _postResponseMapper.MapDbToResponse(post));
         }
 
+        /// <summary>
+        ///     Gets the top posts
+        /// </summary>
+        /// <param name="skip"></param>
+        /// <param name="take"></param>
+        /// <returns></returns>
         [HttpGet]
         [Route("top")]
-        public IActionResult GetTopPosts(int skip = 0, int take = 10)
+        public IActionResult GetTop(int skip = 0, int take = 10)
         {
             var posts = _fetchPostService.GetTopPosts(skip, take);
             var response = _postResponseMapper.MapDbToResponseList(posts);

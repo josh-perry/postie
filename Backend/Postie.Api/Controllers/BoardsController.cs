@@ -37,7 +37,7 @@ namespace Postie.Api.Controllers
         [HttpGet]
         [Route("")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public IActionResult Get()
+        public IActionResult GetAll()
         {
             var boards = _boardRepository.GetAllBoards();
             return Json(_boardResponseMapper.MapDbToResponseList(boards));
@@ -46,7 +46,7 @@ namespace Postie.Api.Controllers
         /// <summary>
         ///     Get an existing board
         /// </summary>
-        /// <param name="board">Board name</param>
+        /// <param name="boardUrl">Board name</param>
         /// <returns></returns>
         /// <response code="200"></response>
         /// <response code="404">The board cannot be found</response>
@@ -54,9 +54,9 @@ namespace Postie.Api.Controllers
         [Route("{board}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public IActionResult Get(string board)
+        public IActionResult GetByUrls(string boardUrl)
         {
-            var b = _boardRepository.GetBoardByUrl(board);
+            var b = _boardRepository.GetBoardByUrl(boardUrl);
 
             if (b == null)
                 return NotFound();
@@ -67,13 +67,13 @@ namespace Postie.Api.Controllers
         /// <summary>
         ///     Adds a new board
         /// </summary>
-        /// <param name="board">Board name</param>
+        /// <param name="boardUrl">Board name</param>
         /// <param name="newBoardRequest">New board details</param>
         /// <returns></returns>
         [HttpPut]
         [Authorize]
         [Route("{board}")]
-        public IActionResult Put(string board, NewBoardRequest newBoardRequest)
+        public IActionResult Put(string boardUrl, NewBoardRequest newBoardRequest)
         {
             // Validate this board doesn't already exist
             if (_boardRepository.GetBoardByUrl(newBoardRequest.Title) != null)
@@ -83,7 +83,7 @@ namespace Postie.Api.Controllers
 
             var success = _boardRepository.AddBoard(new Board
             {
-                Url = board,
+                Url = boardUrl,
                 Title = newBoardRequest.Title,
                 CreatedBy = user,
                 CreatedDateTime = DateTime.UtcNow,
@@ -93,9 +93,9 @@ namespace Postie.Api.Controllers
             if (!success)
                 return Problem("Failed to create board");
 
-            return CreatedAtAction(nameof(Get), new
+            return CreatedAtAction(nameof(GetAll), new
             {
-                board
+                board = boardUrl
             });
         }
     }

@@ -2,6 +2,7 @@ using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Postie.Api.Mappers;
+using Postie.Api.Repositories;
 using Postie.Api.Repositories.Interfaces;
 using Postie.Api.Services;
 
@@ -16,7 +17,7 @@ namespace Postie.Api.Controllers
 
         private readonly CommentResponseMapper _commentResponseMapper;
 
-        private readonly IFetchPostService _fetchPostService;
+        private readonly IPostRepository _postRepository;
 
         private readonly PostResponseMapper _postResponseMapper;
 
@@ -29,14 +30,14 @@ namespace Postie.Api.Controllers
             UserResponseMapper userResponseMapper,
             CommentResponseMapper commentResponseMapper,
             PostResponseMapper postResponseMapper,
-            IFetchPostService fetchPostService)
+            IPostRepository postRepository)
         {
             _userRepository = userRepository;
             _commentRepository = commentRepository;
             _userResponseMapper = userResponseMapper;
             _commentResponseMapper = commentResponseMapper;
             _postResponseMapper = postResponseMapper;
-            _fetchPostService = fetchPostService;
+            _postRepository = postRepository;
         }
 
         /// <summary>
@@ -73,7 +74,7 @@ namespace Postie.Api.Controllers
                 return NotFound();
 
             var lastComments = _commentRepository.GetLastCommentsByUser(user, recentCommentsCount);
-            var lastPosts = _fetchPostService.GetLastPostsByUser(user, recentPostsCount);
+            var lastPosts = _postRepository.GetLastPostsByUser(user, recentPostsCount);
 
             var userResponse = _userResponseMapper.MapDbToResponse(user);
             userResponse.RecentComments = _commentResponseMapper.MapDbToResponseList(lastComments);

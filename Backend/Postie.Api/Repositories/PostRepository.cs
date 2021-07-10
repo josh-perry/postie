@@ -2,32 +2,17 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using Postie.Api.Data;
-using Postie.Api.Models;
 using Postie.Api.Models.Db;
+using Postie.Api.Repositories.Interfaces;
 
-namespace Postie.Api.Services
+namespace Postie.Api.Repositories
 {
 
-    public interface IFetchPostService
-    {
-        IEnumerable<Post> GetPostsForBoard(Board board);
-
-        Post GetPostByBoardAndUrl(string boardUrl, string postUrl);
-
-        Post GetPostById(int postId);
-
-        IEnumerable<Post> GetLastPostsByUser(User user, int amount);
-
-        bool AddPost(Post post);
-
-        IEnumerable<Post> GetTopPosts(int skip = 0, int take = 10);
-    }
-
-    public class FetchPostService : IFetchPostService
+    public class PostRepository : IPostRepository
     {
         private readonly ApplicationDbContext _dbContext;
 
-        public FetchPostService(ApplicationDbContext dbContext)
+        public PostRepository(ApplicationDbContext dbContext)
         {
             _dbContext = dbContext;
         }

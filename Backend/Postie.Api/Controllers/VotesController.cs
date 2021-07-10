@@ -1,6 +1,7 @@
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Postie.Api.Repositories;
 using Postie.Api.Repositories.Interfaces;
 using Postie.Api.Services;
 
@@ -11,17 +12,17 @@ namespace Postie.Api.Controllers
     public class VotesController : Controller
     {
 
-        private readonly IFetchPostService _fetchPostService;
+        private readonly IPostRepository _postRepository;
 
         private readonly IPostVotesRepository _postVotesRepository;
         private readonly IUserRepository _userRepository;
 
         public VotesController(IUserRepository userRepository,
-            IFetchPostService fetchPostService,
+            IPostRepository postRepository,
             IPostVotesRepository postVotesRepository)
         {
             _userRepository = userRepository;
-            _fetchPostService = fetchPostService;
+            _postRepository = postRepository;
             _postVotesRepository = postVotesRepository;
         }
 
@@ -38,7 +39,7 @@ namespace Postie.Api.Controllers
             if (user == null)
                 return BadRequest("User is null.");
 
-            var post = _fetchPostService.GetPostById(postId);
+            var post = _postRepository.GetPostById(postId);
             if (post == null)
                 return BadRequest("Post is null.");
 

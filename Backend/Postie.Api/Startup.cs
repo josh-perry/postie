@@ -89,7 +89,7 @@ namespace Postie.Api
                 c.IncludeXmlComments(xmlPath);
             });
 
-            services.AddTransient<IFetchPostService, FetchPostService>();
+            services.AddTransient<IPostRepository, PostRepository>();
             services.AddTransient<IBoardRepository, BoardRepository>();
             services.AddTransient<IUrlService, UrlService>();
             services.AddTransient<IUserRepository, UserRepository>();

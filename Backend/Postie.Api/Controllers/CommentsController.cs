@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Postie.Api.Mappers;
 using Postie.Api.Models.Db;
 using Postie.Api.Models.Requests;
+using Postie.Api.Repositories;
 using Postie.Api.Repositories.Interfaces;
 using Postie.Api.Services;
 
@@ -18,19 +19,19 @@ namespace Postie.Api.Controllers
 
         private readonly CommentResponseMapper _commentResponseMapper;
 
-        private readonly IFetchPostService _fetchPostService;
+        private readonly IPostRepository _postRepository;
 
         private readonly IUserRepository _userRepository;
 
         public CommentsController(ICommentRepository commentRepository,
-            IFetchPostService fetchPostService,
+            IPostRepository postRepository,
             IUserRepository userRepository,
             CommentResponseMapper commentResponseMapper)
         {
             _userRepository = userRepository;
             _commentResponseMapper = commentResponseMapper;
             _commentRepository = commentRepository;
-            _fetchPostService = fetchPostService;
+            _postRepository = postRepository;
         }
 
         /// <summary>
@@ -63,7 +64,7 @@ namespace Postie.Api.Controllers
         [Route("{boardUrl}/{postUrl}")]
         public IActionResult Post(string boardUrl, string postUrl, AddCommentRequest addCommentRequest)
         {
-            var post = _fetchPostService.GetPostByBoardAndUrl(boardUrl, postUrl);
+            var post = _postRepository.GetPostByBoardAndUrl(boardUrl, postUrl);
             var parentComment = addCommentRequest.ParentCommentId != null
                 ? _commentRepository.GetCommentById(addCommentRequest.ParentCommentId.Value)
                 : null;

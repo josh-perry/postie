@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Postie.Api.Mappers;
 using Postie.Api.Models.Db;
 using Postie.Api.Models.Requests;
+using Postie.Api.Repositories;
 using Postie.Api.Repositories.Interfaces;
 using Postie.Api.Services;
 
@@ -18,7 +19,7 @@ namespace Postie.Api.Controllers
 
         private readonly ICommentRepository _commentRepository;
 
-        private readonly IFetchPostService _fetchPostService;
+        private readonly IPostRepository _postRepository;
 
         private readonly PostResponseMapper _postResponseMapper;
 
@@ -28,7 +29,7 @@ namespace Postie.Api.Controllers
 
         private readonly IUserRepository _userRepository;
 
-        public PostsController(IFetchPostService fetchPostService,
+        public PostsController(IPostRepository postRepository,
             IBoardRepository boardRepository,
             ICommentRepository commentRepository,
             PostResponseMapper postResponseMapper,
@@ -36,7 +37,7 @@ namespace Postie.Api.Controllers
             IUserRepository userRepository,
             IPostVotesRepository postVotesRepository)
         {
-            _fetchPostService = fetchPostService;
+            _postRepository = postRepository;
             _boardRepository = boardRepository;
             _commentRepository = commentRepository;
             _postResponseMapper = postResponseMapper;
@@ -57,7 +58,7 @@ namespace Postie.Api.Controllers
         [Route("board/{boardUrl}/{postUrl}")]
         public IActionResult GetByBoardAndPost(string boardUrl, string postUrl)
         {
-            var post = _fetchPostService.GetPostByBoardAndUrl(boardUrl, postUrl);
+            var post = _postRepository.GetPostByBoardAndUrl(boardUrl, postUrl);
 
             if (post == null)
                 return NotFound();
@@ -86,7 +87,7 @@ namespace Postie.Api.Controllers
             if (board == null)
                 return NotFound();
 
-            var posts = _fetchPostService.GetPostsForBoard(board);
+            var posts = _postRepository.GetPostsForBoard(board);
             var response = _postResponseMapper.MapDbToResponseList(posts);
 
             foreach (var post in response)
@@ -136,7 +137,7 @@ namespace Postie.Api.Controllers
                 CreatedBy = user
             };
 
-            _fetchPostService.AddPost(post);
+            _postRepository.AddPost(post);
 
             // TODO: fix this. We should just be able to return CreatedAtAction(nameof(...)) but it
             //       doesn't seem to get the route properly.
@@ -155,7 +156,7 @@ namespace Postie.Api.Controllers
         [Route("top")]
         public IActionResult GetTop(int skip = 0, int take = 10)
         {
-            var posts = _fetchPostService.GetTopPosts(skip, take);
+            var posts = _postRepository.GetTopPosts(skip, take);
             var response = _postResponseMapper.MapDbToResponseList(posts);
 
             foreach (var post in response)

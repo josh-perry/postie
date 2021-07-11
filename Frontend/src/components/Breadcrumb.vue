@@ -1,7 +1,7 @@
 <template>
   <div>
     <ul>
-      <li v-for="crumb in crumbs" v-bind:key="crumb">
+      <li v-for="crumb in crumbs" v-bind:key="crumb.depth">
         <a v-if="crumb.link != null" :href="crumb.link">{{ crumb.text }}</a>
         <span v-if="crumb.link == null">{{ crumb.text }}</span>
       </li>
@@ -11,15 +11,16 @@
 
 <script>
 class Crumb {
-  constructor(text, link) {
+  constructor(text, link, depth) {
     this.link = link
     this.text = text
+    this.depth = depth
   }
 }
 
 function create_crumbs(route) {
   let crumbs = []
-  crumbs.push(new Crumb("Home", "/"))
+  crumbs.push(new Crumb("Home", "/", 0))
 
   let split = route.toLowerCase().split("/").filter((x) => x)
 
@@ -28,16 +29,16 @@ function create_crumbs(route) {
   }
 
   if (split[0] == "board" && split[1] != null) {
-    crumbs.push(new Crumb(split[1], `/board/${split[1]}`))
+    crumbs.push(new Crumb(split[1], `/board/${split[1]}`, 1))
 
     if (split[2] != null) {
-      crumbs.push(new Crumb(split[2], null))
+      crumbs.push(new Crumb(split[2], null, 2))
     }
   }
 
   if (split[0] == "user" && split[1] != null) {
-    crumbs.push(new Crumb("User", null))
-    crumbs.push(new Crumb(split[1], split[1]))
+    crumbs.push(new Crumb("User", null, 1))
+    crumbs.push(new Crumb(split[1], split[1], 2))
   }
 
   if (crumbs.length > 1) {

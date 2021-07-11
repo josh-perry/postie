@@ -16,8 +16,7 @@
 </template>
 
 <script>
-import axios from "axios"
-import { store } from "../store/store"
+import apiClient from "../api_client"
 
 export default {
   name: "Votes",
@@ -39,24 +38,8 @@ export default {
   },
   methods: {
     async postVote(up) {
-      if (store.state.token === null) {
-        return
-      }
-
-      let headers = {
-        Authorization: `Bearer ${store.state.token}`
-      }
-
-      let json = {
-        up
-      }
-
-      const { data } = await axios.post(`https://localhost:5001/vote/post/${this.post.id}`, json, {
-        headers: headers,
-        "Content-Type": "application/json"
-      });
-
-      this.post.upVotes = data.upVotes
+      let response = await apiClient.postVoteOnPost(this.post.id, up)
+      this.post.upVotes = response.upVotes
       this.voted = up
     }
   }

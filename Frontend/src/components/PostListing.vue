@@ -1,16 +1,28 @@
 <template>
   <div class="post">
-    <a class="title" :href="`/board/${post.board}/${post.url}`">{{ post.title }}</a>
+    <div class="vote-buttons">
+      <div>
+        <a href="#">▲</a>
+      </div>
 
-    <div class="details">
-      <span>
-        Posted by <a :href="`/user/${post.createdBy}`">{{ post.createdBy }}</a> on <a :href="`/board/${post.board}`">{{ post.board }}</a>
-      </span>
+      <div>
+        <a href="#">▼</a>
+      </div>
     </div>
-  
-    <div class="stats">
-      <p class="datetime" :title="post.createdDateTime"> {{ humanDateTime }}</p>
-      <p>{{ post.commentCount }} comments</p>
+
+    <div class="main">
+      <a class="title" :href="`/board/${post.board}/${post.url}`">{{ post.title }}</a>
+
+      <div class="details">
+        <span>
+          Posted by <a :href="`/user/${post.createdBy}`">{{ post.createdBy }}</a> on <a :href="`/board/${post.board}`">{{ post.board }}</a>
+        </span>
+      </div>
+    
+      <div class="stats">
+        <p class="datetime" :title="post.createdDateTime"> {{ humanDateTime }}</p>
+        <p>{{ post.commentCount }} comments</p>
+      </div>
     </div>
   </div>
 </template>
@@ -69,15 +81,45 @@ p {
 }
 
 .title {
+  display: inline-block;
   font-size: 24px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .post {
   padding: 16px;
+  padding-left: 0;
   padding-right: 0;
   margin: 8px;
   border: 1px solid #CACACA;
   border-left: 6px solid #F06543FF;
+
+  display: flex;
+}
+
+.main {
+  flex: 1;
+}
+
+.vote-buttons {
+  width: 32px;
+  display: flex;
+  flex-direction: column;
+}
+
+.vote-buttons div {
+  flex: 1;
+  margin: 2px;
+  justify-content: center;
+  align-contents: center;
+  display: flex;
+}
+
+.vote-buttons div a {
+  margin: auto;
+  text-decoration: none;
 }
 
 .title {

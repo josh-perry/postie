@@ -8,8 +8,7 @@
 <script>
 import PostList from "../components/PostList"
 
-import axios from "axios"
-import { store } from "../store/store"
+import apiClient from "../api_client"
 
 export default {
   components: {
@@ -20,23 +19,8 @@ export default {
       posts: [],
     }
   },
-  created() {
-    this.getPosts()
-  },
-  methods: {
-    async getPosts() {
-      let headers = {}
-
-      if (store.state.token !== null) {
-        headers["Authorization"] = `Bearer ${store.state.token}`
-      }
-
-      const { data } = await axios.get(`https://localhost:5001/post/top`, {
-        headers: headers
-      });
-
-      this.posts = data
-    }
+  async created() {
+    this.posts = await apiClient.getTopPosts()
   }
 }
 </script>

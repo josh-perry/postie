@@ -7,6 +7,10 @@ A Reddit clone made for fun!
 * Comment chains
 * User profile pages for viewing recent posting history
 
+## Screenshots
+![Home](https://raw.githubusercontent.com/josh-perry/postie/master/Docs/img/home.png)
+![Post](https://raw.githubusercontent.com/josh-perry/postie/master/Docs/img/post.png)
+
 ## Building and running
 ### API
 * From the Backend folder

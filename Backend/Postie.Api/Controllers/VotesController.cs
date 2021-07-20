@@ -1,9 +1,7 @@
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Postie.Api.Repositories;
 using Postie.Api.Repositories.Interfaces;
-using Postie.Api.Services;
 
 namespace Postie.Api.Controllers
 {

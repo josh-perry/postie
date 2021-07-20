@@ -26,11 +26,9 @@ namespace Postie.Api.Controllers
 
         public PostsController(IPostRepository postRepository,
             IBoardRepository boardRepository,
-            ICommentRepository commentRepository,
             PostResponseMapper postResponseMapper,
             IUrlService urlService,
-            IUserRepository userRepository,
-            IPostVotesRepository postVotesRepository)
+            IUserRepository userRepository)
         {
             _postRepository = postRepository;
             _boardRepository = boardRepository;

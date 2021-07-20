@@ -51,7 +51,7 @@ namespace Postie.Api.Controllers
         /// <response code="200"></response>
         /// <response code="404">The board cannot be found</response>
         [HttpGet]
-        [Route("{board}")]
+        [Route("{boardUrl}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public IActionResult GetByUrls(string boardUrl)
@@ -72,7 +72,7 @@ namespace Postie.Api.Controllers
         /// <returns></returns>
         [HttpPut]
         [Authorize]
-        [Route("{board}")]
+        [Route("{boardUrl}")]
         public IActionResult Put(string boardUrl, NewBoardRequest newBoardRequest)
         {
             // Validate this board doesn't already exist

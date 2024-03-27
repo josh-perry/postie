@@ -63,9 +63,9 @@ export default {
     async getPost() {
       let headers = {}
 
-      if (store.state.token !== null) {
-        headers["Authorization"] = `Bearer ${store.state.token}`
-      }
+      //if (store.state.token !== null) {
+      //  headers["Authorization"] = `Bearer ${store.state.token}`
+      //}
 
       const { data } = await axios.get(`https://localhost:5001/post/board/${this.$route.params.boardName}/${this.$route.params.postName}`, {
         headers: headers
@@ -76,9 +76,9 @@ export default {
     async getRootComments() {
       let headers = {}
 
-      if (store.state.token !== null) {
-        headers["Authorization"] = `Bearer ${store.state.token}`
-      }
+      //if (store.state.token !== null) {
+      //  headers["Authorization"] = `Bearer ${store.state.token}`
+      //}
 
       const { data } = await axios.get(`https://localhost:5001/comment/${this.$route.params.boardName}/${this.$route.params.postName}?childrenOf=0`, {
         headers: headers

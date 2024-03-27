@@ -1,5 +1,4 @@
-import Vue from "vue";
-import Router from "vue-router";
+import { createRouter, createWebHistory } from 'vue-router';
 
 import Home from "../views/Home.vue";
 import Profile from "../views/Profile.vue";
@@ -9,88 +8,85 @@ import Post from "../views/Post.vue";
 import User from "../views/User.vue";
 import CreateBoard from "../views/CreateBoard.vue";
 import SubmitPost from "../views/SubmitPost.vue";
+import Login from "../components/Login.vue";
 
-import { authGuard } from "../auth";
+const routes = [
+  {
+    path: "/",
+    name: "home",
+    component: Home
+  },
+  {
+    path: "/profile",
+    name: "profile",
+    component: Profile,
+    //beforeEnter: authGuard
+  },
+  {
+    path: "/user/:username",
+    name: "user",
+    component: User
+  },
+  {
+    path: "/board",
+    name: "boards",
+    component: Boards
+  },
+  {
+    path: "/board/:boardName",
+    name: "board",
+    component: Board
+  },
+  {
+    path: "/board/:boardName/submit",
+    name: "submitposttoboard",
+    component: SubmitPost
+  },
+  {
+    path: "/board/:boardName/:postName",
+    name: "post",
+    component: Post
+  },
+  {
+    path: "/create-board",
+    name: "createboard",
+    component: CreateBoard
+  },
+  {
+    path: "/submit",
+    name: "submitpost",
+    component: SubmitPost
+  },
+  {
+    path: "/login",
+    name: "login",
+    component: Login
+  }
+];
 
-Vue.use(Router);
-
-const router = new Router({
-  mode: "history",
-  base: process.env.BASE_URL,
-  routes: [
-    {
-      path: "/",
-      name: "home",
-      component: Home
-    },
-    {
-      path: "/profile",
-      name: "profile",
-      component: Profile,
-      beforeEnter: authGuard
-    },
-    {
-      path: "/user/:username",
-      name: "user",
-      component: User
-    },
-    {
-      path: "/board",
-      name: "boards",
-      component: Boards
-    },
-    {
-      path: "/board/:boardName",
-      name: "board",
-      component: Board
-    },
-    {
-      path: "/board/:boardName/submit",
-      name: "submitposttoboard",
-      component: SubmitPost
-    },
-    {
-      path: "/board/:boardName/:postName",
-      name: "post",
-      component: Post
-    },
-    {
-      path: "/create-board",
-      name: "createboard",
-      component: CreateBoard
-    },
-    {
-      path: "/submit",
-      name: "submitpost",
-      component: SubmitPost
-    } 
-  ],
-  scrollBehavior(to) {
+const router = createRouter({
+  history: createWebHistory(process.env.BASE_URL),
+  routes,
+  async scrollBehavior(to, from, savedPosition) {
     if (to.hash) {
-      const scrollOptions = {
-        behavior: "smooth"
-      }
-
-      const element = document.getElementById(to.hash.replace(/#/, ''))
-
-      // If it's already on the page then scroll to it
-      if (element) {
-          element.scrollIntoView(scrollOptions)
-      }
-      else {
-        // Otherwise check every 500ms. When we find it, scroll to it and stop the timer
-        let scrollInterval = setInterval(() => {
-          const element = document.getElementById(to.hash.replace(/#/, ''))
+      await new Promise(resolve => {
+        const checkElementExistence = setInterval(() => {
+          const element = document.getElementById(to.hash.replace(/#/, ''));
           if (element) {
-            element.scrollIntoView(scrollOptions)
-            clearInterval(scrollInterval)
+            clearInterval(checkElementExistence);
+            resolve();
           }
-        }, 500)
-      }
+        }, 500);
+      });
 
       return {
-        el: to.hash
-      }
+        el: to.hash,
+        behavior: 'smooth'
+      };
+    } else if (savedPosition) {
+      return savedPosition;
+    } else {
+      return { top: 0 };
     }
   }
 });

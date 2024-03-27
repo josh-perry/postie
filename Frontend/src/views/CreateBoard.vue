@@ -30,12 +30,7 @@
 import axios from "axios";
 import { store } from "../store/store"
 
-import PostList from "../components/PostList.vue"
-
 export default {
- components: {
-    PostList
-  },
   data() {
     return {
       form: {

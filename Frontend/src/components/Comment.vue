@@ -76,7 +76,8 @@ export default {
       this.showCommentBox = !this.showCommentBox
     },
     addedComment(value) {
-      this.comment.children.push(value)
+      // TODO: Add the comment to the list of children
+      //this.comment.children.push(value)
       this.showCommentBox = false
 
       // Scroll to the new comment

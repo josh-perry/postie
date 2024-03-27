@@ -1,14 +1,12 @@
-import Vue from "vue"
-import Vuex from "vuex"
-import createPersistedState from "vuex-persistedstate"
-import * as Cookies from "js-cookie"
-import axios from 'axios'
+import { createStore } from 'vuex';
+import axios from 'axios';
+import VuexPersistence from 'vuex-persist';
 
-Vue.use(Vuex)
+const vuexLocal = new VuexPersistence({
+  storage: window.localStorage
+});
 
-import { getInstance } from "@/auth";
-
-export const store = new Vuex.Store({
+export const store = createStore({
   state: {
     token: null,
     board: {
@@ -28,41 +26,23 @@ export const store = new Vuex.Store({
       state.token = token;
     },
     setBoard(state, board) {
-      state.board = board
+      state.board = board;
     },
     setUser(state, user) {
-      state.user = user
+      state.user = user;
     },
     setMobileMenu(state, menuOpen) {
-      state.mobileMenu = menuOpen
+      state.mobileMenu = menuOpen;
     }
   },
   actions: {
-    retrieveTokenFromAuth0(context) {
-      return new Promise(async (resolve) => {
-        const instance = getInstance();
-
-        instance.$watch("loading", async loading => {
-          if (loading === false) {
-            let authToken = await instance.getTokenSilently();
-
-            if (context.state.token !== authToken) {
-              context.commit("setToken", authToken);
-            }
-
-            resolve(authToken);
-          }
-        })
-      });
-    },
     async retrieveBoardDetails(context, boardUrl) {
       // Don't bother retrieving if we already have this board's information
-      console.log(`Fetching board data for '${boardUrl}'`)
+      console.log(`Fetching board data for '${boardUrl}'`);
       if (boardUrl == context.state.board.url) {
-        console.log(`Already got board data for '${boardUrl}', skipping request`)
-        return
+        console.log(`Already got board data for '${boardUrl}', skipping request`);
+        return;
       }
-
       let headers = {}
 
       if (context.state.token !== null) {
@@ -74,6 +54,29 @@ export const store = new Vuex.Store({
       });
 
       context.commit("setBoard", data)
+    },
+    async login(context, credentials) {
+      const { data } = await axios.post(`https://localhost:5001/account/login?useCookies=true`, {
+        email: credentials.email,
+        password: credentials.password
+      });
+
+      //context.commit("");
+
+      //fetch("https://localhost:5001/account/login?useCookies=true&useSessionCookies=true", {
+      //    credentials: "include",
+      //    method: "POST",
+      //    headers: {
+      //        "Content-Type": "application/json"
+      //    },
+      //    body: JSON.stringify({
+      //        email: this.username,
+      //        password: this.password
+      //    })
+      //})
+
+      console.log(data);
+      context.commit("setUser", data.user);
     },
     async logout(context) {
       context.commit("setUser", {})
@@ -107,10 +110,5 @@ export const store = new Vuex.Store({
       context.commit("setMobileMenu", !context.state.mobileMenu)
     }
   },
-  plugins: [
-    createPersistedState({
-      getState: (key) => Cookies.getJSON(key),
-      setState: (key, state) => Cookies.set(key, state, { expires: 2, secure: true })
-    })
-  ]
-})
+  plugins: [vuexLocal.plugin]
+});

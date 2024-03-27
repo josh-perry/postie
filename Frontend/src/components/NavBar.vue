@@ -7,10 +7,10 @@
     </div>
 
     <div class="right" v-if="!mobile">
-      <a v-if="!$auth.isAuthenticated && !$auth.loading" href="#" class="badge" @click.prevent="login">Log in</a> 
+      <a v-if="!isAuthenticated" href="#" class="badge" @click.prevent="login">Log in</a> 
 
       <div class="dropdown">
-        <button v-if="$auth.isAuthenticated && !$auth.loading" class="dropdown-button">{{ username }}</button>
+        <button v-if="isAuthenticated" class="dropdown-button">{{ username }}</button>
         <div class="dropdown-content">
           <a :href="profileLink">Profile</a>
           <a href="#" @click.prevent="logout">Log out</a>
@@ -39,6 +39,9 @@ export default {
   components: {
     Breadcrumb
   },
+  created() {
+
+  },
   computed: {
     profileLink() {
       if (store.state.user.username == null) {
@@ -54,9 +57,14 @@ export default {
       return this.$screen.width < 800
     }
   },
+  data() {
+    return {
+      isAuthenticated: false
+    }
+  },
   methods: {
     login() {
-      this.$auth.loginWithRedirect();
+      this.$router.push({ path: "/login" })
     },
     logout() {
       store.dispatch("logout")

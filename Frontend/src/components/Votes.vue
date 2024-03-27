@@ -28,18 +28,14 @@ export default {
   },
   data() {
     return {
-      voted: null
-    }
-  },
-  computed: {
-    upVotes() {
-      return this.post.upVotes
+      voted: null,
+      votes: this.post.upVotes
     }
   },
   methods: {
     async postVote(up) {
       let response = await apiClient.postVoteOnPost(this.post.id, up)
-      this.post.upVotes = response.upVotes
+      this.votes = response.data
       this.voted = up
     }
   }

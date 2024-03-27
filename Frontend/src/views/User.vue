@@ -18,14 +18,10 @@
 import apiClient from "../api_client"
 
 import PostList from "../components/PostList.vue"
-import CommentList from "../components/CommentList.vue"
-import CommentPreview from "../components/CommentPreview.vue"
 
 export default {
  components: {
-    PostList,
-    CommentList,
-    CommentPreview
+    PostList
   },
   data() {
     return {

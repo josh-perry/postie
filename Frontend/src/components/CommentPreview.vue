@@ -29,7 +29,7 @@ export default {
     comment: {
       type: Object,
       default: () => {
-        return []
+        return {}
       }
     }
   },

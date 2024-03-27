@@ -1,35 +1,17 @@
-import Vue from "vue";
-import App from "./App.vue";
-import router from "./router";
+import { createApp } from 'vue';
+import App from './App.vue';
+import router from './router';
 
-import { Auth0Plugin } from "./auth";
-import VueScreen from "vue-screen"
+import { store } from './store/store';
 
-import { domain, clientId, audience } from "../auth_config.json";
+import '@/assets/css/main.css';
 
-import { store } from "./store/store"
+import VueScreen from 'vue-screen';
 
-import '@/assets/css/main.css'
+const app = createApp(App);
 
-Vue.config.productionTip = false;
+app.use(store);
+app.use(router);
+app.use(VueScreen);
 
-Vue.use(Auth0Plugin, {
-  domain,
-  clientId,
-  audience,
-  onRedirectCallback: appState => {
-    router.push(
-      appState && appState.targetUrl
-        ? appState.targetUrl
-        : window.location.pathname
-    );
-  }
-});
-
-Vue.use(VueScreen);
-
-new Vue({
-  router,
-  store,
-  render: h => h(App)
-}).$mount("#app");
+app.mount('#app');

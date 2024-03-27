@@ -2,8 +2,6 @@
   <div class="outer">
     <NavBar class="navbar"/>
 
-    <Error />
-
     <div class="container" :class="{ 'vertical': mobile }">
       <div v-if="mobile" class="mobile-menu" :class="{ 'collapse': !mobileMenuOpen }">
         <SideBar :class="{ 'collapse': !mobileMenuOpen && mobile }" />
@@ -25,28 +23,24 @@
 <script>
 import NavBar from "./components/NavBar";
 import SideBar from "./components/SideBar";
-import Error from "./components/Error";
-
-import { store } from "./store/store"
 
 export default {
   components: {
     NavBar,
-    SideBar,
-    Error
+    SideBar
   },
   computed: {
     mobile() {
       return this.$screen.width < 800
     },
     mobileMenuOpen() {
-      return store.state.mobileMenu
+      return this.$store.state.mobileMenu
     }
   },
   created() {
-    store.dispatch("retrieveTokenFromAuth0").then(() => {
-      store.dispatch("retrieveUserDetails")
-    })
+    //this.$store.dispatch("retrieveTokenFromAuth0").then(() => {
+    //  this.$store.dispatch("retrieveUserDetails")
+    //})
   }
 };
 </script>

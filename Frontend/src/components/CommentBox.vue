@@ -4,7 +4,7 @@
     <p v-if="parentCommentId != 0">Replying to comment</p>
 
     <div>
-      <textarea v-model="content" placeholder="Say something nice!" />
+      <textarea v-model="commentContent" placeholder="Say something nice!" />
     </div>
 
     <a href="#" @click.prevent="postComment">Leave a comment</a>
@@ -17,6 +17,11 @@ import { store } from "../store/store"
 
 export default {
   name: "CommentBox",
+  data() {
+    return {
+      commentContent: ""
+    }
+  },
   props: {
     parentCommentId: {
       type: Number,
@@ -31,12 +36,6 @@ export default {
       }
     },
     board: {
-      type: String,
-      default: () => {
-        return ""
-      }
-    },
-    content: {
       type: String,
       default: () => {
         return ""

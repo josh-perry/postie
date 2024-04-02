@@ -50,7 +50,7 @@ export default {
         content: this.commentContent
       }
 
-      const { data } = await axios.post(`https://localhost:5001/comment/${this.$route.params.boardName}/${this.$route.params.postName}`, json, {
+      const { data } = await axios.post(`comment/${this.$route.params.boardName}/${this.$route.params.postName}`, json, {
         headers: headers,
         "Content-Type": "application/json"
       });

@@ -25,16 +25,7 @@ export default {
         return;
       }
 
-      let headers = {}
-
-      //if (context.rootState.token !== null) {
-      //  headers["Authorization"] = `Bearer ${context.rootState.token}`
-      //}
-
-      const { data } = await axios.get(`https://localhost:5001/board/${boardUrl}`, {
-        headers: headers
-      });
-
+      const { data } = await axios.get(`board/${boardUrl}`)
       context.commit("SET_BOARD", data)
     }
   }

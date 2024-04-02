@@ -28,7 +28,7 @@ export default {
     async getPosts() {
       let headers = {}
 
-      const { data } = await axios.get("https://localhost:5001/board", {
+      const { data } = await axios.get("board", {
         headers: headers
       });
 

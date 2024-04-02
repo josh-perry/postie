@@ -44,7 +44,7 @@ export default {
 
       console.log(this.form)
 
-      const { data } = await axios.put(`https://localhost:5001/board/${this.form.url}`, this.form, {
+      const { data } = await axios.put(`board/${this.form.url}`, this.form, {
         headers: headers,
         "Content-Type": "application/json"
       })

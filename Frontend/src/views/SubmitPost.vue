@@ -48,7 +48,7 @@ export default {
     async getBoards() {
       let headers = {}
 
-      const { data } = await axios.get(`https://localhost:5001/board/`, {
+      const { data } = await axios.get(`board/`, {
         headers: headers,
         "Content-Type": "application/json"
       })
@@ -68,7 +68,7 @@ export default {
     async createPost() {
       let headers = {}
 
-      const { data } = await axios.post(`https://localhost:5001/post/board/${this.form.board}`, this.form, {
+      const { data } = await axios.post(`post/board/${this.form.board}`, this.form, {
         headers: headers,
         "Content-Type": "application/json"
       })

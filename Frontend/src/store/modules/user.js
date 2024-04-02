@@ -17,7 +17,7 @@ export default {
     },
     actions: {
         async login(context, credentials) {
-            const result = await axios.post(`https://localhost:5001/account/login`, {
+            const result = await axios.post(`account/login`, {
                 email: credentials.email,
                 password: credentials.password
             });
@@ -53,7 +53,7 @@ export default {
         
               console.log("getting user")
         
-              const { data } = await axios.get(`https://localhost:5001/user`)
+              const { data } = await axios.get(`user`)
         
               console.log("user", data)
               context.commit("SET_USERNAME", data)

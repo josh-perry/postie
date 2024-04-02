@@ -14,12 +14,10 @@
 </template>
 
 <script>
-import { store } from "../store/store"
-
 export default {
   computed: {
     board() {
-      return store.state.board
+      return this.$store.state.board
     }
   }
 };

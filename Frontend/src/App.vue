@@ -34,7 +34,8 @@ export default {
       return this.$screen.width < 800
     },
     mobileMenuOpen() {
-      return this.$store.state.mobileMenu
+      return false
+      //return this.$store.state.mobileMenu
     }
   },
   created() {

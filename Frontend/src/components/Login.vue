@@ -32,18 +32,6 @@ export default {
                 email: this.username,
                 password: this.password
             });
-
-            //fetch("https://localhost:5001/account/login?useCookies=true&useSessionCookies=true", {
-            //    credentials: "include",
-            //    method: "POST",
-            //    headers: {
-            //        "Content-Type": "application/json"
-            //    },
-            //    body: JSON.stringify({
-            //        email: this.username,
-            //        password: this.password
-            //    })
-            //})
         }
     }
 }

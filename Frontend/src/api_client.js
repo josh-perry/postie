@@ -1,5 +1,3 @@
-import { store } from "./store/store"
-
 import axios from "axios"
 
 class ApiClient {
@@ -10,9 +8,9 @@ class ApiClient {
   getDefaultHeaders() {
     let headers = {}
 
-    if (store.state.token !== null) {
-      headers["Authorization"] = `Bearer ${store.state.token}`
-    }
+    //if (store.state.token !== null) {
+    //  headers["Authorization"] = `Bearer ${store.state.token}`
+    //}
 
     return headers
   }

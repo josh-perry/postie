@@ -32,7 +32,6 @@
 
 <script>
 import Breadcrumb from "../components/Breadcrumb";
-import { store } from "../store/store"
 
 export default {
   name: "NavBar",
@@ -44,22 +43,20 @@ export default {
   },
   computed: {
     profileLink() {
-      if (store.state.user.username == null) {
+      if (this.$store.state.user.username == null) {
         return null
       }
 
-      return `/user/${store.state.user.username}`
+      return `/user/${this.$store.state.user.username}`
     },
     username() {
-      return store.state.user.username
+      return this.$store.state.user.username
     },
     mobile() {
       return this.$screen.width < 800
-    }
-  },
-  data() {
-    return {
-      isAuthenticated: false
+    },
+    isAuthenticated() {
+      return this.$store.getters["user/isAuthenticated"];
     }
   },
   methods: {
@@ -67,15 +64,18 @@ export default {
       this.$router.push({ path: "/login" })
     },
     logout() {
-      store.dispatch("logout")
+      this.$store.dispatch("logout")
 
       this.$auth.logout();
       this.$router.push({ path: "/" });
     },
     toggleMenu() {
-      store.dispatch("toggleMobileMenu");
+      this.$store.dispatch("toggleMobileMenu");
     }
-  }
+  },
+  mounted() {
+    console.log(this.$store);
+  },
 };
 </script>
 

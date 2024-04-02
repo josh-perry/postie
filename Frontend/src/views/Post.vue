@@ -25,7 +25,6 @@
 
 <script>
 import axios from "axios";
-import { store } from "../store/store"
 
 import CommentList from "../components/CommentList.vue"
 import CommentBox from "../components/CommentBox.vue"
@@ -54,7 +53,7 @@ export default {
     this.postName = this.$route.params.postName
     this.boardName = this.$route.params.boardName
 
-    store.dispatch("retrieveBoardDetails", this.boardName)
+    this.$store.dispatch("retrieveBoardDetails", this.boardName)
 
     this.getPost()
     this.getRootComments()
@@ -62,10 +61,6 @@ export default {
   methods: {
     async getPost() {
       let headers = {}
-
-      //if (store.state.token !== null) {
-      //  headers["Authorization"] = `Bearer ${store.state.token}`
-      //}
 
       const { data } = await axios.get(`https://localhost:5001/post/board/${this.$route.params.boardName}/${this.$route.params.postName}`, {
         headers: headers
@@ -75,10 +70,6 @@ export default {
     },
     async getRootComments() {
       let headers = {}
-
-      //if (store.state.token !== null) {
-      //  headers["Authorization"] = `Bearer ${store.state.token}`
-      //}
 
       const { data } = await axios.get(`https://localhost:5001/comment/${this.$route.params.boardName}/${this.$route.params.postName}?childrenOf=0`, {
         headers: headers

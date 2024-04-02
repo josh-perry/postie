@@ -28,7 +28,6 @@
 
 <script>
 import axios from "axios";
-import { store } from "../store/store"
 
 export default {
   data() {
@@ -42,10 +41,6 @@ export default {
   methods: {
     async createBoard() {
       let headers = {}
-
-      if (store.state.token !== null) {
-        headers["Authorization"] = `Bearer ${store.state.token}`
-      }
 
       console.log(this.form)
 

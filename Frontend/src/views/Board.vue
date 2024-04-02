@@ -9,8 +9,6 @@
 <script>
 import PostList from "../components/PostList.vue"
 
-import { store } from "../store/store"
-
 import apiClient from "../api_client"
 
 export default {
@@ -26,7 +24,7 @@ export default {
   async created() {
     this.boardName = this.$route.params.boardName
 
-    store.dispatch("retrieveBoardDetails", this.boardName)
+    this.$store.dispatch("retrieveBoardDetails", this.boardName)
     this.posts = await apiClient.getPostsForBoard(this.$route.params.boardName)
   }
 }

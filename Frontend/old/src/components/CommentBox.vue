@@ -13,6 +13,7 @@
 
 <script>
 import axios from "axios";
+import { store } from "../store/store"
 
 export default {
   name: "CommentBox",
@@ -45,12 +46,16 @@ export default {
     async postComment() {
       let headers = {}
 
-      let json = {
-        parentCommentId: this.parentCommentId,
-        content: this.commentContent
+      if (store.state.token !== null) {
+        headers["Authorization"] = `Bearer ${store.state.token}`
       }
 
-      const { data } = await axios.post(`https://localhost:5001/comment/${this.$route.params.boardName}/${this.$route.params.postName}`, json, {
+      let json = {
+        parentCommentId: this.parentCommentId,
+        content: this.content
+      }
+
+      const { data } = await axios.post(`comment/${this.$route.params.boardName}/${this.$route.params.postName}`, json, {
         headers: headers,
         "Content-Type": "application/json"
       });

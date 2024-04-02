@@ -81,6 +81,7 @@ export default {
       this.showCommentBox = false
 
       // Scroll to the new comment
+      // TODO: fix this
       this.$router.push({ hash: `Comment${value.id}` })
     },
     getCommentClass() {

@@ -10,7 +10,6 @@
 
 <script>
 import axios from "axios";
-import { store } from "../store/store"
 import BoardCard from "../components/BoardCard";
 
 export default {
@@ -28,10 +27,6 @@ export default {
   methods: {
     async getPosts() {
       let headers = {}
-
-      if (store.state.token !== null) {
-        headers["Authorization"] = `Bearer ${store.state.token}`
-      }
 
       const { data } = await axios.get("https://localhost:5001/board", {
         headers: headers

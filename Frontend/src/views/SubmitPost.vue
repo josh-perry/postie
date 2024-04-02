@@ -30,7 +30,6 @@
 
 <script>
 import axios from "axios";
-import { store } from "../store/store"
 
 export default {
   data() {
@@ -49,10 +48,6 @@ export default {
     async getBoards() {
       let headers = {}
 
-      if (store.state.token !== null) {
-        headers["Authorization"] = `Bearer ${store.state.token}`
-      }
-      
       const { data } = await axios.get(`https://localhost:5001/board/`, {
         headers: headers,
         "Content-Type": "application/json"
@@ -73,10 +68,6 @@ export default {
     async createPost() {
       let headers = {}
 
-      if (store.state.token !== null) {
-        headers["Authorization"] = `Bearer ${store.state.token}`
-      }
-      
       const { data } = await axios.post(`https://localhost:5001/post/board/${this.form.board}`, this.form, {
         headers: headers,
         "Content-Type": "application/json"

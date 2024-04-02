@@ -56,15 +56,37 @@ namespace Postie.Api
             if (dbContext.Users.FirstOrDefault() != null)
                 return;
 
+            var systemUser = new User
+            {
+                UserName = "System",
+                Email = ""
+            };
+
+            await userManager.CreateAsync(systemUser);
+
             foreach (var user in defaultUserOptions.Users)
             {
-                var result = await userManager.CreateAsync(new User
+                await userManager.CreateAsync(new User
                 {
                     UserName = user.Username,
                     Email = user.Email
                 }, user.Password);
             }
 
+            dbContext.SaveChanges();
+            
+            foreach (var board in defaultUserOptions.SystemBoards)
+            {
+                dbContext.Boards.Add(new Board
+                {
+                    Title = board.Title,
+                    Description = board.Description,
+                    Url = board.Title.Replace(" ", "-").ToLower().Replace(".", ""),
+                    CreatedBy = systemUser,
+                    CreatedDateTime = DateTime.Now
+                });
+            }
+            
             dbContext.SaveChanges();
 
             var userFaker = new Faker<User>()
@@ -83,7 +105,7 @@ namespace Postie.Api
             // Create boards
             var boardFaker = new Faker<Board>()
                 .RuleFor(b => b.Description, f => f.Lorem.Paragraphs())
-                .RuleFor(b => b.Title, f => f.Lorem.Sentence(1, 3).ToString())
+                .RuleFor(b => b.Title, f => string.Join(" ", f.Lorem.Words(3)))
                 .RuleFor(b => b.Url, (f, b) => b.Title.Replace(" ", "-").ToLower().Replace(".", ""))
                 .RuleFor(b => b.CreatedBy, f => f.PickRandom(users))
                 .RuleFor(b => b.CreatedDateTime, f => f.Date.Recent());
@@ -93,13 +115,15 @@ namespace Postie.Api
 
             dbContext.SaveChanges();
 
+            boards = dbContext.Boards.ToList();
+
             // Create posts
             foreach (var user in users)
             {
                 var postFaker = new Faker<Post>()
                     .RuleFor(p => p.Board, f => f.PickRandom(boards))
                     .RuleFor(p => p.Content, f => f.Lorem.Paragraphs(1, 5))
-                    .RuleFor(p => p.Title, f => f.Lorem.Sentence())
+                    .RuleFor(p => p.Title, f => string.Join(" ", f.Lorem.Words(_random.Next(1, 5))))
                     .RuleFor(p => p.Url, (f, p) => p.Title.Replace(" ", "-").ToLower().Replace(".", ""))
                     .RuleFor(p => p.CreatedBy, f => user)
                     .RuleFor(p => p.CreatedDateTime, f => f.Date.Recent());

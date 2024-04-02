@@ -1,9 +1,6 @@
-using System;
-using System.IO;
-using System.Reflection;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Routing;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -11,10 +8,15 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using Postie.Api.Data;
 using Postie.Api.Mappers;
+using Postie.Api.Models.Db;
 using Postie.Api.Models.Options;
-using Postie.Api.Repositories;
 using Postie.Api.Repositories.Interfaces;
+using Postie.Api.Repositories;
 using Postie.Api.Services;
+using System.IO;
+using System.Reflection;
+using System;
+using System.Collections.Generic;
 
 namespace Postie.Api
 {
@@ -29,6 +31,8 @@ namespace Postie.Api
 
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddAuthorizationBuilder();
+            
             services.AddDbContext<ApplicationDbContext>(options => {
                 options.UseSqlite(Configuration.GetConnectionString("DefaultConnection"));
             });
@@ -37,50 +41,26 @@ namespace Postie.Api
             services.AddOptions();
 
             services.AddCors(options => {
-                options.AddPolicy("AllowedOrigins", builder => {
-                    builder.WithOrigins("http://localhost:3000")
+                options.AddPolicy("AllowedOrigins", builder =>
+                {
+                    builder.WithOrigins("https://localhost:8081")
                         .AllowAnyHeader()
-                        .AllowAnyMethod()
-                        .AllowAnyOrigin();
+                        .AllowCredentials()
+                        .AllowAnyMethod();
                 });
             });
 
-            services.AddAuthentication(options => {
-                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-            }).AddJwtBearer(options => {
-                options.Authority = "https://dev-q8zwjq1z.us.auth0.com/";
-                options.Audience = "postie";
-            });
-
-            services.AddSwaggerGen(c => {
+            services
+                .AddIdentityApiEndpoints<User>()
+                .AddEntityFrameworkStores<ApplicationDbContext>();
+            
+            services.AddEndpointsApiExplorer();
+            services.AddSwaggerGen(c =>
+            {
                 c.SwaggerDoc("v1", new OpenApiInfo
                 {
                     Title = "Postie",
                     Version = "v1"
-                });
-                c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
-                {
-                    Description = "JWT Authorization header using the Bearer scheme (Example: 'Bearer 12345abcdef')",
-                    Name = "Authorization",
-                    In = ParameterLocation.Header,
-                    Type = SecuritySchemeType.ApiKey,
-                    Scheme = "Bearer"
-                });
-
-                c.AddSecurityRequirement(new OpenApiSecurityRequirement
-                {
-                    {
-                        new OpenApiSecurityScheme
-                        {
-                            Reference = new OpenApiReference
-                            {
-                                Type = ReferenceType.SecurityScheme,
-                                Id = "Bearer"
-                            }
-                        },
-                        Array.Empty<string>()
-                    }
                 });
 
                 // Source: https://docs.microsoft.com/en-us/aspnet/core/tutorials/getting-started-with-swashbuckle
@@ -118,12 +98,19 @@ namespace Postie.Api
             }
 
             app.UseStaticFiles();
-            app.UseRouting();
 
             app.UseCors("AllowedOrigins");
 
             app.UseAuthentication();
+            app.UseRouting();
             app.UseAuthorization();
+            
+            app.UseEndpoints(endpoints => {
+                endpoints.MapControllers();
+                endpoints
+                    .MapGroup("/account")
+                    .MapIdentityApi<User>();
+            });
 
             app.UseSwagger();
 

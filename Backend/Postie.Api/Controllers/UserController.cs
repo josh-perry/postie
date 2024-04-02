@@ -2,9 +2,7 @@ using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Postie.Api.Mappers;
-using Postie.Api.Repositories;
 using Postie.Api.Repositories.Interfaces;
-using Postie.Api.Services;
 
 namespace Postie.Api.Controllers
 {
@@ -49,7 +47,7 @@ namespace Postie.Api.Controllers
         [Route("")]
         public IActionResult GetMe()
         {
-            var user = _userRepository.GetUserByAuthId(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
+            var user = _userRepository.GetUserByUsername(User.FindFirst(ClaimTypes.Name)?.Value);
 
             if (user == null)
                 return BadRequest("User is null.");
@@ -68,7 +66,7 @@ namespace Postie.Api.Controllers
         [Route("{username}")]
         public IActionResult GetByUsername(string username, int recentCommentsCount = 10, int recentPostsCount = 10)
         {
-            var user = _userRepository.GetUserByName(username);
+            var user = _userRepository.GetUserByUsername(username);
 
             if (user == null)
                 return NotFound();

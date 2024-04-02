@@ -5,9 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Postie.Api.Mappers;
 using Postie.Api.Models.Db;
 using Postie.Api.Models.Requests;
-using Postie.Api.Repositories;
 using Postie.Api.Repositories.Interfaces;
-using Postie.Api.Services;
 
 namespace Postie.Api.Controllers
 {
@@ -69,7 +67,7 @@ namespace Postie.Api.Controllers
                 ? _commentRepository.GetCommentById(addCommentRequest.ParentCommentId.Value)
                 : null;
 
-            var user = _userRepository.GetUserByAuthId(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
+            var user = _userRepository.GetUserByUsername(User.FindFirst(ClaimTypes.Name)?.Value);
 
             if (user == null)
                 return BadRequest("User is null.");

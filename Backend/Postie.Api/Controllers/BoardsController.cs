@@ -79,7 +79,7 @@ namespace Postie.Api.Controllers
             if (_boardRepository.GetBoardByUrl(newBoardRequest.Title) != null)
                 return Conflict($"{newBoardRequest.Title} already exists!");
 
-            var user = _userRepository.GetUserByAuthId(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
+            var user = _userRepository.GetUserByUsername(User.FindFirst(ClaimTypes.Name)?.Value);
 
             var success = _boardRepository.AddBoard(new Board
             {

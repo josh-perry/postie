@@ -18,7 +18,7 @@ namespace Postie.Api.Mappers
             {
                 ID = comment.ID,
                 Content = comment.Content,
-                User = comment.CreatedBy.Username,
+                User = comment.CreatedBy.UserName,
                 ParentCommentId = comment.ParentComment?.ID,
                 Children = new List<Comment>(),
                 Board = comment.Post?.Board.Url,

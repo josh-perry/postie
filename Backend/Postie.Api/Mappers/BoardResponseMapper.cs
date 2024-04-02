@@ -17,7 +17,7 @@ namespace Postie.Api.Mappers
             return new BoardApiResponse
             {
                 Title = board.Title ?? "",
-                CreatedBy = board.CreatedBy?.Username ?? "",
+                CreatedBy = board.CreatedBy?.UserName ?? "",
                 CreatedDateTime = board.CreatedDateTime,
                 Url = board.Url,
                 Description = board.Description

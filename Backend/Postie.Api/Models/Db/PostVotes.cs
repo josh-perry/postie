@@ -13,8 +13,8 @@ namespace Postie.Api.Models.Db
 
         [Required]
         public User User { get; set; }
-
-        public int UserID { get; set; }
+        
+        public string UserID { get; set; }
 
         [Required]
         public bool Up { get; set; }

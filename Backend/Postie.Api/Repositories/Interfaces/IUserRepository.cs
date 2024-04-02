@@ -4,9 +4,6 @@ namespace Postie.Api.Repositories.Interfaces
 {
     public interface IUserRepository
     {
-        User GetUserByName(string username);
-
-        User GetUserByAuthId(string authId);
+        User GetUserByUsername(string username);
     }
-
 }

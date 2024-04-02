@@ -16,7 +16,7 @@ namespace Postie.Api.Mappers
         {
             return new UserApiResponse
             {
-                Username = user.Username
+                Username = user.UserName
             };
         }
     }

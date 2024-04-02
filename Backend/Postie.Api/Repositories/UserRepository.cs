@@ -14,14 +14,9 @@ namespace Postie.Api.Repositories
             _dbContext = dbContext;
         }
 
-        public User GetUserByName(string username)
+        public User GetUserByUsername(string username)
         {
-            return _dbContext.Users.FirstOrDefault(x => x.Username == username);
-        }
-
-        public User GetUserByAuthId(string authId)
-        {
-            return _dbContext.Users.FirstOrDefault(x => x.AuthId == authId);
+            return (User)_dbContext.Users.FirstOrDefault(x => x.UserName == username);
         }
     }
 }

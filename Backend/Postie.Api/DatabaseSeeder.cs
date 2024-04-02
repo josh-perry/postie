@@ -5,6 +5,7 @@ using Bogus;
 using Bogus.Extensions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -16,7 +17,7 @@ namespace Postie.Api
 {
     public static class DatabaseSeeder
     {
-        private const int UserCount = 50;
+        private const int UserCount = 10;
 
         private const int MinBoards = 5;
 
@@ -38,10 +39,12 @@ namespace Postie.Api
 
         private static readonly Random _random = new Random();
 
-        public static void SeedDatabase(this IApplicationBuilder app, IWebHostEnvironment env)
+        public static async void SeedDatabase(this IApplicationBuilder app, IWebHostEnvironment env)
         {
             using var serviceScope = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>().CreateScope();
-            using var dbContext = serviceScope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+            await using var dbContext = serviceScope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+            using var userManager = serviceScope.ServiceProvider.GetRequiredService<UserManager<User>>();
+            
             var defaultUserOptions = serviceScope.ServiceProvider.GetRequiredService<SeedDataOptions>();
 
             // Apply any migrations, but don't seed if not necessary or not in development mode
@@ -55,23 +58,21 @@ namespace Postie.Api
 
             foreach (var user in defaultUserOptions.Users)
             {
-                var defaultUser = new User
+                var result = await userManager.CreateAsync(new User
                 {
-                    Username = user.Username,
-                    AuthId = user.AuthId
-                };
-
-                dbContext.Users.Add(defaultUser);
+                    UserName = user.Username,
+                    Email = user.Email
+                }, user.Password);
             }
 
             dbContext.SaveChanges();
 
             var userFaker = new Faker<User>()
-                .RuleFor(u => u.Username, f => f.Internet.UserName())
-                .RuleFor(u => u.AuthId, f => "auth0|");
+                .RuleFor(u => u.UserName, f => f.Internet.UserName());
 
             // Create users
             var users = userFaker.Generate(UserCount);
+            
             dbContext.Users.AddRange(users);
             dbContext.SaveChanges();
 

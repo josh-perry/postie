@@ -97,7 +97,7 @@ namespace Postie.Api.Controllers
             if (boardUrl != addPostRequest.Board)
                 return BadRequest("Board in URL and board in request mismatch!");
 
-            var user = _userRepository.GetUserByAuthId(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
+            var user = _userRepository.GetUserByUsername(User.FindFirst(ClaimTypes.Name)?.Value);
 
             if (user == null)
                 return BadRequest("User is null.");

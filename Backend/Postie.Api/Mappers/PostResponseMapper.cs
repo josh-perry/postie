@@ -29,7 +29,7 @@ namespace Postie.Api.Mappers
                 ID = post.ID,
                 Board = post.Board.Url ?? "",
                 Title = post.Title ?? "",
-                CreatedBy = post.CreatedBy.Username ?? "",
+                CreatedBy = post.CreatedBy.UserName ?? "",
                 CreatedDateTime = post.CreatedDateTime,
                 Content = post.Content,
                 Url = post.Url,

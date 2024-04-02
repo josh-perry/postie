@@ -33,7 +33,7 @@ namespace Postie.Api.Controllers
         [Route("post/{postId}")]
         public IActionResult AddPostVote(int postId, PostVoteRequest postVoteRequest)
         {
-            var user = _userRepository.GetUserByAuthId(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
+            var user = _userRepository.GetUserByUsername(User.FindFirst(ClaimTypes.Name)?.Value);
             if (user == null)
                 return BadRequest("User is null.");
 

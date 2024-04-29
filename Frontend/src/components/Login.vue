@@ -32,6 +32,8 @@ export default {
                 email: this.username,
                 password: this.password
             });
+
+            this.$router.push({ path: "/" });
         }
     }
 }

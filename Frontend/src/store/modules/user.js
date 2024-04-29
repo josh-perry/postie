@@ -13,7 +13,12 @@ export default {
         tokenExpirationDateTime: state => state.tokenExpirationDateTime,
         email: state => state.email,
         refreshToken: state => state.refreshToken,
-        isAuthenticated: state => state.bearerToken !== ''
+        isAuthenticated: function (state) {
+            return state.bearerToken !== null &&
+                state.bearerToken !== "" &&
+                state.tokenExpirationDateTime !== null &&
+                state.tokenExpirationDateTime > new Date().getTime();
+        }
     },
     actions: {
         async login(context, credentials) {
@@ -51,11 +56,7 @@ export default {
                 return
               }
         
-              console.log("getting user")
-        
               const { data } = await axios.get(`user`)
-        
-              console.log("user", data)
               context.commit("SET_USERNAME", data)
         }
     },
@@ -69,7 +70,7 @@ export default {
         SET_REFRESH_TOKEN(state, token) {
             state.refreshToken = token;
         },
-        SET_EXPIRATION_DATETIME(state, expirationDateTime) {
+        SET_TOKEN_EXPIRATION_DATETIME(state, expirationDateTime) {
             state.tokenExpirationDateTime = expirationDateTime;
         }
     }

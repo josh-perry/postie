@@ -31,6 +31,7 @@
 </template>
 
 <script>
+import { mapState, mapGetters } from 'vuex';
 import Breadcrumb from "../components/Breadcrumb";
 
 export default {
@@ -42,21 +43,17 @@ export default {
 
   },
   computed: {
+    ...mapState('user', ['username']),
+    ...mapGetters('user', ['isAuthenticated']),
     profileLink() {
-      if (this.$store.state.user.username == null) {
+      if (this.username == null) {
         return null
       }
 
-      return `/user/${this.$store.state.user.username}`
-    },
-    username() {
-      return this.$store.state.user.username
+      return `/user/${this.username}`
     },
     mobile() {
       return this.$screen.width < 800
-    },
-    isAuthenticated() {
-      return this.$store.getters["user/isAuthenticated"];
     }
   },
   methods: {
@@ -64,18 +61,13 @@ export default {
       this.$router.push({ path: "/login" })
     },
     logout() {
-      this.$store.dispatch("logout")
-
-      this.$auth.logout();
+      this.$store.dispatch("user/logout")
       this.$router.push({ path: "/" });
     },
     toggleMenu() {
       this.$store.dispatch("toggleMobileMenu");
     }
-  },
-  mounted() {
-    console.log(this.$store);
-  },
+  }
 };
 </script>
 
